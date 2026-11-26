@@ -1,10 +1,13 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 
-import { ButtonComponent } from '../../../shared/ui/button/button.component';
-import { DividerComponent, DividerVariant } from '../../../shared/ui/divider/divider.component';
-import { IconComponent } from '../../../shared/ui/icon/icon.component';
-import { ReadonlyFieldComponent } from '../../../shared/ui/readonly-field/readonly-field.component';
-import { TooltipDirective } from '../../../shared/ui/tooltip/tooltip.directive';
+import {
+  ButtonComponent,
+  DividerComponent,
+  DividerVariant,
+  IconComponent,
+  ReadonlyFieldComponent,
+  TooltipDirective,
+} from '@kennedy122112/siaf-rp-ui-angular';
 
 /**
  * Ejemplos en vivo de la categoría Fundamentos. `siafTooltip` suma un bloque «Uso en consultas»

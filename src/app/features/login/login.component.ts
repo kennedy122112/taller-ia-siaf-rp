@@ -1,12 +1,16 @@
 import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 
-import { AlertComponent } from '../../shared/ui/alert/alert.component';
-import { ButtonComponent } from '../../shared/ui/button/button.component';
-import { ListComponent, ListItem } from '../../shared/ui/list/list.component';
-import { MessageBoxComponent } from '../../shared/ui/message-box/message-box.component';
-import { TabItem, TabsComponent } from '../../shared/ui/tabs/tabs.component';
-import { TextFieldComponent } from '../../shared/ui/text-field/text-field.component';
+import {
+  AlertComponent,
+  ButtonComponent,
+  ListComponent,
+  ListItem,
+  MessageBoxComponent,
+  TabItem,
+  TabsComponent,
+  TextFieldComponent,
+} from '@kennedy122112/siaf-rp-ui-angular';
 import { AuthService } from '../../core/auth/auth.service';
 import { reiniciarDatosDemo } from '../../mock/mock-db';
 import { CONTRASENA_DEMO, USUARIOS_DEMO } from '../../mock/usuarios-demo';

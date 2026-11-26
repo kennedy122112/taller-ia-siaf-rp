@@ -3,8 +3,8 @@
  *
  * Todo lo demás (selector, descripción, entradas, eventos, si tiene uso) sale del código
  * vía `scripts/generar-ui-kit.mjs`. El spec `ui-kit.catalogo.spec.ts` falla si un
- * componente nuevo no tiene categoría, así que agregar uno a `shared/` sin declararlo
- * aquí rompe los tests: esa es la regla de "sin ficha no está terminado".
+ * componente nuevo del kit (o del armazón) no tiene categoría, así que actualizar el kit sin
+ * declararlo aquí rompe los tests: esa es la regla de "sin ficha no está terminado".
  *
  * Criterio: una familia va entera en una sola categoría (todos los paneles laterales en
  * Overlays, todas las tarjetas en Superficies) y los componentes que se parecen van uno
@@ -26,7 +26,8 @@ export type CategoriaId =
   | 'overlays'
   | 'paginas'
   | 'plantillas'
-  | 'armazon';
+  | 'armazon'
+  | 'landing';
 
 export interface CategoriaUiKit {
   id: CategoriaId;
@@ -48,6 +49,7 @@ export const CATEGORIAS_UI_KIT: readonly CategoriaUiKit[] = [
   { id: 'paginas', titulo: 'Layouts de página', descripcion: 'Armazones y cabeceras de las pantallas de solicitud y de consulta: cada pantalla pone dentro su propio contenido.' },
   { id: 'plantillas', titulo: 'Plantillas de pantalla', descripcion: 'Flujos completos que se repiten entre procesos: cada pantalla solo pasa su configuración (título, textos, columnas y filtros).' },
   { id: 'armazon', titulo: 'Armazón de la aplicación', descripcion: 'Piezas del shell autenticado: barra superior, menús y bandeja.' },
+  { id: 'landing', titulo: 'Página de inicio', descripcion: 'Piezas de la página pública de los sistemas: cabecera, barra de sistemas, tarjetas, detalle, pie y chat.' },
 ];
 
 export const CATEGORIA_POR_SELECTOR: Readonly<Record<string, CategoriaId>> = {
@@ -89,6 +91,9 @@ export const CATEGORIA_POR_SELECTOR: Readonly<Record<string, CategoriaId>> = {
   'siaf-custom-filter': 'datos',
   'siaf-tree-view': 'datos',
   'siaf-list': 'datos',
+  '[siafReordenable]': 'datos',
+  '[siafReordenableItem]': 'datos',
+  'siaf-drag-handle': 'datos',
   // Gráficos
   'siaf-chart-section': 'graficos',
   'siaf-kpi-card': 'graficos',
@@ -168,7 +173,24 @@ export const CATEGORIA_POR_SELECTOR: Readonly<Record<string, CategoriaId>> = {
   'siaf-tray-menu': 'armazon',
   'siaf-tray-documents-view': 'armazon',
   'siaf-tray-notifications-view': 'armazon',
+  // Página de inicio
+  'siaf-landing-header': 'landing',
+  'siaf-landing-systems-bar': 'landing',
+  'siaf-landing-cards-carousel': 'landing',
+  'siaf-landing-detail-hero': 'landing',
+  'siaf-landing-footer': 'landing',
+  'siaf-landing-chat-button': 'landing',
 };
 
-/** Pantallas completas, no piezas reutilizables: no se listan en el catálogo. */
-export const SELECTORES_OCULTOS: readonly string[] = ['siaf-app-shell', 'siaf-virtual-desk'];
+/**
+ * No se listan en el catálogo: las pantallas completas del taller (armazón y escritorio) y las secciones internas de
+ * `siaf-documents-records-page` (encabezado, filtros y acciones en lote), que el kit exporta pero se usan dentro de
+ * la plantilla, no solas.
+ */
+export const SELECTORES_OCULTOS: readonly string[] = [
+  'siaf-app-shell',
+  'siaf-virtual-desk',
+  'siaf-encabezado-section',
+  'siaf-filtros-section',
+  'siaf-acciones-en-lote-section',
+];

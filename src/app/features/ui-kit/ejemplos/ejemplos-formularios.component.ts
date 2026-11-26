@@ -1,16 +1,21 @@
 import { ChangeDetectionStrategy, Component, Input, signal } from '@angular/core';
 
-import { CheckboxComponent } from '../../../shared/ui/checkbox/checkbox.component';
-import { DateTimePickerComponent } from '../../../shared/ui/date-time-picker/date-time-picker.component';
-import { RadioComponent, RadioOption } from '../../../shared/ui/radio/radio.component';
-import { ReadonlyComponent } from '../../../shared/ui/readonly/readonly.component';
-import { ReadonlyFieldComponent } from '../../../shared/ui/readonly-field/readonly-field.component';
-import { SelectOption, SelectOptionsComponent } from '../../../shared/ui/select-options/select-options.component';
-import { SwitchComponent } from '../../../shared/ui/switch/switch.component';
-import { TextAreaControlComponent } from '../../../shared/ui/text-area-control/text-area-control.component';
-import { TextFieldComponent, TextFieldOption } from '../../../shared/ui/text-field/text-field.component';
-import { UploadedFileCardComponent } from '../../../shared/ui/uploaded-file-card/uploaded-file-card.component';
-import { UploaderComponent } from '../../../shared/ui/uploader/uploader.component';
+import {
+  CheckboxComponent,
+  DateTimePickerComponent,
+  RadioComponent,
+  RadioOption,
+  ReadonlyComponent,
+  ReadonlyFieldComponent,
+  SelectOption,
+  SelectOptionsComponent,
+  SwitchComponent,
+  TextAreaControlComponent,
+  TextFieldComponent,
+  TextFieldOption,
+  UploadedFileCardComponent,
+  UploaderComponent,
+} from '@kennedy122112/siaf-rp-ui-angular';
 
 /** Ejemplos en vivo de la categoría Formularios. */
 @Component({

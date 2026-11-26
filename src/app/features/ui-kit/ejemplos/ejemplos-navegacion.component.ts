@@ -1,8 +1,13 @@
 import { ChangeDetectionStrategy, Component, Input, signal } from '@angular/core';
 
-import { BreadcrumbComponent, BreadcrumbItem } from '../../../shared/components/breadcrumb/breadcrumb.component';
-import { RecordsTabItem, RecordsTabsComponent } from '../../../shared/components/records-tabs/records-tabs.component';
-import { TabItem, TabsComponent } from '../../../shared/ui/tabs/tabs.component';
+import {
+  BreadcrumbComponent,
+  BreadcrumbItem,
+  RecordsTabItem,
+  RecordsTabsComponent,
+  TabItem,
+  TabsComponent,
+} from '@kennedy122112/siaf-rp-ui-angular';
 
 /** Ejemplos en vivo de la categoría Navegación. */
 @Component({

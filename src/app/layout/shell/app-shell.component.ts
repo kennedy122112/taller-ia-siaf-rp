@@ -4,19 +4,25 @@ import { NavigationEnd, Router, RouterOutlet } from '@angular/router';
 import { filter } from 'rxjs';
 
 import { CREATE_DOCUMENT_OPTIONS, REQUEST_ROUTE } from '../../modules/tesoreria/cuentas-bancarias/config/cuentas-bancarias.rutas';
-import { CreateDocumentAccepted, CreateDocumentComponent, CreateDocumentProcessOption } from '../../shared/components/create-document/create-document.component';
+import {
+  CreateDocumentAccepted,
+  CreateDocumentComponent,
+  CreateDocumentProcessOption,
+  MobileNavigationMenuComponent,
+  NavbarComponent,
+  ProcessMenuNode,
+  ProcessMenuTreeComponent,
+  SidebarComponent,
+  SidebarNavigation,
+  TrayDocumentsViewComponent,
+  TrayMenuComponent,
+  TrayNotificationsViewComponent,
+} from '@kennedy122112/siaf-rp-ui-angular';
 import { CatalogosApiService, TipoDocumentoResponse } from '../../core/api/catalogos-api.service';
-import { MobileNavigationMenuComponent } from '../mobile-navigation-menu/mobile-navigation-menu.component';
-import { ProcessMenuNode, ProcessMenuTreeComponent } from '../process-menu-tree/process-menu-tree.component';
-import { TrayDocumentsViewComponent } from '../tray-documents-view/tray-documents-view.component';
-import { TrayNotificationsViewComponent } from '../tray-notifications-view/tray-notifications-view.component';
-import { TrayMenuComponent } from '../tray-menu/tray-menu.component';
-import { NavbarComponent } from '../navbar/navbar.component';
-import { SidebarComponent, SidebarNavigation } from '../sidebar/sidebar.component';
 import { CurrentUserService } from '../../core/auth/current-user.service';
 import { PermissionService } from '../../core/auth/permission.service';
 import { ShellNavigationService } from './shell-navigation.service';
-import { ADMIN_MENU_TREE } from '../../shared/utils/process-tree.util';
+import { ADMIN_MENU_TREE, DEFAULT_PROCESS_TREE } from '../../shared/utils/process-tree.util';
 
 /**
  * Armazón de la app autenticada: navbar, sidebar y los paneles flotantes sobre los que vive el router-outlet.
@@ -68,7 +74,7 @@ import { ADMIN_MENU_TREE } from '../../shared/utils/process-tree.util';
 
       @if (processMenuOpen) {
         <div class="fixed inset-x-0 bottom-0 top-14 z-20 lg:left-16 lg:right-auto" (click)="$event.stopPropagation()">
-          <siaf-process-menu-tree (nodeSelected)="onProcessNodeSelected($event)" />
+          <siaf-process-menu-tree [nodes]="processTree" (nodeSelected)="onProcessNodeSelected($event)" />
         </div>
       }
 
@@ -84,7 +90,6 @@ import { ADMIN_MENU_TREE } from '../../shared/utils/process-tree.util';
             title="Ajustes"
             subtitle="Seleccionar configuracion"
             placeholder="Buscar configuracion"
-            searchLabel="Buscar configuracion"
             [nodes]="adminMenuTree"
             (nodeSelected)="onAdminNodeSelected($event)"
           />
@@ -348,6 +353,8 @@ export class AppShellComponent implements OnInit {
   }
 
   /** Árbol del menú "Ajustes": lo pinta el mismo `siaf-process-menu-tree` que el de procesos. */
+  /** Árbol del menú de procesos del taller (el kit trae por defecto el del SIAF-RP completo). */
+  readonly processTree = DEFAULT_PROCESS_TREE;
   readonly adminMenuTree = ADMIN_MENU_TREE;
 
   onAdminNodeSelected(node: ProcessMenuNode): void {

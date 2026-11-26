@@ -1,22 +1,27 @@
 import { ChangeDetectionStrategy, Component, Input, computed, signal } from '@angular/core';
 
-import { QueryParametersPanelComponent } from '../../../shared/components/query-parameters-panel/query-parameters-panel.component';
+import {
+  AnnulmentModalComponent,
+  AnnulmentRequest,
+  ButtonComponent,
+  ColumnVisibilityPanelComponent,
+  FocoDirective,
+  ModalComponent,
+  QueryParametersPanelComponent,
+  RequestApprovalModalsComponent,
+  SelectionColumn,
+  SelectionSideNavComponent,
+  SideNavComponent,
+  SidePanelComponent,
+  TextFieldComponent,
+  TextFieldOption,
+  TimelineDetailPanelComponent,
+  TimelineItem,
+  UploadSideNavComponent,
+} from '@kennedy122112/siaf-rp-ui-angular';
 import type { QueryReportParameters } from '../../../shared/types/query-report.types';
 import { CAMPOS_PARAMETROS_DE_MUESTRA } from './reporte-de-muestra';
-import { RequestApprovalModalsComponent } from '../../../shared/components/request-approval-modals/request-approval-modals.component';
-import { SelectionColumn, SelectionSideNavComponent } from '../../../shared/components/selection-side-nav/selection-side-nav.component';
-import { TimelineDetailPanelComponent } from '../../../shared/components/timeline/timeline-detail-panel.component';
-import { TimelineItem } from '../../../shared/components/timeline/timeline.model';
 import { DocumentsRecordsColumn } from '../../../shared/types/documents-records.types';
-import { AnnulmentModalComponent, AnnulmentRequest } from '../../../shared/ui/annulment-modal/annulment-modal.component';
-import { ButtonComponent } from '../../../shared/ui/button/button.component';
-import { ColumnVisibilityPanelComponent } from '../../../shared/ui/column-visibility-panel/column-visibility-panel.component';
-import { FocoDirective } from '../../../shared/ui/foco/foco.directive';
-import { ModalComponent } from '../../../shared/ui/modal/modal.component';
-import { SideNavComponent } from '../../../shared/ui/side-nav/side-nav.component';
-import { SidePanelComponent } from '../../../shared/ui/side-panel/side-panel.component';
-import { TextFieldComponent, TextFieldOption } from '../../../shared/ui/text-field/text-field.component';
-import { UploadSideNavComponent } from '../../../shared/ui/upload-side-nav/upload-side-nav.component';
 
 interface CuentaEjemplo {
   id: string;

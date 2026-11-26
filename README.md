@@ -1,7 +1,7 @@
 # Taller IA · SIAF-RP
 
 Arquetipo para clases demostrativas: muestra cómo se arman las pantallas del SIAF-RP con los componentes del diseño de
-Figma y **datos simulados**, sin backend. Trae el login, el escritorio virtual y un proceso de ejemplo completo
+Figma (el kit `@kennedy122112/siaf-rp-ui-angular`, Angular 21) y **datos simulados**, sin backend. Trae el login, el escritorio virtual y un proceso de ejemplo completo
 (Documentos y registros, la solicitud con su formulario y Consultas y reportes), con usuarios de demostración para
 alternar roles y perfiles.
 
@@ -10,6 +10,8 @@ alternar roles y perfiles.
 ## Requisitos
 
 - Node.js 24 (ver `.nvmrc`) y npm.
+- Nada más: el kit de componentes viene dentro del repositorio (`vendor/`), así que `npm ci` lo instala sin acceso al
+  repositorio del SIAF-RP.
 
 ## Cómo correrlo
 
@@ -85,8 +87,9 @@ Para empezar de cero: **Reiniciar datos** en el login (o borrar el almacenamient
 ```text
 src/app/
 ├── core/            API, sesión y permisos, interceptores, estado de las solicitudes y notificaciones
+│   └── kit/         fuentes de datos del kit (sesión, notificaciones, bandeja, historiales y documentos)
 ├── features/        login, recuperar contraseña y catálogo /ui-kit
-├── layout/          armazón: barra superior, menú lateral, menú de procesos, bandeja y escritorio virtual
+├── layout/          armazón propio (app-shell) y escritorio virtual; la barra, los menús y la bandeja vienen del kit
 ├── mock/            backend simulado, datos iniciales y usuarios de demostración
 ├── modules/
 │   └── tesoreria/cuentas-bancarias/
@@ -96,9 +99,9 @@ src/app/
 │       ├── pages/   documents · solicitud · consultas
 │       └── utils/   exportación a Excel, CSV y PDF
 └── shared/
-    ├── ui/          componentes del diseño de Figma (sin dependencias del dominio)
-    ├── components/  componentes compuestos y plantillas de pantalla
+    ├── types/       tipos de las plantillas (reexportados del kit)
     └── utils/       árbol de procesos del menú, migas de pan, fechas…
+vendor/              el paquete del kit (.tgz) que instala npm
 ```
 
 ## Cómo sumar un proceso
@@ -113,7 +116,7 @@ Tomen como modelo `modules/tesoreria/cuentas-bancarias/`:
 5. **Menú y migas de pan**: sus hojas en `shared/utils/process-tree.util.ts` (`DEFAULT_PROCESS_TREE`).
 6. **Crear documento y notificaciones**: el tipo de documento en `/tipos-documento` del backend simulado, sus opciones
    en `layout/shell/app-shell.component.ts` (`ROUTE_BY_PROCESO`) y la ruta que abre cada aviso en
-   `layout/notifications-panel` y `layout/tray-notifications-view` (`resolveRoute`).
+   `core/kit/fuentes-kit.ts` (`RUTA_POR_DOCUMENTO`).
 
 Antes de escribir markup, busquen el componente en `/ui-kit`: casi todo ya existe.
 
@@ -124,7 +127,25 @@ Antes de escribir markup, busquen el componente en `/ui-kit`: casi todo ya exist
 | `npm start` | Servidor de desarrollo |
 | `npx ng build --configuration=development` | Compilar |
 | `npx ng test --watch=false --browsers=ChromeHeadless` | Pruebas unitarias |
-| `npm run ui-kit:manifest` | Regenerar las fichas del catálogo tras crear o cambiar un componente |
+| `npm run ui-kit:manifest` | Regenerar las fichas del catálogo tras actualizar el kit (o cambiar el armazón) |
 | `npm run ui-kit:check` | Verificar que el catálogo está al día |
 | `npm run icons:check` | Verificar que los íconos existen en Material Icons |
-| `npm run tokens:build` | Regenerar los tokens de color desde `src/tokens/` |
+
+## El kit de componentes
+
+Los componentes, los tokens del Figma (claro y oscuro) y los estilos vienen del paquete
+`@kennedy122112/siaf-rp-ui-angular`, que **no está en npm**: su `.tgz` va en `vendor/` y `package.json` lo instala
+desde ahí (`file:vendor/…`). No se editan: si algo del kit no alcanza, se compone en la pantalla o se pide en el
+SIAF-RP.
+
+- **Estilos**: `src/styles.css` importa `estilos/tema.css` del kit (tokens, `@theme` de Tailwind y la capa
+  `components`); sus imágenes se copian a `assets/` desde `angular.json`.
+- **Fuentes de datos**: la barra superior, la bandeja, los paneles de historial y «Documentos y registros» no llaman a
+  la API: piden sus datos a clases `Fuente*` del kit, que el taller implementa en `core/kit/fuentes-kit.ts` sobre el
+  backend simulado y registra en `main.ts`.
+- **Catálogo**: `npm run ui-kit:manifest` arma las fichas de `/ui-kit` leyendo el paquete instalado.
+
+**Para actualizarlo**: copiar el `.tgz` nuevo a `vendor/` (y borrar el anterior), cambiar la ruta en `package.json`,
+`npm install`, leer la sección «Actualizar desde otra versión» del README del paquete
+(`node_modules/@kennedy122112/siaf-rp-ui-angular/README.md`) y correr `npm run ui-kit:manifest`. Si trae componentes
+nuevos, los tests piden su categoría en `ui-kit.catalogo.ts` y su ejemplo en `features/ui-kit/ejemplos/`.

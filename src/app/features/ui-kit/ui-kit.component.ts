@@ -3,12 +3,14 @@ import { ChangeDetectionStrategy, Component, DestroyRef, ElementRef, Injector, N
 import { Title } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
 
-import { ButtonComponent } from '../../shared/ui/button/button.component';
-import { EmptyStateComponent } from '../../shared/ui/empty-state/empty-state.component';
-import { FocoDirective } from '../../shared/ui/foco/foco.directive';
-import { IconComponent } from '../../shared/ui/icon/icon.component';
-import { TextFieldComponent } from '../../shared/ui/text-field/text-field.component';
-import { TemaApp, aplicarTema, leerTemaGuardado } from '../../shared/utils/tema.util';
+import {
+  ButtonComponent,
+  EmptyStateComponent,
+  FocoDirective,
+  IconComponent,
+  TextFieldComponent,
+} from '@kennedy122112/siaf-rp-ui-angular';
+import { TemaApp, aplicarTema, leerTemaGuardado } from '@kennedy122112/siaf-rp-ui-angular';
 import { filtrarSecciones } from './fundamentos/secciones';
 import { UiKitFundamentosComponent } from './fundamentos/ui-kit-fundamentos.component';
 import { UiKitFichaComponent } from './ui-kit-ficha.component';
@@ -143,7 +145,7 @@ function* posiciones(secciones: ArrayLike<HTMLElement>): Generator<PosicionSecci
         >
           <div class="shrink-0 border-b border-border px-6 pb-5 pt-6" data-ui-kit-indice-fijo>
             <p class="text-lg font-semibold leading-6">UI Kit</p>
-            <p class="mt-1 font-mono text-xs text-text-muted">SIAF-RP · Angular 20</p>
+            <p class="mt-1 font-mono text-xs text-text-muted">SIAF-RP · Angular 21</p>
             <siaf-input
               class="mt-5"
               label="Buscar en el catálogo"
@@ -209,11 +211,10 @@ function* posiciones(secciones: ArrayLike<HTMLElement>): Generator<PosicionSecci
             <p class="mb-3 font-mono text-xs uppercase tracking-[0.2em] text-[var(--sys-color-text-brand-primary)]">SIAF-RP · Biblioteca de interfaz</p>
             <h1 class="mb-4 text-3xl font-bold lg:text-4xl">Catálogo de componentes</h1>
             <p class="text-base leading-relaxed text-text-muted">
-              Los componentes reutilizables del frontend: el design system de <code class="font-mono text-sm">shared/ui</code>,
-              los transversales de <code class="font-mono text-sm">shared/components</code> y las piezas del armazón.
-              Cada ficha se genera desde el código, así que el selector, las entradas y los eventos son los reales.
-              Los ejemplos se renderizan en vivo con los mismos componentes que usan las pantallas. Los fundamentos visuales salen de los tokens de
-              <code class="font-mono text-sm">src/styles</code>.
+              Los componentes del kit del SIAF-RP (<code class="font-mono text-sm">@kennedy122112/siaf-rp-ui-angular</code>):
+              el design system, los transversales y las piezas del armazón. Cada ficha se genera desde el paquete instalado,
+              así que el selector, las entradas y los eventos son los reales. Los ejemplos se renderizan en vivo con los mismos
+              componentes que usan las pantallas. Los fundamentos visuales salen de los tokens del kit.
             </p>
             <div class="mt-8 flex flex-wrap gap-4">
               @for (dato of resumen; track dato.etiqueta) {

@@ -11,15 +11,9 @@
 import { readFileSync, readdirSync, statSync } from 'node:fs';
 import { join, relative } from 'node:path';
 
-// Orden de la cascada de src/styles.css: el que viene después gana.
-const ARCHIVOS_CSS = [
-  'src/styles/tokens/base.css',
-  'src/styles/tokens/figma.css',
-  'src/styles/tokens/generated/tailwind.tokens.css',
-  'src/styles/tokens/themes/light.css',
-  'src/styles/tokens/themes/dark.css',
-  'src/styles.css',
-];
+// Orden de la cascada de src/styles.css: primero los tokens del kit y después lo propio del taller (el que viene
+// después gana).
+const ARCHIVOS_CSS = ['node_modules/@kennedy122112/siaf-rp-ui-angular/estilos/tema.css', 'src/styles.css'];
 
 const MEDIA_TABLET = '@media (max-width: 1023px)';
 const MEDIA_MOVIL = '@media (max-width: 767px)';

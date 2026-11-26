@@ -73,7 +73,7 @@ describe('Catálogo de componentes (ui-kit)', () => {
   it('el manifiesto trae la documentación extraída del código', () => {
     const boton = MANIFIESTO_UI_KIT.find((f) => f.selector === 'siaf-button')!;
     expect(boton.clase).toBe('ButtonComponent');
-    expect(boton.importacion).toBe('@siaf/ui/button/button.component');
+    expect(boton.importacion).toBe('@kennedy122112/siaf-rp-ui-angular');
     expect(boton.descripcion).toContain('Botón base');
     expect(boton.entradas.find((e) => e.nombre === 'size')?.tipo).toBe("'sm' | 'md'");
     expect(MANIFIESTO_UI_KIT.find((f) => f.selector === 'siaf-icon')!.entradas.find((e) => e.nombre === 'name')?.requerida).toBeTrue();

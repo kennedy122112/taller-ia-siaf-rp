@@ -1,11 +1,14 @@
 import { ChangeDetectionStrategy, Component, OnInit, computed, inject, signal } from '@angular/core';
 
 import { ShellNavigationService } from '../shell/shell-navigation.service';
-import { IconComponent } from '../../shared/ui/icon/icon.component';
-import { ButtonComponent } from '../../shared/ui/button/button.component';
-import { DeskCardComponent, DeskCardTone } from '../../shared/ui/desk-card/desk-card.component';
-import { ModalComponent } from '../../shared/ui/modal/modal.component';
-import { TextFieldComponent } from '../../shared/ui/text-field/text-field.component';
+import {
+  ButtonComponent,
+  DeskCardComponent,
+  DeskCardTone,
+  IconComponent,
+  ModalComponent,
+  TextFieldComponent,
+} from '@kennedy122112/siaf-rp-ui-angular';
 import { SolicitudesFacadeService } from '../../core/state/solicitudes-facade.service';
 import { SolicitudesStateService } from '../../core/state/solicitudes-state.service';
 import { PermissionService } from '../../core/auth/permission.service';

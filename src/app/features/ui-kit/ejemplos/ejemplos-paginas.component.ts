@@ -1,15 +1,19 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 
-import { BreadcrumbItem } from '../../../shared/components/breadcrumb/breadcrumb.component';
-import { CreateDocumentComponent } from '../../../shared/components/create-document/create-document.component';
-import { PageHeaderComponent } from '../../../shared/components/page-header/page-header.component';
-import { PageShellComponent } from '../../../shared/components/page-shell/page-shell.component';
-import { SolicitudeFormCardComponent } from '../../../shared/components/solicitude-form-card/solicitude-form-card.component';
-import { SolicitudeHeaderComponent } from '../../../shared/components/solicitude-header/solicitude-header.component';
-import { SolicitudeInfoCardComponent, SolicitudeInfoField } from '../../../shared/components/solicitude-info-card/solicitude-info-card.component';
-import { SolicitudePageLayoutComponent } from '../../../shared/components/solicitude-page-layout/solicitude-page-layout.component';
-import { ButtonComponent } from '../../../shared/ui/button/button.component';
-import { TextFieldComponent, TextFieldOption } from '../../../shared/ui/text-field/text-field.component';
+import {
+  BreadcrumbItem,
+  ButtonComponent,
+  CreateDocumentComponent,
+  PageHeaderComponent,
+  PageShellComponent,
+  SolicitudeFormCardComponent,
+  SolicitudeHeaderComponent,
+  SolicitudeInfoCardComponent,
+  SolicitudeInfoField,
+  SolicitudePageLayoutComponent,
+  TextFieldComponent,
+  TextFieldOption,
+} from '@kennedy122112/siaf-rp-ui-angular';
 
 /**
  * Ejemplos en vivo de la categoría Layouts de página. El layout y la cabecera de solicitud se

@@ -10,26 +10,33 @@ import { CurrentUserService } from '../../../../../core/auth/current-user.servic
 import { PermissionService } from '../../../../../core/auth/permission.service';
 import { ESTADO, MOTIVOS_RECHAZO } from '../../../../../core/models/documento.model';
 import { SolicitudesFacadeService } from '../../../../../core/state/solicitudes-facade.service';
-import { BreadcrumbItem } from '../../../../../shared/components/breadcrumb/breadcrumb.component';
-import { DetailHistoryTabsComponent } from '../../../../../shared/components/detail-history-tabs/detail-history-tabs.component';
-import { HistorialSource, buildCurrentComment, buildHistoryEntries } from '../../../../../shared/components/detail-history-tabs/detail-history-tabs.utils';
-import { RequestApprovalModalsComponent } from '../../../../../shared/components/request-approval-modals/request-approval-modals.component';
-import { SolicitudeFormCardComponent } from '../../../../../shared/components/solicitude-form-card/solicitude-form-card.component';
-import { SolicitudeHeaderState } from '../../../../../shared/components/solicitude-header/solicitude-header.component';
-import { SolicitudeInfoCardComponent, SolicitudeInfoField } from '../../../../../shared/components/solicitude-info-card/solicitude-info-card.component';
-import { SolicitudePageLayoutComponent } from '../../../../../shared/components/solicitude-page-layout/solicitude-page-layout.component';
-import { ActionTrackerComponent, ActionTrackerSummary } from '../../../../../shared/ui/action-tracker/action-tracker.component';
-import { ButtonComponent } from '../../../../../shared/ui/button/button.component';
-import { DateTimePickerComponent } from '../../../../../shared/ui/date-time-picker/date-time-picker.component';
-import { DocumentSummaryCardComponent } from '../../../../../shared/ui/document-summary-card/document-summary-card.component';
-import { FlowStatus } from '../../../../../shared/ui/flow-status-tag/flow-status-tag.component';
-import { RadioComponent } from '../../../../../shared/ui/radio/radio.component';
-import { ReadonlyFieldComponent } from '../../../../../shared/ui/readonly-field/readonly-field.component';
-import { SnackbarVariant } from '../../../../../shared/ui/snackbar/snackbar.component';
-import { TextAreaControlComponent } from '../../../../../shared/ui/text-area-control/text-area-control.component';
-import { TextFieldComponent } from '../../../../../shared/ui/text-field/text-field.component';
-import { UploadSideNavComponent } from '../../../../../shared/ui/upload-side-nav/upload-side-nav.component';
-import { UploadedFileCardComponent, UploadedFileInfo } from '../../../../../shared/ui/uploaded-file-card/uploaded-file-card.component';
+import {
+  ActionTrackerComponent,
+  ActionTrackerSummary,
+  BreadcrumbItem,
+  buildCurrentComment,
+  buildHistoryEntries,
+  ButtonComponent,
+  DateTimePickerComponent,
+  DetailHistoryTabsComponent,
+  DocumentSummaryCardComponent,
+  FlowStatus,
+  HistorialSource,
+  RadioComponent,
+  ReadonlyFieldComponent,
+  RequestApprovalModalsComponent,
+  SnackbarVariant,
+  SolicitudeFormCardComponent,
+  SolicitudeHeaderState,
+  SolicitudeInfoCardComponent,
+  SolicitudeInfoField,
+  SolicitudePageLayoutComponent,
+  TextAreaControlComponent,
+  TextFieldComponent,
+  UploadedFileCardComponent,
+  UploadedFileInfo,
+  UploadSideNavComponent,
+} from '@kennedy122112/siaf-rp-ui-angular';
 import { buildProcessBreadcrumbs } from '../../../../../shared/utils/breadcrumbs.util';
 import { crearSnapshotFormulario, hayCambiosRespectoAlSnapshot, identidadArchivo } from '../../../../../shared/utils/form-snapshot.util';
 import { MIN_CARACTERES_TEXTO_LIBRE, cumpleMinimoTextoLibre } from '../../../../../shared/utils/texto-libre.util';

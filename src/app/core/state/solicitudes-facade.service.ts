@@ -18,7 +18,7 @@ import {
   HistorialDemo,
   EstadoSolicitudDemo,
 } from './solicitudes-state.service';
-import type { SolicitudeHeaderRole } from '../../shared/components/solicitude-header/solicitude-header.component';
+import type { SolicitudeHeaderRole } from '@kennedy122112/siaf-rp-ui-angular';
 import { ESTADO, EstadoDocumento } from '../models/documento.model';
 
 /** Intervalo de refresco automático de la bandeja del aprobador (ms). */

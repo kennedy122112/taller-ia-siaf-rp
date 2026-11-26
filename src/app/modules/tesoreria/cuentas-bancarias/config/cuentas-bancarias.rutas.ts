@@ -1,4 +1,4 @@
-import type { CreateDocumentProcessOption } from '../../../../shared/components/create-document/create-document.component';
+import type { CreateDocumentProcessOption } from '@kennedy122112/siaf-rp-ui-angular';
 import { NOMBRE_DOCUMENTO } from '../models/cuenta-bancaria.model';
 
 /** Rutas e ids del proceso de ejemplo. Los ids existen en `DEFAULT_PROCESS_TREE` (shared/utils/process-tree.util.ts). */

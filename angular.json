@@ -25,8 +25,15 @@
               "zone.js"
             ],
             "tsConfig": "tsconfig.app.json",
-            "allowedCommonJsDependencies": ["exceljs"],
+            "allowedCommonJsDependencies": [
+              "exceljs"
+            ],
             "assets": [
+              {
+                "glob": "**/*",
+                "input": "node_modules/@kennedy122112/siaf-rp-ui-angular/assets",
+                "output": "assets"
+              },
               {
                 "glob": "**/*",
                 "input": "src/assets",
@@ -89,14 +96,9 @@
             "tsConfig": "tsconfig.spec.json",
             "assets": [
               {
-                "glob": "*.svg",
-                "input": "src/assets/figma/modals",
-                "output": "assets/figma/modals"
-              },
-              {
-                "glob": "*.svg",
-                "input": "src/assets/figma/modals-dark",
-                "output": "assets/figma/modals-dark"
+                "glob": "**/*",
+                "input": "node_modules/@kennedy122112/siaf-rp-ui-angular/assets",
+                "output": "assets"
               }
             ],
             "styles": [

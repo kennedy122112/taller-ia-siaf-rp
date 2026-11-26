@@ -2,9 +2,7 @@ import { NgClass } from '@angular/common';
 import { ChangeDetectionStrategy, Component, ElementRef, QueryList, ViewChildren, inject, signal } from '@angular/core';
 import { Router } from '@angular/router';
 
-import { ButtonComponent } from '../../shared/ui/button/button.component';
-import { IconComponent } from '../../shared/ui/icon/icon.component';
-import { TextFieldComponent } from '../../shared/ui/text-field/text-field.component';
+import { ButtonComponent, IconComponent, TextFieldComponent } from '@kennedy122112/siaf-rp-ui-angular';
 import { AuthApiService } from '../../core/api/auth-api.service';
 import { AuthService } from '../../core/auth/auth.service';
 

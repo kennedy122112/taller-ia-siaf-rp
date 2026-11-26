@@ -2,8 +2,8 @@
  * Tipos comunes reutilizables en toda la aplicación
  */
 
-/** Mismos tipos que `shared/ui/button`: variantes y tamaños del Figma. */
-export type { ButtonSize, ButtonVariant } from '../ui/button/button.component';
+/** Mismos tipos que `siaf-button` del kit: variantes y tamaños del Figma. */
+export type { ButtonSize, ButtonVariant } from '@kennedy122112/siaf-rp-ui-angular';
 export type ButtonType = 'button' | 'submit' | 'reset';
 
 export type InputType = 'text' | 'email' | 'password' | 'number' | 'tel' | 'url' | 'date' | 'time' | 'datetime-local';

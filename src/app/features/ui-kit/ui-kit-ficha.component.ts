@@ -1,12 +1,15 @@
 import { NgComponentOutlet, NgTemplateOutlet } from '@angular/common';
 import { ChangeDetectionStrategy, Component, DestroyRef, Input, computed, inject, signal } from '@angular/core';
 
-import { ButtonComponent } from '../../shared/ui/button/button.component';
-import { IconComponent } from '../../shared/ui/icon/icon.component';
-import { MessageBoxComponent } from '../../shared/ui/message-box/message-box.component';
-import { StatusTagComponent } from '../../shared/ui/status-tag/status-tag.component';
-import { TabItem, TabsComponent } from '../../shared/ui/tabs/tabs.component';
-import { TemaApp } from '../../shared/utils/tema.util';
+import {
+  ButtonComponent,
+  IconComponent,
+  MessageBoxComponent,
+  StatusTagComponent,
+  TabItem,
+  TabsComponent,
+} from '@kennedy122112/siaf-rp-ui-angular';
+import type { TemaApp } from '@kennedy122112/siaf-rp-ui-angular';
 import { UiKitCopiarComponent } from './fundamentos/ui-kit-copiar.component';
 import { UiKitMarcoComponent } from './ui-kit-marco.component';
 import { FichaVista } from './ui-kit.vista';

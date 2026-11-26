@@ -1,6 +1,6 @@
 import { isDevMode } from '@angular/core';
 
-import type { BreadcrumbItem } from '../components/breadcrumb/breadcrumb.component';
+import type { BreadcrumbItem } from '@kennedy122112/siaf-rp-ui-angular';
 import { findProcessPathById } from './process-tree.util';
 
 /**

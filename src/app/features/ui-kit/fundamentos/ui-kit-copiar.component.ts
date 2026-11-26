@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, DestroyRef, Input, inject, signal } from '@angular/core';
 
-import { IconComponent } from '../../../shared/ui/icon/icon.component';
+import { IconComponent } from '@kennedy122112/siaf-rp-ui-angular';
 
 /** Texto en monoespaciada que se copia al pulsarlo (nombre de token, utilidad o fragmento). */
 @Component({

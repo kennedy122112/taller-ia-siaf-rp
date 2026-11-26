@@ -1,10 +1,19 @@
 import { ChangeDetectionStrategy, Component, Input, signal } from '@angular/core';
 
-import { ButtonComponent, ButtonVariant } from '../../../shared/ui/button/button.component';
-import { ButtonGroupItem, ButtonsGroupComponent } from '../../../shared/ui/buttons-group/buttons-group.component';
-import { CascadingMenuComponent, CascadingMenuGroup } from '../../../shared/ui/cascading-menu/cascading-menu.component';
-import { IconDropdownMenuComponent, IconDropdownMenuItem } from '../../../shared/ui/icon-dropdown-menu/icon-dropdown-menu.component';
-import { MenuComponent, MenuDensity, MenuItem, MenuLeading } from '../../../shared/ui/menu/menu.component';
+import {
+  ButtonComponent,
+  ButtonGroupItem,
+  ButtonsGroupComponent,
+  ButtonVariant,
+  CascadingMenuComponent,
+  CascadingMenuGroup,
+  IconDropdownMenuComponent,
+  IconDropdownMenuItem,
+  MenuComponent,
+  MenuDensity,
+  MenuItem,
+  MenuLeading,
+} from '@kennedy122112/siaf-rp-ui-angular';
 
 /** Ejemplos en vivo de la categoría Botones y acciones. */
 @Component({

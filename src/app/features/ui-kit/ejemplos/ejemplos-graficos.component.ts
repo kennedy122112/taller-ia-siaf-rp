@@ -1,15 +1,21 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 
-import { BarChartComponent } from '../../../shared/ui/bar-chart/bar-chart.component';
-import { ChartLegendComponent, ChartLegendItem } from '../../../shared/ui/chart-legend/chart-legend.component';
-import { ChartSectionComponent } from '../../../shared/ui/chart-section/chart-section.component';
-import { ChartTooltipComponent, ChartTooltipItem } from '../../../shared/ui/chart-tooltip/chart-tooltip.component';
-import { tokenDeSerie } from '../../../shared/ui/charts/chart-tema';
-import { ChartSeries } from '../../../shared/ui/charts/grafico-base';
-import { DivergingChartComponent } from '../../../shared/ui/diverging-chart/diverging-chart.component';
-import { DonutChartComponent } from '../../../shared/ui/donut-chart/donut-chart.component';
-import { KpiCardComponent } from '../../../shared/ui/kpi-card/kpi-card.component';
-import { LineChartComponent } from '../../../shared/ui/line-chart/line-chart.component';
+import {
+  ChartLegendComponent,
+  ChartLegendItem,
+  ChartSectionComponent,
+  ChartTooltipComponent,
+  ChartTooltipItem,
+  KpiCardComponent,
+  tokenDeSerie,
+} from '@kennedy122112/siaf-rp-ui-angular';
+import {
+  BarChartComponent,
+  ChartSeries,
+  DivergingChartComponent,
+  DonutChartComponent,
+  LineChartComponent,
+} from '@kennedy122112/siaf-rp-ui-angular/graficos';
 
 /** Ejemplos en vivo de la categoría Gráficos, con los datos de muestra del Figma («Graphics»). */
 @Component({

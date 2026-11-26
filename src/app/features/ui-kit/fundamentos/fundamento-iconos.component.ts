@@ -1,9 +1,13 @@
 import { ChangeDetectionStrategy, Component, DestroyRef, ElementRef, computed, inject, signal } from '@angular/core';
 
-import { PaginationComponent } from '../../../shared/components/pagination/pagination.component';
-import { ButtonGroupItem, ButtonsGroupComponent } from '../../../shared/ui/buttons-group/buttons-group.component';
-import { IconComponent, IconVariant } from '../../../shared/ui/icon/icon.component';
-import { TextFieldComponent } from '../../../shared/ui/text-field/text-field.component';
+import {
+  ButtonGroupItem,
+  ButtonsGroupComponent,
+  IconComponent,
+  IconVariant,
+  PaginationComponent,
+  TextFieldComponent,
+} from '@kennedy122112/siaf-rp-ui-angular';
 import { FUNDAMENTOS_UI_KIT } from '../ui-kit.fundamentos';
 
 /** Íconos por página: la lista completa son más de 2000. */

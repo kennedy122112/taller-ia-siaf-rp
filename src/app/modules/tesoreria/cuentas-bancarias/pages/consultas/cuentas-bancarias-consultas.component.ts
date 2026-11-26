@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
 import { Router } from '@angular/router';
 
-import { QueryReportExportEvent, QueryReportPageComponent } from '../../../../../shared/components/query-report-page/query-report-page.component';
+import { QueryReportExportEvent, QueryReportPageComponent } from '@kennedy122112/siaf-rp-ui-angular/graficos';
 import type { QueryReportConfig, QueryReportParameters, QueryReportResult, QueryReportRow } from '../../../../../shared/types/query-report.types';
 import { buildProcessBreadcrumbs } from '../../../../../shared/utils/breadcrumbs.util';
 import { CuentasBancariasApiService } from '../../api/cuentas-bancarias-api.service';

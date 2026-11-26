@@ -3,8 +3,8 @@ import { ChangeDetectionStrategy, Component, Input, inject, signal } from '@angu
 import { CurrentUserService } from '../../../core/auth/current-user.service';
 import { PermissionService } from '../../../core/auth/permission.service';
 
-import { DocumentsRecordsPageComponent } from '../../../shared/components/documents-records-page/documents-records-page.component';
-import { QueryReportExportEvent, QueryReportPageComponent } from '../../../shared/components/query-report-page/query-report-page.component';
+import { DocumentsRecordsPageComponent } from '@kennedy122112/siaf-rp-ui-angular';
+import { QueryReportExportEvent, QueryReportPageComponent } from '@kennedy122112/siaf-rp-ui-angular/graficos';
 import type { QueryReportResult } from '../../../shared/types/query-report.types';
 import { BANDEJA_CONFIG_DE_MUESTRA, PROVEEDORES_BANDEJA_DE_MUESTRA, sembrarSesionDeMuestra } from './datos-de-muestra';
 import { CONFIG_REPORTE_DE_MUESTRA, FILAS_REPORTE_DE_MUESTRA, RESULTADO_REPORTE_DE_MUESTRA } from './reporte-de-muestra';

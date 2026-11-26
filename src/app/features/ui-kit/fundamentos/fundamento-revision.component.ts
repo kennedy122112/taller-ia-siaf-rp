@@ -1,7 +1,6 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 
-import { AlertComponent } from '../../../shared/ui/alert/alert.component';
-import { StatusTagComponent } from '../../../shared/ui/status-tag/status-tag.component';
+import { AlertComponent, StatusTagComponent } from '@kennedy122112/siaf-rp-ui-angular';
 import { FUNDAMENTOS_UI_KIT } from '../ui-kit.fundamentos';
 import { UiKitCopiarComponent } from './ui-kit-copiar.component';
 

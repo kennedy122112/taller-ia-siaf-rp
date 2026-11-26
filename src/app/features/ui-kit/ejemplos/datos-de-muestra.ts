@@ -1,9 +1,10 @@
 /**
  * Datos de muestra para los ejemplos de componentes que en la app piden sus datos a la API.
  *
- * Esos componentes no reciben los datos por entradas: los consultan a un servicio al
- * abrirse. Para pintarlos en /ui-kit (sin sesión) se les da, a nivel del componente de
- * ejemplos, un servicio con la misma forma que devuelve datos fijos sin tocar la red.
+ * Esos componentes no reciben los datos por entradas: los piden a una fuente del kit
+ * (`FuenteHistorialCuenta`, `FuenteBandeja`…). Para pintarlos en /ui-kit (sin sesión) se les
+ * da, a nivel del componente de ejemplos, una fuente que devuelve datos fijos sin tocar la red:
+ * la misma del taller (`core/kit/fuentes-kit.ts`) sobre servicios falsos, o una de muestra.
  * Los almacenes que solo guardan señales (usuario, permisos, solicitudes) se usan reales,
  * en una instancia propia sembrada con estos datos. Nada de esto se usa fuera del catálogo.
  *
@@ -14,11 +15,8 @@
 import { Injectable, Provider, computed, signal } from '@angular/core';
 import { Observable, of } from 'rxjs';
 
-import { AperturaContableApiService, ConfiguracionAmbitoResponse } from '../../../core/api/apertura-contable-api.service';
 import { PerfilItem } from '../../../core/api/auth-api.service';
 import { NotificacionResponse, NotificacionesApiService } from '../../../core/api/notificaciones-api.service';
-import { CuentaContableResponse, CuentaHistorialEntry, PlanesApiService } from '../../../core/api/planes-api.service';
-import { SolicitudResponse, SolicitudesApiService } from '../../../core/api/solicitudes-api.service';
 import { AuthService } from '../../../core/auth/auth.service';
 import { CurrentUserService } from '../../../core/auth/current-user.service';
 import { PermissionService } from '../../../core/auth/permission.service';
@@ -26,7 +24,22 @@ import { ESTADO } from '../../../core/models/documento.model';
 import { NotificationsStateService } from '../../../core/realtime/notifications-state.service';
 import { SolicitudesFacadeService } from '../../../core/state/solicitudes-facade.service';
 import { SolicitudDemo, SolicitudesStateService } from '../../../core/state/solicitudes-state.service';
-import { DocumentHistoryRow } from '../../../shared/components/document-history-panel/document-history-panel.component';
+import { TallerFuenteBandeja, TallerFuenteNotificaciones, TallerFuenteSesion } from '../../../core/kit/fuentes-kit';
+import {
+  FuenteBandeja,
+  FuenteDocumentosRegistros,
+  FuenteHistorialAsiento,
+  FuenteHistorialCuenta,
+  FuenteHistorialDocumento,
+  FuenteNotificaciones,
+  FuenteSesion,
+  type CuentaDelHistorial,
+  type DocumentHistoryRow,
+  type ModoDeRol,
+  type PeriodoDelAsiento,
+  type SolicitudDeLaCuenta,
+  type SolicitudDelAsiento,
+} from '@kennedy122112/siaf-rp-ui-angular';
 import { DocumentsRecordsColumn, DocumentsRecordsConfig } from '../../../shared/types/documents-records.types';
 
 const hace = (horas: number): string => new Date(Date.now() - horas * 3_600_000).toISOString();
@@ -82,9 +95,9 @@ const CUENTA_DE_MUESTRA = {
   tieneDinamicaContable: true,
   dinamicaDebita: 'Por los ingresos de efectivo recibidos.',
   dinamicaAcredita: 'Por los depósitos y pagos realizados.',
-} as unknown as CuentaContableResponse;
+} as unknown as CuentaDelHistorial;
 
-const HISTORIAL_CUENTA_DE_MUESTRA: CuentaHistorialEntry[] = [
+const HISTORIAL_CUENTA_DE_MUESTRA: SolicitudDeLaCuenta[] = [
   {
     documentoId: 'doc-scc-1',
     tipoDocumento: { codigo: 'SCC', nombre: 'Solicitud de cuenta contable' },
@@ -95,7 +108,7 @@ const HISTORIAL_CUENTA_DE_MUESTRA: CuentaHistorialEntry[] = [
     sustento: { nombreOriginal: 'sustento-cuenta-caja.pdf' },
     esModificacion: false,
     historialEstados,
-  } as unknown as CuentaHistorialEntry,
+  } as unknown as SolicitudDeLaCuenta,
 ];
 
 /** La fila de la pestaña Registros que abre el panel de historial de la cuenta. */
@@ -141,16 +154,12 @@ const SOLICITUD_ASIENTO_DE_MUESTRA = {
       { tipoMovimiento: 'Haber', monto: 12500, cuentaContable: { codigoCompleto: '1508.0101', nombre: 'Depreciación acumulada de edificios' } },
     ],
   },
-} as unknown as SolicitudResponse;
+} as unknown as SolicitudDelAsiento;
 
 export const REGISTRO_ASIENTO_DE_MUESTRA = { recordId: 'doc-sraa-12', status: 'Activo' };
 
-const CONFIGURACION_APERTURA_DE_MUESTRA = [
-  {
-    ambitoId: 'ent-mef',
-    periodos: [{ etiqueta: '2026 - 03', fechaInicio: '2026-03-01', fechaFin: '2026-03-31', fechaVigenciaAdicional: '2026-04-10' }],
-  },
-] as unknown as ConfiguracionAmbitoResponse[];
+/** Período «2026 - 03» de la configuración de la entidad. */
+const PERIODO_DE_MUESTRA: PeriodoDelAsiento = { fechaInicio: '2026-03-01', fechaFin: '2026-03-31', fechaVigenciaAdicional: '2026-04-10' };
 
 // ── Notificaciones ───────────────────────────────────────────────────
 
@@ -212,16 +221,28 @@ export class EstadoNotificacionesDeMuestra {
 
 const nada = <T>(valor: T): Observable<T> => of(valor);
 
-/** Servicios falsos de los paneles de historial (cuenta y asiento). */
+/** Fuentes de muestra de los paneles de historial (documento, cuenta y asiento). */
 export const PROVEEDORES_HISTORIAL_DE_MUESTRA: Provider[] = [
-  { provide: PlanesApiService, useValue: { obtenerCuenta: () => nada(CUENTA_DE_MUESTRA), obtenerHistorialCuenta: () => nada(HISTORIAL_CUENTA_DE_MUESTRA) } },
-  { provide: SolicitudesApiService, useValue: { obtenerDetalle: () => nada(SOLICITUD_ASIENTO_DE_MUESTRA), cambiarEstado: () => nada({ message: 'ok' }) } },
-  { provide: AperturaContableApiService, useValue: { listarConfiguracion: () => nada(CONFIGURACION_APERTURA_DE_MUESTRA) } },
-  CurrentUserService,
+  { provide: FuenteHistorialDocumento, useValue: { obtenerHistorial: () => nada(HISTORIAL_DOCUMENTO_DE_MUESTRA) } },
+  { provide: FuenteHistorialCuenta, useValue: { obtenerCuenta: () => nada(CUENTA_DE_MUESTRA), obtenerSolicitudes: () => nada(HISTORIAL_CUENTA_DE_MUESTRA) } },
+  {
+    provide: FuenteHistorialAsiento,
+    useValue: {
+      obtenerSolicitud: () => nada(SOLICITUD_ASIENTO_DE_MUESTRA),
+      obtenerPeriodo: () => nada(PERIODO_DE_MUESTRA),
+      ambitoDelUsuario: () => USUARIO_DE_MUESTRA.entidadAmbitoId,
+    },
+  },
 ];
 
-/** Servicios falsos del shell: notificaciones, bandeja y sesión. Los almacenes de señales van reales, sembrados. */
+/**
+ * Fuentes del shell (sesión, notificaciones y bandeja): las del taller, sobre servicios falsos. Los almacenes de
+ * señales van reales, sembrados.
+ */
 export const PROVEEDORES_SHELL_DE_MUESTRA: Provider[] = [
+  { provide: FuenteSesion, useClass: TallerFuenteSesion },
+  { provide: FuenteNotificaciones, useClass: TallerFuenteNotificaciones },
+  { provide: FuenteBandeja, useClass: TallerFuenteBandeja },
   { provide: NotificationsStateService, useClass: EstadoNotificacionesDeMuestra },
   { provide: NotificacionesApiService, useValue: { obtenerHistorial: () => nada(NOTIFICACIONES_DE_MUESTRA), marcarLeidas: () => nada(undefined) } },
   {
@@ -299,11 +320,18 @@ export const BANDEJA_CONFIG_DE_MUESTRA: DocumentsRecordsConfig = {
   fieldsMenuOptions: [{ label: 'Documento' }, { label: 'Estado' }, { label: 'Fecha de registro' }],
 };
 
-/** Servicios falsos de la pantalla de bandeja: acciones sobre documentos e historial de la pestaña Registros. */
+/** Fuentes de muestra de la pantalla de bandeja: rol, acciones sobre documentos e historiales. */
 export const PROVEEDORES_BANDEJA_DE_MUESTRA: Provider[] = [
   ...PROVEEDORES_HISTORIAL_DE_MUESTRA,
-  { provide: SolicitudesFacadeService, useValue: { recargarBandeja: () => undefined } },
-  PermissionService,
+  {
+    provide: FuenteDocumentosRegistros,
+    useValue: {
+      rol: signal<ModoDeRol>('creator').asReadonly(),
+      cambiarEstado: () => nada({ message: 'ok' }),
+      recargarBandeja: () => undefined,
+      marcarNotificacionesLeidas: () => undefined,
+    },
+  },
 ];
 
 /** Siembra las instancias reales de usuario, rol y bandeja que dan los proveedores de muestra. */

@@ -1,5 +1,5 @@
 // GENERADO por scripts/generar-ui-kit.mjs (scripts/ui-kit-fundamentos.mjs) — no editar a mano.
-// Sale de los tokens de src/styles: regenerar con `npm run ui-kit:manifest` después de cambiar un token.
+// Sale de los tokens del kit (estilos/tema.css): regenerar con `npm run ui-kit:manifest` después de actualizarlo.
 import type { FundamentosUiKit } from './ui-kit.model';
 
 export const FUNDAMENTOS_UI_KIT: FundamentosUiKit = {
@@ -15,10 +15,11 @@ export const FUNDAMENTOS_UI_KIT: FundamentosUiKit = {
           "sinOscuro": false,
           "soloOscuro": false,
           "utilidades": [
+            "bg-bg-brand-accent",
             "bg-brand-accent",
             "bg-accent"
           ],
-          "manual": false
+          "manual": true
         },
         {
           "nombre": "--sys-color-bg-brand-primary",
@@ -27,9 +28,10 @@ export const FUNDAMENTOS_UI_KIT: FundamentosUiKit = {
           "sinOscuro": false,
           "soloOscuro": false,
           "utilidades": [
+            "bg-bg-brand-primary",
             "bg-brand-primary"
           ],
-          "manual": false
+          "manual": true
         },
         {
           "nombre": "--sys-color-bg-brand-primary-hover",
@@ -38,7 +40,8 @@ export const FUNDAMENTOS_UI_KIT: FundamentosUiKit = {
           "sinOscuro": false,
           "soloOscuro": false,
           "utilidades": [
-            "bg-brand-primary-hover"
+            "bg-brand-primary-hover",
+            "bg-bg-brand-primary-hover"
           ],
           "manual": true
         },
@@ -49,9 +52,10 @@ export const FUNDAMENTOS_UI_KIT: FundamentosUiKit = {
           "sinOscuro": false,
           "soloOscuro": false,
           "utilidades": [
+            "bg-bg-brand-secondary",
             "bg-brand-secondary"
           ],
-          "manual": false
+          "manual": true
         },
         {
           "nombre": "--sys-color-bg-brand-white",
@@ -59,8 +63,10 @@ export const FUNDAMENTOS_UI_KIT: FundamentosUiKit = {
           "oscuro": "#FFFFFF",
           "sinOscuro": true,
           "soloOscuro": false,
-          "utilidades": [],
-          "manual": false
+          "utilidades": [
+            "bg-bg-brand-white"
+          ],
+          "manual": true
         }
       ]
     },
@@ -74,8 +80,10 @@ export const FUNDAMENTOS_UI_KIT: FundamentosUiKit = {
           "oscuro": "#2E3440",
           "sinOscuro": false,
           "soloOscuro": false,
-          "utilidades": [],
-          "manual": false
+          "utilidades": [
+            "bg-bg-surfaces-disabled"
+          ],
+          "manual": true
         },
         {
           "nombre": "--sys-color-bg-surfaces-field",
@@ -83,7 +91,9 @@ export const FUNDAMENTOS_UI_KIT: FundamentosUiKit = {
           "oscuro": "#292D36",
           "sinOscuro": false,
           "soloOscuro": true,
-          "utilidades": [],
+          "utilidades": [
+            "bg-bg-surfaces-field"
+          ],
           "manual": true
         },
         {
@@ -92,7 +102,9 @@ export const FUNDAMENTOS_UI_KIT: FundamentosUiKit = {
           "oscuro": "#20232B",
           "sinOscuro": false,
           "soloOscuro": true,
-          "utilidades": [],
+          "utilidades": [
+            "bg-bg-surfaces-floating"
+          ],
           "manual": true
         },
         {
@@ -101,8 +113,10 @@ export const FUNDAMENTOS_UI_KIT: FundamentosUiKit = {
           "oscuro": "#143A5A",
           "sinOscuro": false,
           "soloOscuro": false,
-          "utilidades": [],
-          "manual": false
+          "utilidades": [
+            "bg-bg-surfaces-highlight"
+          ],
+          "manual": true
         },
         {
           "nombre": "--sys-color-bg-surfaces-surface",
@@ -111,9 +125,10 @@ export const FUNDAMENTOS_UI_KIT: FundamentosUiKit = {
           "sinOscuro": false,
           "soloOscuro": false,
           "utilidades": [
+            "bg-bg-surfaces-surface",
             "bg-surface"
           ],
-          "manual": false
+          "manual": true
         },
         {
           "nombre": "--sys-color-bg-surfaces-surface-high",
@@ -122,10 +137,11 @@ export const FUNDAMENTOS_UI_KIT: FundamentosUiKit = {
           "sinOscuro": false,
           "soloOscuro": false,
           "utilidades": [
+            "bg-bg-surfaces-surface-high",
             "bg-surface-high",
             "bg-surface-muted"
           ],
-          "manual": false
+          "manual": true
         },
         {
           "nombre": "--sys-color-bg-surfaces-surface-highest",
@@ -133,8 +149,10 @@ export const FUNDAMENTOS_UI_KIT: FundamentosUiKit = {
           "oscuro": "#292D36",
           "sinOscuro": false,
           "soloOscuro": false,
-          "utilidades": [],
-          "manual": false
+          "utilidades": [
+            "bg-bg-surfaces-surface-highest"
+          ],
+          "manual": true
         },
         {
           "nombre": "--sys-color-bg-surfaces-surface-low",
@@ -142,8 +160,10 @@ export const FUNDAMENTOS_UI_KIT: FundamentosUiKit = {
           "oscuro": "#1B1E25",
           "sinOscuro": false,
           "soloOscuro": false,
-          "utilidades": [],
-          "manual": false
+          "utilidades": [
+            "bg-bg-surfaces-surface-low"
+          ],
+          "manual": true
         },
         {
           "nombre": "--sys-color-bg-surfaces-surface-lowest",
@@ -151,8 +171,10 @@ export const FUNDAMENTOS_UI_KIT: FundamentosUiKit = {
           "oscuro": "#101216",
           "sinOscuro": false,
           "soloOscuro": false,
-          "utilidades": [],
-          "manual": false
+          "utilidades": [
+            "bg-bg-surfaces-surface-lowest"
+          ],
+          "manual": true
         },
         {
           "nombre": "--sys-color-bg-surfaces-surface-muted",
@@ -160,7 +182,9 @@ export const FUNDAMENTOS_UI_KIT: FundamentosUiKit = {
           "oscuro": "#242832",
           "sinOscuro": false,
           "soloOscuro": false,
-          "utilidades": [],
+          "utilidades": [
+            "bg-bg-surfaces-surface-muted"
+          ],
           "manual": true
         }
       ]
@@ -175,8 +199,10 @@ export const FUNDAMENTOS_UI_KIT: FundamentosUiKit = {
           "oscuro": "rgb(32 32 32 / 0.4)",
           "sinOscuro": true,
           "soloOscuro": false,
-          "utilidades": [],
-          "manual": false
+          "utilidades": [
+            "bg-bg-on-surfaces-disabled"
+          ],
+          "manual": true
         },
         {
           "nombre": "--sys-color-bg-on-surfaces-high",
@@ -184,8 +210,10 @@ export const FUNDAMENTOS_UI_KIT: FundamentosUiKit = {
           "oscuro": "rgb(32 32 32 / 0.92)",
           "sinOscuro": true,
           "soloOscuro": false,
-          "utilidades": [],
-          "manual": false
+          "utilidades": [
+            "bg-bg-on-surfaces-high"
+          ],
+          "manual": true
         },
         {
           "nombre": "--sys-color-bg-on-surfaces-medium",
@@ -193,8 +221,10 @@ export const FUNDAMENTOS_UI_KIT: FundamentosUiKit = {
           "oscuro": "rgb(32 32 32 / 0.8)",
           "sinOscuro": true,
           "soloOscuro": false,
-          "utilidades": [],
-          "manual": false
+          "utilidades": [
+            "bg-bg-on-surfaces-medium"
+          ],
+          "manual": true
         }
       ]
     },
@@ -208,8 +238,10 @@ export const FUNDAMENTOS_UI_KIT: FundamentosUiKit = {
           "oscuro": "rgba(145, 201, 255, 0.24)",
           "sinOscuro": false,
           "soloOscuro": false,
-          "utilidades": [],
-          "manual": false
+          "utilidades": [
+            "bg-bg-states-dark-activated"
+          ],
+          "manual": true
         },
         {
           "nombre": "--sys-color-bg-states-dark-disabled",
@@ -217,8 +249,10 @@ export const FUNDAMENTOS_UI_KIT: FundamentosUiKit = {
           "oscuro": "rgba(255, 255, 255, 0.08)",
           "sinOscuro": false,
           "soloOscuro": false,
-          "utilidades": [],
-          "manual": false
+          "utilidades": [
+            "bg-bg-states-dark-disabled"
+          ],
+          "manual": true
         },
         {
           "nombre": "--sys-color-bg-states-dark-dragged",
@@ -226,8 +260,10 @@ export const FUNDAMENTOS_UI_KIT: FundamentosUiKit = {
           "oscuro": "rgb(32 32 32 / 0.16)",
           "sinOscuro": true,
           "soloOscuro": false,
-          "utilidades": [],
-          "manual": false
+          "utilidades": [
+            "bg-bg-states-dark-dragged"
+          ],
+          "manual": true
         },
         {
           "nombre": "--sys-color-bg-states-dark-enabled",
@@ -235,8 +271,10 @@ export const FUNDAMENTOS_UI_KIT: FundamentosUiKit = {
           "oscuro": "rgb(255 255 255 / 0)",
           "sinOscuro": true,
           "soloOscuro": false,
-          "utilidades": [],
-          "manual": false
+          "utilidades": [
+            "bg-bg-states-dark-enabled"
+          ],
+          "manual": true
         },
         {
           "nombre": "--sys-color-bg-states-dark-focus",
@@ -244,8 +282,10 @@ export const FUNDAMENTOS_UI_KIT: FundamentosUiKit = {
           "oscuro": "rgba(145, 201, 255, 0.26)",
           "sinOscuro": false,
           "soloOscuro": false,
-          "utilidades": [],
-          "manual": false
+          "utilidades": [
+            "bg-bg-states-dark-focus"
+          ],
+          "manual": true
         },
         {
           "nombre": "--sys-color-bg-states-dark-hover",
@@ -253,8 +293,10 @@ export const FUNDAMENTOS_UI_KIT: FundamentosUiKit = {
           "oscuro": "rgba(255, 255, 255, 0.10)",
           "sinOscuro": false,
           "soloOscuro": false,
-          "utilidades": [],
-          "manual": false
+          "utilidades": [
+            "bg-bg-states-dark-hover"
+          ],
+          "manual": true
         },
         {
           "nombre": "--sys-color-bg-states-dark-pressed",
@@ -262,8 +304,10 @@ export const FUNDAMENTOS_UI_KIT: FundamentosUiKit = {
           "oscuro": "rgba(255, 255, 255, 0.16)",
           "sinOscuro": false,
           "soloOscuro": false,
-          "utilidades": [],
-          "manual": false
+          "utilidades": [
+            "bg-bg-states-dark-pressed"
+          ],
+          "manual": true
         },
         {
           "nombre": "--sys-color-bg-states-dark-selected",
@@ -271,8 +315,10 @@ export const FUNDAMENTOS_UI_KIT: FundamentosUiKit = {
           "oscuro": "rgba(145, 201, 255, 0.18)",
           "sinOscuro": false,
           "soloOscuro": false,
-          "utilidades": [],
-          "manual": false
+          "utilidades": [
+            "bg-bg-states-dark-selected"
+          ],
+          "manual": true
         },
         {
           "nombre": "--sys-color-bg-states-light-activated",
@@ -280,8 +326,10 @@ export const FUNDAMENTOS_UI_KIT: FundamentosUiKit = {
           "oscuro": "rgb(1 72 153 / 0.12)",
           "sinOscuro": true,
           "soloOscuro": false,
-          "utilidades": [],
-          "manual": false
+          "utilidades": [
+            "bg-bg-states-light-activated"
+          ],
+          "manual": true
         },
         {
           "nombre": "--sys-color-bg-states-light-disabled",
@@ -289,8 +337,10 @@ export const FUNDAMENTOS_UI_KIT: FundamentosUiKit = {
           "oscuro": "rgba(255, 255, 255, 0.08)",
           "sinOscuro": false,
           "soloOscuro": false,
-          "utilidades": [],
-          "manual": false
+          "utilidades": [
+            "bg-bg-states-light-disabled"
+          ],
+          "manual": true
         },
         {
           "nombre": "--sys-color-bg-states-light-dragged",
@@ -298,8 +348,10 @@ export const FUNDAMENTOS_UI_KIT: FundamentosUiKit = {
           "oscuro": "rgb(32 32 32 / 0.08)",
           "sinOscuro": true,
           "soloOscuro": false,
-          "utilidades": [],
-          "manual": false
+          "utilidades": [
+            "bg-bg-states-light-dragged"
+          ],
+          "manual": true
         },
         {
           "nombre": "--sys-color-bg-states-light-enabled",
@@ -307,8 +359,10 @@ export const FUNDAMENTOS_UI_KIT: FundamentosUiKit = {
           "oscuro": "rgba(255, 255, 255, 0.06)",
           "sinOscuro": false,
           "soloOscuro": false,
-          "utilidades": [],
-          "manual": false
+          "utilidades": [
+            "bg-bg-states-light-enabled"
+          ],
+          "manual": true
         },
         {
           "nombre": "--sys-color-bg-states-light-focus",
@@ -316,8 +370,10 @@ export const FUNDAMENTOS_UI_KIT: FundamentosUiKit = {
           "oscuro": "rgb(32 32 32 / 0.12)",
           "sinOscuro": true,
           "soloOscuro": false,
-          "utilidades": [],
-          "manual": false
+          "utilidades": [
+            "bg-bg-states-light-focus"
+          ],
+          "manual": true
         },
         {
           "nombre": "--sys-color-bg-states-light-hover",
@@ -325,8 +381,10 @@ export const FUNDAMENTOS_UI_KIT: FundamentosUiKit = {
           "oscuro": "rgba(145, 201, 255, 0.18)",
           "sinOscuro": false,
           "soloOscuro": false,
-          "utilidades": [],
-          "manual": false
+          "utilidades": [
+            "bg-bg-states-light-hover"
+          ],
+          "manual": true
         },
         {
           "nombre": "--sys-color-bg-states-light-pressed",
@@ -334,8 +392,10 @@ export const FUNDAMENTOS_UI_KIT: FundamentosUiKit = {
           "oscuro": "rgba(145, 201, 255, 0.28)",
           "sinOscuro": false,
           "soloOscuro": false,
-          "utilidades": [],
-          "manual": false
+          "utilidades": [
+            "bg-bg-states-light-pressed"
+          ],
+          "manual": true
         },
         {
           "nombre": "--sys-color-bg-states-light-selected",
@@ -343,8 +403,10 @@ export const FUNDAMENTOS_UI_KIT: FundamentosUiKit = {
           "oscuro": "rgb(1 72 153 / 0.08)",
           "sinOscuro": true,
           "soloOscuro": false,
-          "utilidades": [],
-          "manual": false
+          "utilidades": [
+            "bg-bg-states-light-selected"
+          ],
+          "manual": true
         },
         {
           "nombre": "--sys-color-bg-states-on-brand-hover",
@@ -352,7 +414,9 @@ export const FUNDAMENTOS_UI_KIT: FundamentosUiKit = {
           "oscuro": "rgb(255 255 255 / 0.10)",
           "sinOscuro": true,
           "soloOscuro": false,
-          "utilidades": [],
+          "utilidades": [
+            "bg-bg-states-on-brand-hover"
+          ],
           "manual": true
         },
         {
@@ -361,7 +425,9 @@ export const FUNDAMENTOS_UI_KIT: FundamentosUiKit = {
           "oscuro": "rgb(255 255 255 / 0.10)",
           "sinOscuro": true,
           "soloOscuro": false,
-          "utilidades": [],
+          "utilidades": [
+            "bg-bg-states-on-brand-selected"
+          ],
           "manual": true
         }
       ]
@@ -377,7 +443,8 @@ export const FUNDAMENTOS_UI_KIT: FundamentosUiKit = {
           "sinOscuro": true,
           "soloOscuro": false,
           "utilidades": [
-            "bg-danger"
+            "bg-danger",
+            "bg-bg-feedback-danger"
           ],
           "manual": true
         },
@@ -387,8 +454,10 @@ export const FUNDAMENTOS_UI_KIT: FundamentosUiKit = {
           "oscuro": "#FF8A98",
           "sinOscuro": false,
           "soloOscuro": false,
-          "utilidades": [],
-          "manual": false
+          "utilidades": [
+            "bg-bg-feedback-dark-danger"
+          ],
+          "manual": true
         },
         {
           "nombre": "--sys-color-bg-feedback-dark-default",
@@ -396,8 +465,10 @@ export const FUNDAMENTOS_UI_KIT: FundamentosUiKit = {
           "oscuro": "#D5DCE7",
           "sinOscuro": false,
           "soloOscuro": false,
-          "utilidades": [],
-          "manual": false
+          "utilidades": [
+            "bg-bg-feedback-dark-default"
+          ],
+          "manual": true
         },
         {
           "nombre": "--sys-color-bg-feedback-dark-info",
@@ -405,8 +476,10 @@ export const FUNDAMENTOS_UI_KIT: FundamentosUiKit = {
           "oscuro": "#91C9FF",
           "sinOscuro": false,
           "soloOscuro": false,
-          "utilidades": [],
-          "manual": false
+          "utilidades": [
+            "bg-bg-feedback-dark-info"
+          ],
+          "manual": true
         },
         {
           "nombre": "--sys-color-bg-feedback-dark-success",
@@ -414,8 +487,10 @@ export const FUNDAMENTOS_UI_KIT: FundamentosUiKit = {
           "oscuro": "#8EDBD4",
           "sinOscuro": false,
           "soloOscuro": false,
-          "utilidades": [],
-          "manual": false
+          "utilidades": [
+            "bg-bg-feedback-dark-success"
+          ],
+          "manual": true
         },
         {
           "nombre": "--sys-color-bg-feedback-dark-warning",
@@ -423,8 +498,10 @@ export const FUNDAMENTOS_UI_KIT: FundamentosUiKit = {
           "oscuro": "#F7D37A",
           "sinOscuro": false,
           "soloOscuro": false,
-          "utilidades": [],
-          "manual": false
+          "utilidades": [
+            "bg-bg-feedback-dark-warning"
+          ],
+          "manual": true
         },
         {
           "nombre": "--sys-color-bg-feedback-info",
@@ -433,7 +510,8 @@ export const FUNDAMENTOS_UI_KIT: FundamentosUiKit = {
           "sinOscuro": true,
           "soloOscuro": false,
           "utilidades": [
-            "bg-info"
+            "bg-info",
+            "bg-bg-feedback-info"
           ],
           "manual": true
         },
@@ -443,8 +521,10 @@ export const FUNDAMENTOS_UI_KIT: FundamentosUiKit = {
           "oscuro": "#4B1D27",
           "sinOscuro": false,
           "soloOscuro": false,
-          "utilidades": [],
-          "manual": false
+          "utilidades": [
+            "bg-bg-feedback-light-danger"
+          ],
+          "manual": true
         },
         {
           "nombre": "--sys-color-bg-feedback-light-default",
@@ -452,8 +532,10 @@ export const FUNDAMENTOS_UI_KIT: FundamentosUiKit = {
           "oscuro": "#2F3541",
           "sinOscuro": false,
           "soloOscuro": false,
-          "utilidades": [],
-          "manual": false
+          "utilidades": [
+            "bg-bg-feedback-light-default"
+          ],
+          "manual": true
         },
         {
           "nombre": "--sys-color-bg-feedback-light-info",
@@ -461,8 +543,10 @@ export const FUNDAMENTOS_UI_KIT: FundamentosUiKit = {
           "oscuro": "#143A5A",
           "sinOscuro": false,
           "soloOscuro": false,
-          "utilidades": [],
-          "manual": false
+          "utilidades": [
+            "bg-bg-feedback-light-info"
+          ],
+          "manual": true
         },
         {
           "nombre": "--sys-color-bg-feedback-light-success",
@@ -470,8 +554,10 @@ export const FUNDAMENTOS_UI_KIT: FundamentosUiKit = {
           "oscuro": "#173D3A",
           "sinOscuro": false,
           "soloOscuro": false,
-          "utilidades": [],
-          "manual": false
+          "utilidades": [
+            "bg-bg-feedback-light-success"
+          ],
+          "manual": true
         },
         {
           "nombre": "--sys-color-bg-feedback-light-warning",
@@ -479,8 +565,10 @@ export const FUNDAMENTOS_UI_KIT: FundamentosUiKit = {
           "oscuro": "#463716",
           "sinOscuro": false,
           "soloOscuro": false,
-          "utilidades": [],
-          "manual": false
+          "utilidades": [
+            "bg-bg-feedback-light-warning"
+          ],
+          "manual": true
         },
         {
           "nombre": "--sys-color-bg-feedback-success",
@@ -489,7 +577,8 @@ export const FUNDAMENTOS_UI_KIT: FundamentosUiKit = {
           "sinOscuro": true,
           "soloOscuro": false,
           "utilidades": [
-            "bg-success"
+            "bg-success",
+            "bg-bg-feedback-success"
           ],
           "manual": true
         },
@@ -500,7 +589,8 @@ export const FUNDAMENTOS_UI_KIT: FundamentosUiKit = {
           "sinOscuro": true,
           "soloOscuro": false,
           "utilidades": [
-            "bg-warning"
+            "bg-warning",
+            "bg-bg-feedback-warning"
           ],
           "manual": true
         }
@@ -516,8 +606,10 @@ export const FUNDAMENTOS_UI_KIT: FundamentosUiKit = {
           "oscuro": "#9F20E9",
           "sinOscuro": true,
           "soloOscuro": false,
-          "utilidades": [],
-          "manual": false
+          "utilidades": [
+            "bg-bg-status-document-status-edicion"
+          ],
+          "manual": true
         },
         {
           "nombre": "--sys-color-bg-status-document-status-nuevo",
@@ -525,8 +617,10 @@ export const FUNDAMENTOS_UI_KIT: FundamentosUiKit = {
           "oscuro": "#ED3237",
           "sinOscuro": true,
           "soloOscuro": false,
-          "utilidades": [],
-          "manual": false
+          "utilidades": [
+            "bg-bg-status-document-status-nuevo"
+          ],
+          "manual": true
         },
         {
           "nombre": "--sys-color-bg-status-flow-status-aceptado",
@@ -534,8 +628,10 @@ export const FUNDAMENTOS_UI_KIT: FundamentosUiKit = {
           "oscuro": "#1D6F69",
           "sinOscuro": false,
           "soloOscuro": false,
-          "utilidades": [],
-          "manual": false
+          "utilidades": [
+            "bg-bg-status-flow-status-aceptado"
+          ],
+          "manual": true
         },
         {
           "nombre": "--sys-color-bg-status-flow-status-anulado",
@@ -543,8 +639,10 @@ export const FUNDAMENTOS_UI_KIT: FundamentosUiKit = {
           "oscuro": "#8F2635",
           "sinOscuro": false,
           "soloOscuro": false,
-          "utilidades": [],
-          "manual": false
+          "utilidades": [
+            "bg-bg-status-flow-status-anulado"
+          ],
+          "manual": true
         },
         {
           "nombre": "--sys-color-bg-status-flow-status-aprobado",
@@ -552,8 +650,10 @@ export const FUNDAMENTOS_UI_KIT: FundamentosUiKit = {
           "oscuro": "#1D6F69",
           "sinOscuro": false,
           "soloOscuro": false,
-          "utilidades": [],
-          "manual": false
+          "utilidades": [
+            "bg-bg-status-flow-status-aprobado"
+          ],
+          "manual": true
         },
         {
           "nombre": "--sys-color-bg-status-flow-status-autorizado",
@@ -561,8 +661,10 @@ export const FUNDAMENTOS_UI_KIT: FundamentosUiKit = {
           "oscuro": "#0B5CAD",
           "sinOscuro": false,
           "soloOscuro": false,
-          "utilidades": [],
-          "manual": false
+          "utilidades": [
+            "bg-bg-status-flow-status-autorizado"
+          ],
+          "manual": true
         },
         {
           "nombre": "--sys-color-bg-status-flow-status-elaborado",
@@ -570,8 +672,10 @@ export const FUNDAMENTOS_UI_KIT: FundamentosUiKit = {
           "oscuro": "#4A515F",
           "sinOscuro": false,
           "soloOscuro": false,
-          "utilidades": [],
-          "manual": false
+          "utilidades": [
+            "bg-bg-status-flow-status-elaborado"
+          ],
+          "manual": true
         },
         {
           "nombre": "--sys-color-bg-status-flow-status-eliminado",
@@ -579,8 +683,10 @@ export const FUNDAMENTOS_UI_KIT: FundamentosUiKit = {
           "oscuro": "#9E2F44",
           "sinOscuro": false,
           "soloOscuro": false,
-          "utilidades": [],
-          "manual": false
+          "utilidades": [
+            "bg-bg-status-flow-status-eliminado"
+          ],
+          "manual": true
         },
         {
           "nombre": "--sys-color-bg-status-flow-status-firmado",
@@ -588,8 +694,10 @@ export const FUNDAMENTOS_UI_KIT: FundamentosUiKit = {
           "oscuro": "#0B5CAD",
           "sinOscuro": false,
           "soloOscuro": false,
-          "utilidades": [],
-          "manual": false
+          "utilidades": [
+            "bg-bg-status-flow-status-firmado"
+          ],
+          "manual": true
         },
         {
           "nombre": "--sys-color-bg-status-flow-status-observado",
@@ -597,8 +705,10 @@ export const FUNDAMENTOS_UI_KIT: FundamentosUiKit = {
           "oscuro": "#8A6516",
           "sinOscuro": false,
           "soloOscuro": false,
-          "utilidades": [],
-          "manual": false
+          "utilidades": [
+            "bg-bg-status-flow-status-observado"
+          ],
+          "manual": true
         },
         {
           "nombre": "--sys-color-bg-status-flow-status-rechazado",
@@ -606,8 +716,10 @@ export const FUNDAMENTOS_UI_KIT: FundamentosUiKit = {
           "oscuro": "#9E2F44",
           "sinOscuro": false,
           "soloOscuro": false,
-          "utilidades": [],
-          "manual": false
+          "utilidades": [
+            "bg-bg-status-flow-status-rechazado"
+          ],
+          "manual": true
         },
         {
           "nombre": "--sys-color-bg-status-flow-status-revisado",
@@ -615,8 +727,10 @@ export const FUNDAMENTOS_UI_KIT: FundamentosUiKit = {
           "oscuro": "#5E6675",
           "sinOscuro": false,
           "soloOscuro": false,
-          "utilidades": [],
-          "manual": false
+          "utilidades": [
+            "bg-bg-status-flow-status-revisado"
+          ],
+          "manual": true
         },
         {
           "nombre": "--sys-color-bg-status-flow-status-validado",
@@ -624,8 +738,10 @@ export const FUNDAMENTOS_UI_KIT: FundamentosUiKit = {
           "oscuro": "#4A515F",
           "sinOscuro": false,
           "soloOscuro": false,
-          "utilidades": [],
-          "manual": false
+          "utilidades": [
+            "bg-bg-status-flow-status-validado"
+          ],
+          "manual": true
         },
         {
           "nombre": "--sys-color-bg-status-flow-status-verificado",
@@ -633,8 +749,10 @@ export const FUNDAMENTOS_UI_KIT: FundamentosUiKit = {
           "oscuro": "#0B5CAD",
           "sinOscuro": false,
           "soloOscuro": false,
-          "utilidades": [],
-          "manual": false
+          "utilidades": [
+            "bg-bg-status-flow-status-verificado"
+          ],
+          "manual": true
         },
         {
           "nombre": "--sys-color-bg-status-record-status-activo",
@@ -642,8 +760,10 @@ export const FUNDAMENTOS_UI_KIT: FundamentosUiKit = {
           "oscuro": "#B0DEFD",
           "sinOscuro": true,
           "soloOscuro": false,
-          "utilidades": [],
-          "manual": false
+          "utilidades": [
+            "bg-bg-status-record-status-activo"
+          ],
+          "manual": true
         },
         {
           "nombre": "--sys-color-bg-status-record-status-enviado",
@@ -651,8 +771,10 @@ export const FUNDAMENTOS_UI_KIT: FundamentosUiKit = {
           "oscuro": "#868688",
           "sinOscuro": true,
           "soloOscuro": false,
-          "utilidades": [],
-          "manual": false
+          "utilidades": [
+            "bg-bg-status-record-status-enviado"
+          ],
+          "manual": true
         },
         {
           "nombre": "--sys-color-bg-status-record-status-inactivo",
@@ -660,8 +782,10 @@ export const FUNDAMENTOS_UI_KIT: FundamentosUiKit = {
           "oscuro": "#ED3237",
           "sinOscuro": true,
           "soloOscuro": false,
-          "utilidades": [],
-          "manual": false
+          "utilidades": [
+            "bg-bg-status-record-status-inactivo"
+          ],
+          "manual": true
         },
         {
           "nombre": "--sys-color-bg-status-solid-danger",
@@ -669,7 +793,9 @@ export const FUNDAMENTOS_UI_KIT: FundamentosUiKit = {
           "oscuro": "#9E2F44",
           "sinOscuro": false,
           "soloOscuro": false,
-          "utilidades": [],
+          "utilidades": [
+            "bg-bg-status-solid-danger"
+          ],
           "manual": true
         },
         {
@@ -678,7 +804,9 @@ export const FUNDAMENTOS_UI_KIT: FundamentosUiKit = {
           "oscuro": "#4A515F",
           "sinOscuro": false,
           "soloOscuro": false,
-          "utilidades": [],
+          "utilidades": [
+            "bg-bg-status-solid-default"
+          ],
           "manual": true
         },
         {
@@ -687,7 +815,9 @@ export const FUNDAMENTOS_UI_KIT: FundamentosUiKit = {
           "oscuro": "#0B5CAD",
           "sinOscuro": false,
           "soloOscuro": false,
-          "utilidades": [],
+          "utilidades": [
+            "bg-bg-status-solid-info"
+          ],
           "manual": true
         },
         {
@@ -696,7 +826,9 @@ export const FUNDAMENTOS_UI_KIT: FundamentosUiKit = {
           "oscuro": "#1D6F69",
           "sinOscuro": false,
           "soloOscuro": false,
-          "utilidades": [],
+          "utilidades": [
+            "bg-bg-status-solid-success"
+          ],
           "manual": true
         },
         {
@@ -705,7 +837,9 @@ export const FUNDAMENTOS_UI_KIT: FundamentosUiKit = {
           "oscuro": "#8A6516",
           "sinOscuro": false,
           "soloOscuro": false,
-          "utilidades": [],
+          "utilidades": [
+            "bg-bg-status-solid-warning"
+          ],
           "manual": true
         }
       ]
@@ -720,8 +854,10 @@ export const FUNDAMENTOS_UI_KIT: FundamentosUiKit = {
           "oscuro": "#FFFFFF",
           "sinOscuro": false,
           "soloOscuro": false,
-          "utilidades": [],
-          "manual": false
+          "utilidades": [
+            "text-text-neutral-activated"
+          ],
+          "manual": true
         },
         {
           "nombre": "--sys-color-text-neutral-disabled",
@@ -730,9 +866,10 @@ export const FUNDAMENTOS_UI_KIT: FundamentosUiKit = {
           "sinOscuro": false,
           "soloOscuro": false,
           "utilidades": [
+            "text-text-neutral-disabled",
             "text-text-disabled"
           ],
-          "manual": false
+          "manual": true
         },
         {
           "nombre": "--sys-color-text-neutral-high",
@@ -741,9 +878,10 @@ export const FUNDAMENTOS_UI_KIT: FundamentosUiKit = {
           "sinOscuro": false,
           "soloOscuro": false,
           "utilidades": [
+            "text-text-neutral-high",
             "text-text"
           ],
-          "manual": false
+          "manual": true
         },
         {
           "nombre": "--sys-color-text-neutral-low",
@@ -752,10 +890,11 @@ export const FUNDAMENTOS_UI_KIT: FundamentosUiKit = {
           "sinOscuro": false,
           "soloOscuro": false,
           "utilidades": [
+            "text-text-neutral-low",
             "text-text-low",
             "text-text-muted"
           ],
-          "manual": false
+          "manual": true
         },
         {
           "nombre": "--sys-color-text-neutral-medium",
@@ -764,9 +903,10 @@ export const FUNDAMENTOS_UI_KIT: FundamentosUiKit = {
           "sinOscuro": false,
           "soloOscuro": false,
           "utilidades": [
+            "text-text-neutral-medium",
             "text-text-medium"
           ],
-          "manual": false
+          "manual": true
         }
       ]
     },
@@ -780,8 +920,10 @@ export const FUNDAMENTOS_UI_KIT: FundamentosUiKit = {
           "oscuro": "#E6375D",
           "sinOscuro": true,
           "soloOscuro": false,
-          "utilidades": [],
-          "manual": false
+          "utilidades": [
+            "text-text-brand-accent"
+          ],
+          "manual": true
         },
         {
           "nombre": "--sys-color-text-brand-primary",
@@ -789,8 +931,10 @@ export const FUNDAMENTOS_UI_KIT: FundamentosUiKit = {
           "oscuro": "#91C9FF",
           "sinOscuro": false,
           "soloOscuro": false,
-          "utilidades": [],
-          "manual": false
+          "utilidades": [
+            "text-text-brand-primary"
+          ],
+          "manual": true
         },
         {
           "nombre": "--sys-color-text-brand-secondary",
@@ -798,8 +942,10 @@ export const FUNDAMENTOS_UI_KIT: FundamentosUiKit = {
           "oscuro": "#D5DCE7",
           "sinOscuro": false,
           "soloOscuro": false,
-          "utilidades": [],
-          "manual": false
+          "utilidades": [
+            "text-text-brand-secondary"
+          ],
+          "manual": true
         },
         {
           "nombre": "--sys-color-text-brand-white",
@@ -808,9 +954,10 @@ export const FUNDAMENTOS_UI_KIT: FundamentosUiKit = {
           "sinOscuro": false,
           "soloOscuro": false,
           "utilidades": [
+            "text-text-brand-white",
             "text-brand-contrast"
           ],
-          "manual": false
+          "manual": true
         }
       ]
     },
@@ -824,8 +971,10 @@ export const FUNDAMENTOS_UI_KIT: FundamentosUiKit = {
           "oscuro": "#FFB4BE",
           "sinOscuro": false,
           "soloOscuro": false,
-          "utilidades": [],
-          "manual": false
+          "utilidades": [
+            "text-text-feedback-danger"
+          ],
+          "manual": true
         },
         {
           "nombre": "--sys-color-text-feedback-default",
@@ -833,8 +982,10 @@ export const FUNDAMENTOS_UI_KIT: FundamentosUiKit = {
           "oscuro": "#F4F7FB",
           "sinOscuro": false,
           "soloOscuro": false,
-          "utilidades": [],
-          "manual": false
+          "utilidades": [
+            "text-text-feedback-default"
+          ],
+          "manual": true
         },
         {
           "nombre": "--sys-color-text-feedback-info",
@@ -842,8 +993,10 @@ export const FUNDAMENTOS_UI_KIT: FundamentosUiKit = {
           "oscuro": "#B7DCFF",
           "sinOscuro": false,
           "soloOscuro": false,
-          "utilidades": [],
-          "manual": false
+          "utilidades": [
+            "text-text-feedback-info"
+          ],
+          "manual": true
         },
         {
           "nombre": "--sys-color-text-feedback-success",
@@ -851,8 +1004,10 @@ export const FUNDAMENTOS_UI_KIT: FundamentosUiKit = {
           "oscuro": "#B3EEE8",
           "sinOscuro": false,
           "soloOscuro": false,
-          "utilidades": [],
-          "manual": false
+          "utilidades": [
+            "text-text-feedback-success"
+          ],
+          "manual": true
         },
         {
           "nombre": "--sys-color-text-feedback-warning",
@@ -860,8 +1015,10 @@ export const FUNDAMENTOS_UI_KIT: FundamentosUiKit = {
           "oscuro": "#FFE2A3",
           "sinOscuro": false,
           "soloOscuro": false,
-          "utilidades": [],
-          "manual": false
+          "utilidades": [
+            "text-text-feedback-warning"
+          ],
+          "manual": true
         }
       ]
     },
@@ -875,7 +1032,9 @@ export const FUNDAMENTOS_UI_KIT: FundamentosUiKit = {
           "oscuro": "rgb(255 255 255 / 0.75)",
           "sinOscuro": true,
           "soloOscuro": false,
-          "utilidades": [],
+          "utilidades": [
+            "text-text-on-brand-muted"
+          ],
           "manual": true
         }
       ]
@@ -890,8 +1049,10 @@ export const FUNDAMENTOS_UI_KIT: FundamentosUiKit = {
           "oscuro": "#91C9FF",
           "sinOscuro": false,
           "soloOscuro": false,
-          "utilidades": [],
-          "manual": false
+          "utilidades": [
+            "text-icon-states-active"
+          ],
+          "manual": true
         },
         {
           "nombre": "--sys-color-icon-states-disabled",
@@ -899,8 +1060,10 @@ export const FUNDAMENTOS_UI_KIT: FundamentosUiKit = {
           "oscuro": "#7E8796",
           "sinOscuro": false,
           "soloOscuro": false,
-          "utilidades": [],
-          "manual": false
+          "utilidades": [
+            "text-icon-states-disabled"
+          ],
+          "manual": true
         },
         {
           "nombre": "--sys-color-icon-states-enabled",
@@ -908,8 +1071,10 @@ export const FUNDAMENTOS_UI_KIT: FundamentosUiKit = {
           "oscuro": "#D5DCE7",
           "sinOscuro": false,
           "soloOscuro": false,
-          "utilidades": [],
-          "manual": false
+          "utilidades": [
+            "text-icon-states-enabled"
+          ],
+          "manual": true
         }
       ]
     },
@@ -923,8 +1088,10 @@ export const FUNDAMENTOS_UI_KIT: FundamentosUiKit = {
           "oscuro": "#E6375D",
           "sinOscuro": true,
           "soloOscuro": false,
-          "utilidades": [],
-          "manual": false
+          "utilidades": [
+            "text-icon-brand-accent"
+          ],
+          "manual": true
         },
         {
           "nombre": "--sys-color-icon-brand-primary",
@@ -932,8 +1099,10 @@ export const FUNDAMENTOS_UI_KIT: FundamentosUiKit = {
           "oscuro": "#014899",
           "sinOscuro": true,
           "soloOscuro": false,
-          "utilidades": [],
-          "manual": false
+          "utilidades": [
+            "text-icon-brand-primary"
+          ],
+          "manual": true
         },
         {
           "nombre": "--sys-color-icon-brand-secondary",
@@ -941,8 +1110,10 @@ export const FUNDAMENTOS_UI_KIT: FundamentosUiKit = {
           "oscuro": "#4B4B4D",
           "sinOscuro": true,
           "soloOscuro": false,
-          "utilidades": [],
-          "manual": false
+          "utilidades": [
+            "text-icon-brand-secondary"
+          ],
+          "manual": true
         },
         {
           "nombre": "--sys-color-icon-brand-white",
@@ -950,8 +1121,10 @@ export const FUNDAMENTOS_UI_KIT: FundamentosUiKit = {
           "oscuro": "#FFFFFF",
           "sinOscuro": true,
           "soloOscuro": false,
-          "utilidades": [],
-          "manual": false
+          "utilidades": [
+            "text-icon-brand-white"
+          ],
+          "manual": true
         }
       ]
     },
@@ -965,8 +1138,10 @@ export const FUNDAMENTOS_UI_KIT: FundamentosUiKit = {
           "oscuro": "#101216",
           "sinOscuro": false,
           "soloOscuro": false,
-          "utilidades": [],
-          "manual": false
+          "utilidades": [
+            "text-icon-feedback-dark-danger"
+          ],
+          "manual": true
         },
         {
           "nombre": "--sys-color-icon-feedback-dark-default",
@@ -974,8 +1149,10 @@ export const FUNDAMENTOS_UI_KIT: FundamentosUiKit = {
           "oscuro": "#101216",
           "sinOscuro": false,
           "soloOscuro": false,
-          "utilidades": [],
-          "manual": false
+          "utilidades": [
+            "text-icon-feedback-dark-default"
+          ],
+          "manual": true
         },
         {
           "nombre": "--sys-color-icon-feedback-dark-info",
@@ -983,8 +1160,10 @@ export const FUNDAMENTOS_UI_KIT: FundamentosUiKit = {
           "oscuro": "#101216",
           "sinOscuro": false,
           "soloOscuro": false,
-          "utilidades": [],
-          "manual": false
+          "utilidades": [
+            "text-icon-feedback-dark-info"
+          ],
+          "manual": true
         },
         {
           "nombre": "--sys-color-icon-feedback-dark-success",
@@ -992,8 +1171,10 @@ export const FUNDAMENTOS_UI_KIT: FundamentosUiKit = {
           "oscuro": "#101216",
           "sinOscuro": false,
           "soloOscuro": false,
-          "utilidades": [],
-          "manual": false
+          "utilidades": [
+            "text-icon-feedback-dark-success"
+          ],
+          "manual": true
         },
         {
           "nombre": "--sys-color-icon-feedback-dark-warning",
@@ -1001,8 +1182,10 @@ export const FUNDAMENTOS_UI_KIT: FundamentosUiKit = {
           "oscuro": "#101216",
           "sinOscuro": false,
           "soloOscuro": false,
-          "utilidades": [],
-          "manual": false
+          "utilidades": [
+            "text-icon-feedback-dark-warning"
+          ],
+          "manual": true
         },
         {
           "nombre": "--sys-color-icon-feedback-light-danger",
@@ -1010,8 +1193,10 @@ export const FUNDAMENTOS_UI_KIT: FundamentosUiKit = {
           "oscuro": "#FFB4BE",
           "sinOscuro": false,
           "soloOscuro": false,
-          "utilidades": [],
-          "manual": false
+          "utilidades": [
+            "text-icon-feedback-light-danger"
+          ],
+          "manual": true
         },
         {
           "nombre": "--sys-color-icon-feedback-light-default",
@@ -1019,8 +1204,10 @@ export const FUNDAMENTOS_UI_KIT: FundamentosUiKit = {
           "oscuro": "#D5DCE7",
           "sinOscuro": false,
           "soloOscuro": false,
-          "utilidades": [],
-          "manual": false
+          "utilidades": [
+            "text-icon-feedback-light-default"
+          ],
+          "manual": true
         },
         {
           "nombre": "--sys-color-icon-feedback-light-info",
@@ -1028,8 +1215,10 @@ export const FUNDAMENTOS_UI_KIT: FundamentosUiKit = {
           "oscuro": "#B7DCFF",
           "sinOscuro": false,
           "soloOscuro": false,
-          "utilidades": [],
-          "manual": false
+          "utilidades": [
+            "text-icon-feedback-light-info"
+          ],
+          "manual": true
         },
         {
           "nombre": "--sys-color-icon-feedback-light-success",
@@ -1037,8 +1226,10 @@ export const FUNDAMENTOS_UI_KIT: FundamentosUiKit = {
           "oscuro": "#B3EEE8",
           "sinOscuro": false,
           "soloOscuro": false,
-          "utilidades": [],
-          "manual": false
+          "utilidades": [
+            "text-icon-feedback-light-success"
+          ],
+          "manual": true
         },
         {
           "nombre": "--sys-color-icon-feedback-light-warning",
@@ -1046,8 +1237,10 @@ export const FUNDAMENTOS_UI_KIT: FundamentosUiKit = {
           "oscuro": "#FFE2A3",
           "sinOscuro": false,
           "soloOscuro": false,
-          "utilidades": [],
-          "manual": false
+          "utilidades": [
+            "text-icon-feedback-light-warning"
+          ],
+          "manual": true
         }
       ]
     },
@@ -1061,7 +1254,9 @@ export const FUNDAMENTOS_UI_KIT: FundamentosUiKit = {
           "oscuro": "#F37679",
           "sinOscuro": true,
           "soloOscuro": false,
-          "utilidades": [],
+          "utilidades": [
+            "text-icon-snackbar-danger"
+          ],
           "manual": true
         },
         {
@@ -1070,7 +1265,9 @@ export const FUNDAMENTOS_UI_KIT: FundamentosUiKit = {
           "oscuro": "#54B7FA",
           "sinOscuro": true,
           "soloOscuro": false,
-          "utilidades": [],
+          "utilidades": [
+            "text-icon-snackbar-info"
+          ],
           "manual": true
         },
         {
@@ -1079,7 +1276,9 @@ export const FUNDAMENTOS_UI_KIT: FundamentosUiKit = {
           "oscuro": "#7BCDC6",
           "sinOscuro": true,
           "soloOscuro": false,
-          "utilidades": [],
+          "utilidades": [
+            "text-icon-snackbar-success"
+          ],
           "manual": true
         },
         {
@@ -1088,7 +1287,9 @@ export const FUNDAMENTOS_UI_KIT: FundamentosUiKit = {
           "oscuro": "#F8D184",
           "sinOscuro": true,
           "soloOscuro": false,
-          "utilidades": [],
+          "utilidades": [
+            "text-icon-snackbar-warning"
+          ],
           "manual": true
         }
       ]
@@ -1103,8 +1304,10 @@ export const FUNDAMENTOS_UI_KIT: FundamentosUiKit = {
           "oscuro": "#014899",
           "sinOscuro": true,
           "soloOscuro": false,
-          "utilidades": [],
-          "manual": false
+          "utilidades": [
+            "border-border-states-active"
+          ],
+          "manual": true
         },
         {
           "nombre": "--sys-color-border-states-disabled",
@@ -1112,8 +1315,10 @@ export const FUNDAMENTOS_UI_KIT: FundamentosUiKit = {
           "oscuro": "rgba(213, 220, 231, 0.26)",
           "sinOscuro": false,
           "soloOscuro": false,
-          "utilidades": [],
-          "manual": false
+          "utilidades": [
+            "border-border-states-disabled"
+          ],
+          "manual": true
         },
         {
           "nombre": "--sys-color-border-states-enabled",
@@ -1122,9 +1327,10 @@ export const FUNDAMENTOS_UI_KIT: FundamentosUiKit = {
           "sinOscuro": false,
           "soloOscuro": false,
           "utilidades": [
+            "border-border-states-enabled",
             "border-border"
           ],
-          "manual": false
+          "manual": true
         },
         {
           "nombre": "--sys-color-border-states-focus",
@@ -1132,8 +1338,10 @@ export const FUNDAMENTOS_UI_KIT: FundamentosUiKit = {
           "oscuro": "#91C9FF",
           "sinOscuro": false,
           "soloOscuro": false,
-          "utilidades": [],
-          "manual": false
+          "utilidades": [
+            "border-border-states-focus"
+          ],
+          "manual": true
         },
         {
           "nombre": "--sys-color-border-states-focused",
@@ -1142,7 +1350,8 @@ export const FUNDAMENTOS_UI_KIT: FundamentosUiKit = {
           "sinOscuro": false,
           "soloOscuro": false,
           "utilidades": [
-            "border-border-focus"
+            "border-border-focus",
+            "border-border-states-focused"
           ],
           "manual": true
         },
@@ -1153,9 +1362,10 @@ export const FUNDAMENTOS_UI_KIT: FundamentosUiKit = {
           "sinOscuro": false,
           "soloOscuro": false,
           "utilidades": [
+            "border-border-states-hover",
             "border-border-hover"
           ],
-          "manual": false
+          "manual": true
         },
         {
           "nombre": "--sys-color-border-states-white",
@@ -1163,8 +1373,10 @@ export const FUNDAMENTOS_UI_KIT: FundamentosUiKit = {
           "oscuro": "rgba(255, 255, 255, 0.8)",
           "sinOscuro": false,
           "soloOscuro": false,
-          "utilidades": [],
-          "manual": false
+          "utilidades": [
+            "border-border-states-white"
+          ],
+          "manual": true
         }
       ]
     },
@@ -1178,8 +1390,10 @@ export const FUNDAMENTOS_UI_KIT: FundamentosUiKit = {
           "oscuro": "#FF8A98",
           "sinOscuro": false,
           "soloOscuro": false,
-          "utilidades": [],
-          "manual": false
+          "utilidades": [
+            "border-border-feedback-danger"
+          ],
+          "manual": true
         },
         {
           "nombre": "--sys-color-border-feedback-default",
@@ -1187,8 +1401,10 @@ export const FUNDAMENTOS_UI_KIT: FundamentosUiKit = {
           "oscuro": "#AEB8C7",
           "sinOscuro": false,
           "soloOscuro": false,
-          "utilidades": [],
-          "manual": false
+          "utilidades": [
+            "border-border-feedback-default"
+          ],
+          "manual": true
         },
         {
           "nombre": "--sys-color-border-feedback-info",
@@ -1196,8 +1412,10 @@ export const FUNDAMENTOS_UI_KIT: FundamentosUiKit = {
           "oscuro": "#91C9FF",
           "sinOscuro": false,
           "soloOscuro": false,
-          "utilidades": [],
-          "manual": false
+          "utilidades": [
+            "border-border-feedback-info"
+          ],
+          "manual": true
         },
         {
           "nombre": "--sys-color-border-feedback-success",
@@ -1205,8 +1423,10 @@ export const FUNDAMENTOS_UI_KIT: FundamentosUiKit = {
           "oscuro": "#8EDBD4",
           "sinOscuro": false,
           "soloOscuro": false,
-          "utilidades": [],
-          "manual": false
+          "utilidades": [
+            "border-border-feedback-success"
+          ],
+          "manual": true
         },
         {
           "nombre": "--sys-color-border-feedback-warning",
@@ -1214,8 +1434,10 @@ export const FUNDAMENTOS_UI_KIT: FundamentosUiKit = {
           "oscuro": "#F7D37A",
           "sinOscuro": false,
           "soloOscuro": false,
-          "utilidades": [],
-          "manual": false
+          "utilidades": [
+            "border-border-feedback-warning"
+          ],
+          "manual": true
         }
       ]
     },
@@ -1229,7 +1451,9 @@ export const FUNDAMENTOS_UI_KIT: FundamentosUiKit = {
           "oscuro": "rgb(255 255 255 / 0.10)",
           "sinOscuro": true,
           "soloOscuro": false,
-          "utilidades": [],
+          "utilidades": [
+            "border-border-on-brand-subtle"
+          ],
           "manual": true
         }
       ]
@@ -1244,8 +1468,10 @@ export const FUNDAMENTOS_UI_KIT: FundamentosUiKit = {
           "oscuro": "rgba(213, 220, 231, 0.16)",
           "sinOscuro": false,
           "soloOscuro": false,
-          "utilidades": [],
-          "manual": false
+          "utilidades": [
+            "border-divider-default"
+          ],
+          "manual": true
         },
         {
           "nombre": "--sys-color-divider-strong",
@@ -1253,8 +1479,10 @@ export const FUNDAMENTOS_UI_KIT: FundamentosUiKit = {
           "oscuro": "rgba(213, 220, 231, 0.28)",
           "sinOscuro": false,
           "soloOscuro": false,
-          "utilidades": [],
-          "manual": false
+          "utilidades": [
+            "border-divider-strong"
+          ],
+          "manual": true
         },
         {
           "nombre": "--sys-color-divider-subtle",
@@ -1262,8 +1490,10 @@ export const FUNDAMENTOS_UI_KIT: FundamentosUiKit = {
           "oscuro": "rgba(213, 220, 231, 0.10)",
           "sinOscuro": false,
           "soloOscuro": false,
-          "utilidades": [],
-          "manual": false
+          "utilidades": [
+            "border-divider-subtle"
+          ],
+          "manual": true
         }
       ]
     },
@@ -1277,7 +1507,9 @@ export const FUNDAMENTOS_UI_KIT: FundamentosUiKit = {
           "oscuro": "#20232B",
           "sinOscuro": false,
           "soloOscuro": true,
-          "utilidades": [],
+          "utilidades": [
+            "bg-bg-snackbar"
+          ],
           "manual": true
         },
         {
@@ -1286,7 +1518,383 @@ export const FUNDAMENTOS_UI_KIT: FundamentosUiKit = {
           "oscuro": "#FFFFFF",
           "sinOscuro": true,
           "soloOscuro": false,
-          "utilidades": [],
+          "utilidades": [
+            "bg-bg-switch-thumb"
+          ],
+          "manual": true
+        },
+        {
+          "nombre": "--sys-color-code-attribute",
+          "claro": "#9CDCFE",
+          "oscuro": "#9CDCFE",
+          "sinOscuro": true,
+          "soloOscuro": false,
+          "utilidades": [
+            "text-code-attribute"
+          ],
+          "manual": true
+        },
+        {
+          "nombre": "--sys-color-code-bar",
+          "claro": "#252526",
+          "oscuro": "#252526",
+          "sinOscuro": true,
+          "soloOscuro": false,
+          "utilidades": [
+            "text-code-bar"
+          ],
+          "manual": true
+        },
+        {
+          "nombre": "--sys-color-code-bg",
+          "claro": "#1E1E1E",
+          "oscuro": "#1E1E1E",
+          "sinOscuro": true,
+          "soloOscuro": false,
+          "utilidades": [
+            "text-code-bg"
+          ],
+          "manual": true
+        },
+        {
+          "nombre": "--sys-color-code-border",
+          "claro": "#3C3C3C",
+          "oscuro": "#3C3C3C",
+          "sinOscuro": true,
+          "soloOscuro": false,
+          "utilidades": [
+            "text-code-border"
+          ],
+          "manual": true
+        },
+        {
+          "nombre": "--sys-color-code-comment",
+          "claro": "#6A9955",
+          "oscuro": "#6A9955",
+          "sinOscuro": true,
+          "soloOscuro": false,
+          "utilidades": [
+            "text-code-comment"
+          ],
+          "manual": true
+        },
+        {
+          "nombre": "--sys-color-code-diff-added",
+          "claro": "rgb(115 201 145 / 0.16)",
+          "oscuro": "rgb(115 201 145 / 0.16)",
+          "sinOscuro": true,
+          "soloOscuro": false,
+          "utilidades": [
+            "text-code-diff-added"
+          ],
+          "manual": true
+        },
+        {
+          "nombre": "--sys-color-code-diff-added-sign",
+          "claro": "#73C991",
+          "oscuro": "#73C991",
+          "sinOscuro": true,
+          "soloOscuro": false,
+          "utilidades": [
+            "text-code-diff-added-sign"
+          ],
+          "manual": true
+        },
+        {
+          "nombre": "--sys-color-code-diff-removed",
+          "claro": "rgb(244 71 71 / 0.16)",
+          "oscuro": "rgb(244 71 71 / 0.16)",
+          "sinOscuro": true,
+          "soloOscuro": false,
+          "utilidades": [
+            "text-code-diff-removed"
+          ],
+          "manual": true
+        },
+        {
+          "nombre": "--sys-color-code-diff-removed-sign",
+          "claro": "#F48771",
+          "oscuro": "#F48771",
+          "sinOscuro": true,
+          "soloOscuro": false,
+          "utilidades": [
+            "text-code-diff-removed-sign"
+          ],
+          "manual": true
+        },
+        {
+          "nombre": "--sys-color-code-function",
+          "claro": "#DCDCAA",
+          "oscuro": "#DCDCAA",
+          "sinOscuro": true,
+          "soloOscuro": false,
+          "utilidades": [
+            "text-code-function"
+          ],
+          "manual": true
+        },
+        {
+          "nombre": "--sys-color-code-keyword",
+          "claro": "#C586C0",
+          "oscuro": "#C586C0",
+          "sinOscuro": true,
+          "soloOscuro": false,
+          "utilidades": [
+            "text-code-keyword"
+          ],
+          "manual": true
+        },
+        {
+          "nombre": "--sys-color-code-muted",
+          "claro": "#8C8C8C",
+          "oscuro": "#8C8C8C",
+          "sinOscuro": true,
+          "soloOscuro": false,
+          "utilidades": [
+            "text-code-muted"
+          ],
+          "manual": true
+        },
+        {
+          "nombre": "--sys-color-code-number",
+          "claro": "#B5CEA8",
+          "oscuro": "#B5CEA8",
+          "sinOscuro": true,
+          "soloOscuro": false,
+          "utilidades": [
+            "text-code-number"
+          ],
+          "manual": true
+        },
+        {
+          "nombre": "--sys-color-code-punctuation",
+          "claro": "#8C8C8C",
+          "oscuro": "#8C8C8C",
+          "sinOscuro": true,
+          "soloOscuro": false,
+          "utilidades": [
+            "text-code-punctuation"
+          ],
+          "manual": true
+        },
+        {
+          "nombre": "--sys-color-code-string",
+          "claro": "#CE9178",
+          "oscuro": "#CE9178",
+          "sinOscuro": true,
+          "soloOscuro": false,
+          "utilidades": [
+            "text-code-string"
+          ],
+          "manual": true
+        },
+        {
+          "nombre": "--sys-color-code-tag",
+          "claro": "#569CD6",
+          "oscuro": "#569CD6",
+          "sinOscuro": true,
+          "soloOscuro": false,
+          "utilidades": [
+            "text-code-tag"
+          ],
+          "manual": true
+        },
+        {
+          "nombre": "--sys-color-code-text",
+          "claro": "#D4D4D4",
+          "oscuro": "#D4D4D4",
+          "sinOscuro": true,
+          "soloOscuro": false,
+          "utilidades": [
+            "text-code-text"
+          ],
+          "manual": true
+        },
+        {
+          "nombre": "--sys-color-code-type",
+          "claro": "#4EC9B0",
+          "oscuro": "#4EC9B0",
+          "sinOscuro": true,
+          "soloOscuro": false,
+          "utilidades": [
+            "text-code-type"
+          ],
+          "manual": true
+        },
+        {
+          "nombre": "--sys-color-landing-accent",
+          "claro": "#D52D50",
+          "oscuro": "#D52D50",
+          "sinOscuro": true,
+          "soloOscuro": false,
+          "utilidades": [
+            "text-landing-accent"
+          ],
+          "manual": true
+        },
+        {
+          "nombre": "--sys-color-landing-bg-brand",
+          "claro": "#01336C",
+          "oscuro": "#01336C",
+          "sinOscuro": true,
+          "soloOscuro": false,
+          "utilidades": [
+            "text-landing-bg-brand"
+          ],
+          "manual": true
+        },
+        {
+          "nombre": "--sys-color-landing-bg-brand-darkest",
+          "claro": "#001E40",
+          "oscuro": "#001E40",
+          "sinOscuro": true,
+          "soloOscuro": false,
+          "utilidades": [
+            "text-landing-bg-brand-darkest"
+          ],
+          "manual": true
+        },
+        {
+          "nombre": "--sys-color-landing-bg-brand-deep",
+          "claro": "#002F60",
+          "oscuro": "#002F60",
+          "sinOscuro": true,
+          "soloOscuro": false,
+          "utilidades": [
+            "text-landing-bg-brand-deep"
+          ],
+          "manual": true
+        },
+        {
+          "nombre": "--sys-color-landing-bg-brand-fade",
+          "claro": "rgb(1 51 108 / 0)",
+          "oscuro": "rgb(1 51 108 / 0)",
+          "sinOscuro": true,
+          "soloOscuro": false,
+          "utilidades": [
+            "text-landing-bg-brand-fade"
+          ],
+          "manual": true
+        },
+        {
+          "nombre": "--sys-color-landing-bg-brand-night",
+          "claro": "#002854",
+          "oscuro": "#002854",
+          "sinOscuro": true,
+          "soloOscuro": false,
+          "utilidades": [
+            "text-landing-bg-brand-night"
+          ],
+          "manual": true
+        },
+        {
+          "nombre": "--sys-color-landing-bg-section",
+          "claro": "#F7F7F7",
+          "oscuro": "#F7F7F7",
+          "sinOscuro": true,
+          "soloOscuro": false,
+          "utilidades": [
+            "text-landing-bg-section"
+          ],
+          "manual": true
+        },
+        {
+          "nombre": "--sys-color-landing-chat-brand",
+          "claro": "#13C133",
+          "oscuro": "#13C133",
+          "sinOscuro": true,
+          "soloOscuro": false,
+          "utilidades": [
+            "text-landing-chat-brand"
+          ],
+          "manual": true
+        },
+        {
+          "nombre": "--sys-color-landing-chat-text",
+          "claro": "#2C333B",
+          "oscuro": "#2C333B",
+          "sinOscuro": true,
+          "soloOscuro": false,
+          "utilidades": [
+            "text-landing-chat-text"
+          ],
+          "manual": true
+        },
+        {
+          "nombre": "--sys-color-landing-divider",
+          "claro": "#A8A8A8",
+          "oscuro": "#A8A8A8",
+          "sinOscuro": true,
+          "soloOscuro": false,
+          "utilidades": [
+            "text-landing-divider"
+          ],
+          "manual": true
+        },
+        {
+          "nombre": "--sys-color-landing-tag-consulta",
+          "claro": "#524CCC",
+          "oscuro": "#524CCC",
+          "sinOscuro": true,
+          "soloOscuro": false,
+          "utilidades": [
+            "text-landing-tag-consulta"
+          ],
+          "manual": true
+        },
+        {
+          "nombre": "--sys-color-landing-tag-faq",
+          "claro": "#0954E8",
+          "oscuro": "#0954E8",
+          "sinOscuro": true,
+          "soloOscuro": false,
+          "utilidades": [
+            "text-landing-tag-faq"
+          ],
+          "manual": true
+        },
+        {
+          "nombre": "--sys-color-landing-tag-normas",
+          "claro": "#7117A5",
+          "oscuro": "#7117A5",
+          "sinOscuro": true,
+          "soloOscuro": false,
+          "utilidades": [
+            "text-landing-tag-normas"
+          ],
+          "manual": true
+        },
+        {
+          "nombre": "--sys-color-landing-tag-siaf",
+          "claro": "#18887A",
+          "oscuro": "#18887A",
+          "sinOscuro": true,
+          "soloOscuro": false,
+          "utilidades": [
+            "text-landing-tag-siaf"
+          ],
+          "manual": true
+        },
+        {
+          "nombre": "--sys-color-landing-text-link",
+          "claro": "#0054A6",
+          "oscuro": "#0054A6",
+          "sinOscuro": true,
+          "soloOscuro": false,
+          "utilidades": [
+            "text-landing-text-link"
+          ],
+          "manual": true
+        },
+        {
+          "nombre": "--sys-color-landing-text-muted",
+          "claro": "#555555",
+          "oscuro": "#555555",
+          "sinOscuro": true,
+          "soloOscuro": false,
+          "utilidades": [
+            "text-landing-text-muted"
+          ],
           "manual": true
         },
         {
@@ -1295,7 +1903,9 @@ export const FUNDAMENTOS_UI_KIT: FundamentosUiKit = {
           "oscuro": "#F4F7FB",
           "sinOscuro": false,
           "soloOscuro": false,
-          "utilidades": [],
+          "utilidades": [
+            "text-tipography-neutral-high"
+          ],
           "manual": true
         }
       ]
@@ -3149,6 +3759,34 @@ export const FUNDAMENTOS_UI_KIT: FundamentosUiKit = {
       "utilidades": [
         "shadow-siaf-elevation-16"
       ]
+    },
+    {
+      "token": "--sys-shadow-landing-card",
+      "nombre": "landing-card",
+      "claro": "0 3px 6px rgb(0 0 0 / 0.2)",
+      "oscuro": null,
+      "utilidades": []
+    },
+    {
+      "token": "--sys-shadow-landing-tile",
+      "nombre": "landing-tile",
+      "claro": "0 0 15px rgb(0 0 0 / 0.2)",
+      "oscuro": null,
+      "utilidades": []
+    },
+    {
+      "token": "--sys-shadow-landing-bar",
+      "nombre": "landing-bar",
+      "claro": "0 0 30px 0 rgb(0 0 0 / 0.2)",
+      "oscuro": null,
+      "utilidades": []
+    },
+    {
+      "token": "--sys-shadow-landing-panel",
+      "nombre": "landing-panel",
+      "claro": "0 9px 12px rgb(0 0 0 / 0.14), 0 3px 17px rgb(0 0 0 / 0.12)",
+      "oscuro": null,
+      "utilidades": []
     }
   ],
   "superficie": {

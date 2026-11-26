@@ -1,14 +1,21 @@
 import { ChangeDetectionStrategy, Component, Input, inject, signal } from '@angular/core';
 
 import { CurrentUserService } from '../../../core/auth/current-user.service';
-import { AccountHistoryPanelComponent } from '../../../shared/components/account-history-panel/account-history-panel.component';
-import { AsientoHistoryPanelComponent } from '../../../shared/components/asiento-history-panel/asiento-history-panel.component';
-import { DetailHistoryEntry, DetailHistoryTabsComponent } from '../../../shared/components/detail-history-tabs/detail-history-tabs.component';
-import { DocumentHistoryPanelComponent, DocumentHistorySummary } from '../../../shared/components/document-history-panel/document-history-panel.component';
-import { TimelineComponent, TimelineItem } from '../../../shared/components/timeline/timeline.component';
-import { ActionTrackerComponent, ActionTrackerSummary } from '../../../shared/ui/action-tracker/action-tracker.component';
-import { ButtonComponent } from '../../../shared/ui/button/button.component';
-import { StepItem, StepsComponent } from '../../../shared/ui/steps/steps.component';
+import {
+  AccountHistoryPanelComponent,
+  ActionTrackerComponent,
+  ActionTrackerSummary,
+  AsientoHistoryPanelComponent,
+  ButtonComponent,
+  DetailHistoryEntry,
+  DetailHistoryTabsComponent,
+  DocumentHistoryPanelComponent,
+  DocumentHistorySummary,
+  StepItem,
+  StepsComponent,
+  TimelineComponent,
+  TimelineItem,
+} from '@kennedy122112/siaf-rp-ui-angular';
 import {
   HISTORIAL_DOCUMENTO_DE_MUESTRA,
   PROVEEDORES_HISTORIAL_DE_MUESTRA,

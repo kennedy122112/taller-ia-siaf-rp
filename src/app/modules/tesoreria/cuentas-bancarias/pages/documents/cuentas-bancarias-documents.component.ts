@@ -4,7 +4,11 @@ import { PermissionService } from '../../../../../core/auth/permission.service';
 import { ESTADO } from '../../../../../core/models/documento.model';
 import { SolicitudesFacadeService } from '../../../../../core/state/solicitudes-facade.service';
 import { SolicitudesStateService } from '../../../../../core/state/solicitudes-state.service';
-import { DocumentsRecordsPageComponent } from '../../../../../shared/components/documents-records-page/documents-records-page.component';
+import {
+  DocumentHistoryPanelComponent,
+  DocumentsRecordsPageComponent,
+  type DocumentHistorySummary,
+} from '@kennedy122112/siaf-rp-ui-angular';
 import type { DocumentsQuery, DocumentsRecordsConfig, DocumentsRecordsRow } from '../../../../../shared/types/documents-records.types';
 import { createNewDocumentIdsSignal } from '../../../../../shared/utils/new-document-ids.util';
 import { CuentasBancariasApiService } from '../../api/cuentas-bancarias-api.service';
@@ -22,16 +26,24 @@ import {
 /**
  * «Documentos y registros» del proceso de ejemplo. La pantalla entera la arma `siaf-documents-records-page`:
  * esta página solo carga la bandeja (documentos) y las cuentas aprobadas (registros) y las pasa como filas.
+ *
+ * El historial de un registro es el de la solicitud que lo creó: la plantilla llama a `abrirHistorialRegistro` y esta
+ * página lo muestra con `siaf-document-history-panel`.
  */
 @Component({
   selector: 'siaf-cuentas-bancarias-documents',
   standalone: true,
-  imports: [DocumentsRecordsPageComponent],
+  imports: [DocumentHistoryPanelComponent, DocumentsRecordsPageComponent],
   template: `
     <siaf-documents-records-page
       [config]="pageConfig()"
       [loading]="cargando()"
       (documentsQueryChange)="onDocumentsQuery($event)"
+    />
+    <siaf-document-history-panel
+      [open]="historialAbierto()"
+      [summary]="historial()"
+      (closed)="historialAbierto.set(false)"
     />
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -46,6 +58,8 @@ export class CuentasBancariasDocumentsComponent implements OnInit {
 
   private readonly registros = signal<CuentaBancariaRegistro[]>([]);
   readonly cargando = signal(true);
+  readonly historialAbierto = signal(false);
+  readonly historial = signal<DocumentHistorySummary>({ solicitudId: '', document: '', number: '', actionType: '' });
 
   ngOnInit(): void {
     // Bandeja según el rol (el aprobador además refresca cada 30 s).
@@ -62,6 +76,17 @@ export class CuentasBancariasDocumentsComponent implements OnInit {
     const query = { search: q.search, page: q.page, limit: q.limit };
     if (this.permissions.currentRole() === 'approver') this.solicitudesFacade.cargarBandejaAprobador([CODIGO_DOCUMENTO], query);
     else this.solicitudesFacade.cargarBandejaCreador([CODIGO_DOCUMENTO], query);
+  }
+
+  /** Historial de un registro: el de la solicitud que creó la cuenta. */
+  private abrirHistorialRegistro(fila: DocumentsRecordsRow): void {
+    this.historial.set({
+      solicitudId: String(fila['documentId'] ?? ''),
+      document: String(fila['document'] ?? ''),
+      number: String(fila['number'] ?? ''),
+      actionType: String(fila['actionType'] ?? 'Creación'),
+    });
+    this.historialAbierto.set(true);
   }
 
   readonly pageConfig = computed((): DocumentsRecordsConfig => {
@@ -117,6 +142,7 @@ export class CuentasBancariasDocumentsComponent implements OnInit {
       documentRows,
       recordRows,
       serverQuery: { total: this.solicitudesState.bandejaTotal() },
+      abrirHistorialRegistro: (fila) => this.abrirHistorialRegistro(fila),
     };
   });
 }

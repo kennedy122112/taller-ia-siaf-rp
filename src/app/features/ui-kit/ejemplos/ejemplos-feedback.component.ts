@@ -1,21 +1,33 @@
 import { ChangeDetectionStrategy, Component, DestroyRef, Input, inject, signal } from '@angular/core';
 
-import { AlertComponent, AlertTone } from '../../../shared/ui/alert/alert.component';
-import { BadgeColor, BadgeComponent } from '../../../shared/ui/badge/badge.component';
-import { ButtonComponent } from '../../../shared/ui/button/button.component';
-import { EmptySectionComponent } from '../../../shared/ui/empty-section/empty-section.component';
-import { EmptyStateComponent } from '../../../shared/ui/empty-state/empty-state.component';
-import { FlowStatus, FlowStatusTagComponent } from '../../../shared/ui/flow-status-tag/flow-status-tag.component';
-import { IconComponent } from '../../../shared/ui/icon/icon.component';
-import { LoaderComponent } from '../../../shared/ui/loader/loader.component';
-import { LoaderOverlayComponent } from '../../../shared/ui/loader-overlay/loader-overlay.component';
-import { LoadingProgressComponent } from '../../../shared/ui/loading-progress/loading-progress.component';
-import { MessageBoxComponent } from '../../../shared/ui/message-box/message-box.component';
-import { ProgressCircularComponent } from '../../../shared/ui/progress-circular/progress-circular.component';
-import { RecordStatus, RecordStatusTagComponent } from '../../../shared/ui/record-status-tag/record-status-tag.component';
-import { SnackbarComponent, SnackbarTone } from '../../../shared/ui/snackbar/snackbar.component';
-import { StatusTagAppearance, StatusTagComponent, StatusTagSize, StatusTagTone } from '../../../shared/ui/status-tag/status-tag.component';
-import { TagComponent, TagSize, TagVariant } from '../../../shared/ui/tag/tag.component';
+import {
+  AlertComponent,
+  AlertTone,
+  BadgeColor,
+  BadgeComponent,
+  ButtonComponent,
+  EmptySectionComponent,
+  EmptyStateComponent,
+  FlowStatus,
+  FlowStatusTagComponent,
+  IconComponent,
+  LoaderComponent,
+  LoaderOverlayComponent,
+  LoadingProgressComponent,
+  MessageBoxComponent,
+  ProgressCircularComponent,
+  RecordStatus,
+  RecordStatusTagComponent,
+  SnackbarComponent,
+  SnackbarTone,
+  StatusTagAppearance,
+  StatusTagComponent,
+  StatusTagSize,
+  StatusTagTone,
+  TagComponent,
+  TagSize,
+  TagVariant,
+} from '@kennedy122112/siaf-rp-ui-angular';
 
 /** Un estado del Figma que se fija con inputs; hover y foco se ven al pasar el puntero o llegar con Tab. */
 interface EstadoTag {

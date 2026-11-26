@@ -1,10 +1,13 @@
 import { ChangeDetectionStrategy, Component, computed, signal } from '@angular/core';
 
-import { ButtonGroupItem, ButtonsGroupComponent } from '../../../shared/ui/buttons-group/buttons-group.component';
-import { ExpansionPanelComponent } from '../../../shared/ui/expansion-panel/expansion-panel.component';
-import { IconComponent } from '../../../shared/ui/icon/icon.component';
-import { TextFieldComponent } from '../../../shared/ui/text-field/text-field.component';
-import { TooltipDirective } from '../../../shared/ui/tooltip/tooltip.directive';
+import {
+  ButtonGroupItem,
+  ButtonsGroupComponent,
+  ExpansionPanelComponent,
+  IconComponent,
+  TextFieldComponent,
+  TooltipDirective,
+} from '@kennedy122112/siaf-rp-ui-angular';
 import { FUNDAMENTOS_UI_KIT } from '../ui-kit.fundamentos';
 import { GrupoColor } from '../ui-kit.model';
 import { UiKitCopiarComponent } from './ui-kit-copiar.component';

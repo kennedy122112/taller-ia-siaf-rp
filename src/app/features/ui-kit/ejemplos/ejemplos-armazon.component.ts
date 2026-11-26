@@ -3,15 +3,20 @@ import { ChangeDetectionStrategy, Component, Input, inject, signal } from '@angu
 import { CurrentUserService } from '../../../core/auth/current-user.service';
 import { PermissionService } from '../../../core/auth/permission.service';
 import { SolicitudesStateService } from '../../../core/state/solicitudes-state.service';
-import { MobileNavigationMenuComponent } from '../../../layout/mobile-navigation-menu/mobile-navigation-menu.component';
-import { NavbarComponent } from '../../../layout/navbar/navbar.component';
-import { NotificationsPanelComponent } from '../../../layout/notifications-panel/notifications-panel.component';
-import { ProcessMenuNode, ProcessMenuTreeComponent } from '../../../layout/process-menu-tree/process-menu-tree.component';
-import { SidebarComponent, SidebarItem, SidebarNavigation } from '../../../layout/sidebar/sidebar.component';
-import { TrayDocumentsViewComponent } from '../../../layout/tray-documents-view/tray-documents-view.component';
-import { TrayMenuComponent } from '../../../layout/tray-menu/tray-menu.component';
-import { TrayNotificationsViewComponent } from '../../../layout/tray-notifications-view/tray-notifications-view.component';
-import { ButtonComponent } from '../../../shared/ui/button/button.component';
+import {
+  ButtonComponent,
+  MobileNavigationMenuComponent,
+  NavbarComponent,
+  NotificationsPanelComponent,
+  ProcessMenuNode,
+  ProcessMenuTreeComponent,
+  SidebarComponent,
+  SidebarItem,
+  SidebarNavigation,
+  TrayDocumentsViewComponent,
+  TrayMenuComponent,
+  TrayNotificationsViewComponent,
+} from '@kennedy122112/siaf-rp-ui-angular';
 import { ADMIN_MENU_TREE } from '../../../shared/utils/process-tree.util';
 import { PROVEEDORES_SHELL_DE_MUESTRA, sembrarSesionDeMuestra } from './datos-de-muestra';
 

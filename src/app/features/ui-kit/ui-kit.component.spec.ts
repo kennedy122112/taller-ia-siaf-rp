@@ -3,9 +3,11 @@ import { HttpTestingController, provideHttpClientTesting } from '@angular/common
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
 
-import { CLAVE_TEMA } from '../../shared/utils/tema.util';
 import { COMPONENTES_EJEMPLO } from './ejemplos';
 import { UiKitComponent } from './ui-kit.component';
+
+/** Clave de `localStorage` donde el kit guarda el tema (`leerTemaGuardado` / `aplicarTema`). */
+const CLAVE_TEMA = 'siaf-theme';
 
 /** El scroll avisa en el cuadro siguiente y el índice mide en el otro: se esperan unos cuadros. */
 const cuadros = async (cantidad = 3): Promise<void> => {

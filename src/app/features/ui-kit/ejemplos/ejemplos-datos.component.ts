@@ -1,23 +1,42 @@
+import { NgTemplateOutlet } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input, signal } from '@angular/core';
 
-import { ConsultasFiltrosChipsComponent, FiltroChip } from '../../../shared/components/consultas-filtros-chips/consultas-filtros-chips.component';
-import { CustomFilterComponent, FilterRow } from '../../../shared/components/custom-filter/custom-filter.component';
-import { DataTableColumn, DataTableComponent, DataTableRow } from '../../../shared/components/data-table/data-table.component';
-import { FilterPillComponent, FilterPillOption } from '../../../shared/components/filter-pill/filter-pill.component';
-import { FormTableSearchComponent } from '../../../shared/components/form-table-search/form-table-search.component';
-import { PaginationComponent } from '../../../shared/components/pagination/pagination.component';
-import { ParametroAplicado, ParametrosAplicadosComponent } from '../../../shared/components/parametros-aplicados/parametros-aplicados.component';
-import { RecordsSearchToolbarComponent } from '../../../shared/components/records-search-toolbar/records-search-toolbar.component';
-import { TableControlsComponent } from '../../../shared/components/table-controls/table-controls.component';
+import {
+  ButtonComponent,
+  ConsultasFiltrosChipsComponent,
+  CustomFilterComponent,
+  DataTableColumn,
+  DataTableComponent,
+  DataTableRow,
+  DocumentsRecordsTableComponent,
+  DragHandleComponent,
+  FilterPillComponent,
+  FilterPillOption,
+  FilterRow,
+  FiltroChip,
+  FormTableSearchComponent,
+  IconDropdownMenuComponent,
+  IconDropdownMenuItem,
+  ListComponent,
+  ListItem,
+  PaginationComponent,
+  ParametroAplicado,
+  ParametrosAplicadosComponent,
+  RecordsSearchToolbarComponent,
+  ReordenableDirective,
+  ReordenableItemDirective,
+  type Reordenamiento,
+  ReportTableComponent,
+  TableComponent,
+  TableControlsComponent,
+  TableSkeletonComponent,
+  TextFieldComponent,
+  TextFieldOption,
+  TreeViewComponent,
+  TreeViewNode,
+  reordenar,
+} from '@kennedy122112/siaf-rp-ui-angular';
 import { DocumentsRecordsColumn, DocumentsRecordsRow } from '../../../shared/types/documents-records.types';
-import { DocumentsRecordsTableComponent } from '../../../shared/ui/documents-records-table/documents-records-table.component';
-import { IconDropdownMenuComponent, IconDropdownMenuItem } from '../../../shared/ui/icon-dropdown-menu/icon-dropdown-menu.component';
-import { ListComponent, ListItem } from '../../../shared/ui/list/list.component';
-import { ReportTableComponent } from '../../../shared/ui/report-table/report-table.component';
-import { TableComponent } from '../../../shared/ui/table/table.component';
-import { TableSkeletonComponent } from '../../../shared/ui/table-skeleton/table-skeleton.component';
-import { TextFieldOption } from '../../../shared/ui/text-field/text-field.component';
-import { TreeViewComponent, TreeViewNode } from '../../../shared/ui/tree-view/tree-view.component';
 import { COLUMNAS_REPORTE_DE_MUESTRA, FILAS_REPORTE_DE_MUESTRA } from './reporte-de-muestra';
 
 /** Ejemplos en vivo de la categoría Datos y tablas. */
@@ -26,7 +45,8 @@ import { COLUMNAS_REPORTE_DE_MUESTRA, FILAS_REPORTE_DE_MUESTRA } from './reporte
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
-    ConsultasFiltrosChipsComponent, CustomFilterComponent, DataTableComponent,
+    ButtonComponent, ConsultasFiltrosChipsComponent, CustomFilterComponent, DataTableComponent, DragHandleComponent, NgTemplateOutlet,
+    ReordenableDirective, ReordenableItemDirective, TextFieldComponent,
     DocumentsRecordsTableComponent, FilterPillComponent, FormTableSearchComponent, IconDropdownMenuComponent, ListComponent, PaginationComponent,
     ParametrosAplicadosComponent, RecordsSearchToolbarComponent, ReportTableComponent, TableComponent, TableControlsComponent, TableSkeletonComponent, TreeViewComponent,
   ],
@@ -37,6 +57,48 @@ import { COLUMNAS_REPORTE_DE_MUESTRA, FILAS_REPORTE_DE_MUESTRA } from './reporte
       }
       @case ('siaf-data-table') {
         <siaf-data-table [columns]="columnas" [rows]="filas" />
+      }
+      @case ('[siafReordenable]') {
+        <ng-container [ngTemplateOutlet]="listaCampos" />
+      }
+      @case ('[siafReordenableItem]') {
+        <ng-container [ngTemplateOutlet]="listaCampos" />
+      }
+      @case ('siaf-drag-handle') {
+        <div class="grid gap-6 sm:grid-cols-2">
+          <div class="min-w-0">
+            <p class="mb-2 text-[11px] font-bold uppercase tracking-widest text-text-muted">Vertical · lista de arriba abajo</p>
+            <div class="flex items-center gap-2">
+              <siaf-drag-handle etiqueta="Mover Entidad" />
+              <siaf-drag-handle etiqueta="Mover Entidad (sm)" size="sm" />
+              <siaf-drag-handle etiqueta="Mover Entidad (xs)" size="xs" />
+            </div>
+          </div>
+          <div class="min-w-0">
+            <p class="mb-2 text-[11px] font-bold uppercase tracking-widest text-text-muted">Horizontal · lista de izquierda a derecha</p>
+            <div class="flex items-center gap-2">
+              <siaf-drag-handle etiqueta="Mover Año" orientacion="horizontal" />
+              <siaf-drag-handle etiqueta="Mover Año (sm)" orientacion="horizontal" size="sm" />
+              <siaf-drag-handle etiqueta="Mover Año (xs)" orientacion="horizontal" size="xs" />
+            </div>
+          </div>
+          <div class="min-w-0 sm:col-span-2">
+            <p class="mb-2 text-[11px] font-bold uppercase tracking-widest text-text-muted">En una lista horizontal · ← → con el elemento tomado</p>
+            <div class="flex flex-wrap gap-2" siafReordenable orientacion="horizontal" (reordenado)="columnasOrden.update((c) => reordenar(c, $event))">
+              @for (columna of columnasOrden(); track columna) {
+                <div siafReordenableItem class="flex items-center gap-1 rounded-siaf-md border border-divider-default bg-bg-surfaces-surface py-1 pl-1 pr-3 text-sm text-text-neutral-high">
+                  <siaf-drag-handle size="sm" orientacion="horizontal" [etiqueta]="'Mover ' + columna" />
+                  {{ columna }}
+                </div>
+              }
+            </div>
+          </div>
+          <div class="min-w-0 sm:col-span-2">
+            <p class="mb-2 text-[11px] font-bold uppercase tracking-widest text-text-muted">En una tabla · siaf-data-table con reordenable (celda «Drag &amp; drop» de 24 px)</p>
+            <siaf-data-table [columns]="columnas" [rows]="filasReordenables()" [reordenable]="true" (reordenado)="filasReordenables.update((f) => reordenar(f, $event))" />
+            <p class="mt-2 text-xs text-text-muted" aria-live="polite">Orden: {{ ordenDeFilas() }}</p>
+          </div>
+        </div>
       }
       @case ('siaf-report-table') {
         <siaf-report-table
@@ -153,13 +215,29 @@ import { COLUMNAS_REPORTE_DE_MUESTRA, FILAS_REPORTE_DE_MUESTRA } from './reporte
         </div>
       }
     }
+
+    <ng-template #listaCampos>
+      <div class="max-w-[388px]">
+        <p class="mb-2 text-[11px] font-bold uppercase tracking-widest text-text-muted">Campos del resultado agregado · arrastra o usa Espacio y ↑ ↓</p>
+        <div class="flex flex-col gap-4" siafReordenable (reordenado)="alReordenarCampos($event)">
+          @for (campo of camposAgregado(); track campo.id) {
+            <div siafReordenableItem class="flex items-center gap-2">
+              <siaf-drag-handle [etiqueta]="'Mover ' + nombreDeCampo(campo.valor)" />
+              <siaf-input class="min-w-0 flex-1" label="Campo" type="select" [options]="opcionesCampo" [value]="campo.valor" [autoSuccess]="false" />
+              <siaf-button variant="text" icon="delete" [iconOnly]="true" [ariaLabel]="'Quitar ' + nombreDeCampo(campo.valor)" (click)="quitarCampo(campo.id)" />
+            </div>
+          }
+        </div>
+        <p class="mt-2 text-xs text-text-muted" aria-live="polite">Último cambio: {{ ultimoCambio() || 'ninguno' }}</p>
+      </div>
+    </ng-template>
   `,
 })
 export class EjemplosDatosComponent {
   static readonly selectores = [
     'siaf-table', 'siaf-data-table', 'siaf-report-table', 'siaf-documents-records-table', 'siaf-table-controls', 'siaf-pagination', 'siaf-table-skeleton',
     'siaf-custom-filter', 'siaf-form-table-search', 'siaf-records-search-toolbar', 'siaf-filter-pill', 'siaf-consultas-filtros-chips', 'siaf-parametros-aplicados',
-    'siaf-tree-view', 'siaf-list',
+    'siaf-tree-view', 'siaf-list', '[siafReordenable]', '[siafReordenableItem]', 'siaf-drag-handle',
   ];
   @Input({ required: true }) selector!: string;
 
@@ -299,4 +377,34 @@ export class EjemplosDatosComponent {
   ];
   readonly itemLista = signal<string | null>('plan');
   readonly cambioSwitchLista = signal('');
+
+  // ── Reordenar ──
+  protected readonly reordenar = reordenar;
+  readonly filasReordenables = signal<DataTableRow[]>(this.filas);
+  readonly ordenDeFilas = (): string => this.filasReordenables().map((f) => f['numero']).join(', ');
+  readonly columnasOrden = signal(['Año', 'Mes', 'Pliego', 'Entidad']);
+  readonly opcionesCampo: TextFieldOption[] = [
+    { label: 'Pliego', value: 'pliego' },
+    { label: 'Entidad', value: 'entidad' },
+    { label: 'Cuenta contable', value: 'cuenta' },
+  ];
+  readonly camposAgregado = signal([
+    { id: 1, valor: 'pliego' },
+    { id: 2, valor: 'entidad' },
+    { id: 3, valor: 'cuenta' },
+  ]);
+  readonly ultimoCambio = signal('');
+
+  nombreDeCampo(valor: string): string {
+    return this.opcionesCampo.find((o) => o.value === valor)?.label ?? valor;
+  }
+
+  alReordenarCampos(cambio: Reordenamiento): void {
+    this.camposAgregado.update((c) => reordenar(c, cambio));
+    this.ultimoCambio.set(`de la posición ${cambio.anterior + 1} a la ${cambio.actual + 1}`);
+  }
+
+  quitarCampo(id: number): void {
+    this.camposAgregado.update((c) => (c.length > 1 ? c.filter((x) => x.id !== id) : c));
+  }
 }

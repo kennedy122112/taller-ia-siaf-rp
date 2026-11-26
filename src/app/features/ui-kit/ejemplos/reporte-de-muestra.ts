@@ -4,8 +4,7 @@
  * catálogo.
  */
 import type { QueryReportConfig, QueryReportParameterField, QueryReportResult } from '../../../shared/types/query-report.types';
-import type { ReportSummaryField } from '../../../shared/ui/report-summary-card/report-summary-card.component';
-import type { ReportTableColumn, ReportTableRow } from '../../../shared/ui/report-table/report-table.component';
+import type { ReportSummaryField, ReportTableColumn, ReportTableRow } from '@kennedy122112/siaf-rp-ui-angular';
 
 export const CAMPOS_PARAMETROS_DE_MUESTRA: QueryReportParameterField[] = [
   { key: 'desde', label: 'Fecha desde', type: 'date', required: true, icon: 'calendar_today' },

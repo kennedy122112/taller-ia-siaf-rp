@@ -1,14 +1,7 @@
 /**
- * Layout Components
- * Componentes estruturales de la aplicación
+ * Armazón propio del taller. La navbar, el sidebar, el menú de procesos y la bandeja vienen del kit
+ * (`@kennedy122112/siaf-rp-ui-angular`); aquí quedan el armazón y el escritorio virtual.
  */
 
-export { SidebarComponent } from './sidebar/sidebar.component';
-export { NavbarComponent } from './navbar/navbar.component';
-export { MobileNavigationMenuComponent } from './mobile-navigation-menu/mobile-navigation-menu.component';
-export { ProcessMenuTreeComponent } from './process-menu-tree/process-menu-tree.component';
-export type { ProcessMenuNode } from './process-menu-tree/process-menu-tree.component';
-export { TrayMenuComponent } from './tray-menu/tray-menu.component';
-export { TrayDocumentsViewComponent } from './tray-documents-view/tray-documents-view.component';
-export { CreateDocumentComponent } from '../shared/components/create-document/create-document.component';
-export type { CreateDocumentAccepted, CreateDocumentVariant } from '../shared/components/create-document/create-document.component';
+export { AppShellComponent } from './shell/app-shell.component';
+export { VirtualDeskComponent } from './virtual-desk/virtual-desk.component';

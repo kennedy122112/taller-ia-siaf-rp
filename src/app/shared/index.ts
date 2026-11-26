@@ -1,13 +1,7 @@
 /**
- * Shared Module
- * Exporta todos los componentes compartidos,tipos, directives, pipes y utilities
+ * Lo compartido propio del taller: tipos, utilidades, directivas y pipes. Los componentes del design system vienen del
+ * paquete `@kennedy122112/siaf-rp-ui-angular`.
  */
-
-// UI Components (Base del Design System)
-export * from './ui/index';
-
-// Transversal Components
-export * from './components/index';
 
 // Types
 export * from './types/index';

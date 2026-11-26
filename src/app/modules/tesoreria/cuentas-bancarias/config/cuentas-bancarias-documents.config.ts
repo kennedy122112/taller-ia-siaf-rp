@@ -80,8 +80,8 @@ export const CUENTAS_BANCARIAS_DOCUMENTS_CONFIG: DocumentsRecordsConfig = {
   recordTableMinWidthClass: 'min-w-[1300px]',
   recordTrackKey: 'recordId',
   recordHistoryDocumentLabel: NOMBRE_DOCUMENTO,
-  // El historial de un registro es el de la solicitud que lo creó.
-  recordHistoryKind: 'documento',
+  // El historial de un registro es el de la solicitud que lo creó: lo abre la página con `abrirHistorialRegistro`.
+  recordHistoryLabel: 'Ver historial del documento',
   statusFilterOptions: [ESTADO.ELABORADO, ESTADO.VERIFICADO, ESTADO.OBSERVADO, ESTADO.APROBADO, ESTADO.RECHAZADO],
   actionTypeFilterOptions: ['Creación'],
   filterCampoOptions,

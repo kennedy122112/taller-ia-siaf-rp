@@ -7,6 +7,7 @@ import { EjemplosFeedbackComponent } from './ejemplos-feedback.component';
 import { EjemplosFormulariosComponent } from './ejemplos-formularios.component';
 import { EjemplosFundamentosComponent } from './ejemplos-fundamentos.component';
 import { EjemplosGraficosComponent } from './ejemplos-graficos.component';
+import { EjemplosLandingComponent } from './ejemplos-landing.component';
 import { EjemplosNavegacionComponent } from './ejemplos-navegacion.component';
 import { EjemplosOverlaysComponent } from './ejemplos-overlays.component';
 import { EjemplosPaginasComponent } from './ejemplos-paginas.component';
@@ -32,6 +33,7 @@ export const COMPONENTES_EJEMPLO: readonly ComponenteEjemplos[] = [
   EjemplosPlantillasComponent,
   EjemplosArmazonComponent,
   EjemplosArmazonSesionComponent,
+  EjemplosLandingComponent,
 ];
 
 /** Qué componente de ejemplos sabe pintar cada selector. */

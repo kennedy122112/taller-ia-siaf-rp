@@ -1,20 +1,28 @@
 import { ChangeDetectionStrategy, Component, Input, signal } from '@angular/core';
 
-import { SolicitudeFormCardComponent } from '../../../shared/components/solicitude-form-card/solicitude-form-card.component';
-import { SolicitudeInfoCardComponent, SolicitudeInfoField } from '../../../shared/components/solicitude-info-card/solicitude-info-card.component';
-import { AccordionComponent, AccordionItem } from '../../../shared/ui/accordion/accordion.component';
-import { ButtonComponent } from '../../../shared/ui/button/button.component';
-import { CardComponent } from '../../../shared/ui/card/card.component';
-import { CollapsibleCardComponent } from '../../../shared/ui/collapsible-card/collapsible-card.component';
-import { DeskCardComponent, DeskCardTone } from '../../../shared/ui/desk-card/desk-card.component';
-import { DocumentSummaryCardComponent } from '../../../shared/ui/document-summary-card/document-summary-card.component';
-import { ExpansionPanelComponent } from '../../../shared/ui/expansion-panel/expansion-panel.component';
-import { IconDropdownMenuItem } from '../../../shared/ui/icon-dropdown-menu/icon-dropdown-menu.component';
-import { PopoverAction, PopoverComponent } from '../../../shared/ui/popover/popover.component';
-import { ReportSummaryCardComponent } from '../../../shared/ui/report-summary-card/report-summary-card.component';
-import { StepperCardComponent, StepperCardField } from '../../../shared/ui/stepper-card/stepper-card.component';
-import { SummaryCardComponent, SummaryCardField } from '../../../shared/ui/summary-card/summary-card.component';
-import { TextFieldComponent } from '../../../shared/ui/text-field/text-field.component';
+import {
+  AccordionComponent,
+  AccordionItem,
+  ButtonComponent,
+  CardComponent,
+  CollapsibleCardComponent,
+  DeskCardComponent,
+  DeskCardTone,
+  DocumentSummaryCardComponent,
+  ExpansionPanelComponent,
+  IconDropdownMenuItem,
+  PopoverAction,
+  PopoverComponent,
+  ReportSummaryCardComponent,
+  SolicitudeFormCardComponent,
+  SolicitudeInfoCardComponent,
+  SolicitudeInfoField,
+  StepperCardComponent,
+  StepperCardField,
+  SummaryCardComponent,
+  SummaryCardField,
+  TextFieldComponent,
+} from '@kennedy122112/siaf-rp-ui-angular';
 import { DATOS_RESUMEN_DE_MUESTRA } from './reporte-de-muestra';
 
 /** Ejemplos en vivo de la categoría Superficies: todas las tarjetas y contenedores. */

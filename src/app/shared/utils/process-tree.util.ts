@@ -1,7 +1,7 @@
 /**
  * Árbol maestro de procesos + utilidad de búsqueda de ruta.
  * Vive en shared/utils/ (no en layout/) porque lo consumen tanto piezas
- * del shell (layout/process-menu-tree, layout/create-document) como
+ * del shell (`siaf-process-menu-tree` y `siaf-create-document` del kit) como
  * utilidades transversales de shared (breadcrumbs.util) — shared no debe
  * depender de layout, así que la fuente de verdad va acá.
  */
