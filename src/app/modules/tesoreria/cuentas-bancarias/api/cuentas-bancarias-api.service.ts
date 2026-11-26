@@ -2,8 +2,9 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { Observable } from 'rxjs';
 
+import { SolicitudesApiService } from '../../../../core/api/solicitudes-api.service';
 import { APP_CONFIG } from '../../../../core/config/app.config';
-import { CuentaBancariaDatos, CuentaBancariaRegistro } from '../models/cuenta-bancaria.model';
+import { CuentaBancariaDatos, CuentaBancariaRegistro, SolicitudCuentaBancaria } from '../models/cuenta-bancaria.model';
 
 /**
  * Endpoints propios del proceso de ejemplo. En el taller los responde el backend simulado
@@ -13,6 +14,12 @@ import { CuentaBancariaDatos, CuentaBancariaRegistro } from '../models/cuenta-ba
 export class CuentasBancariasApiService {
   private readonly http = inject(HttpClient);
   private readonly base = APP_CONFIG.api.baseUrl;
+  private readonly solicitudes = inject(SolicitudesApiService);
+
+  /** La solicitud con la cuenta propuesta: el mismo detalle de `core`, con el tipo del proceso. */
+  obtenerSolicitud(id: string): Observable<SolicitudCuentaBancaria> {
+    return this.solicitudes.obtenerDetalle(id);
+  }
 
   /** Guarda (o reemplaza) la cuenta propuesta en la solicitud. */
   guardarDetalle(solicitudId: string, datos: CuentaBancariaDatos): Observable<{ message: string }> {

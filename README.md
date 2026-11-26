@@ -87,7 +87,8 @@ Para empezar de cero: **Reiniciar datos** en el login (o borrar el almacenamient
 ```text
 src/app/
 ├── core/            API, sesión y permisos, interceptores, estado de las solicitudes y notificaciones
-│   └── kit/         fuentes de datos del kit (sesión, notificaciones, bandeja, historiales y documentos)
+│   ├── kit/         fuentes de datos del kit (sesión, notificaciones, bandeja, historiales y documentos)
+│   └── procesos/    registro de procesos: lo que el armazón sabe de cada uno, sin importar su módulo
 ├── features/        login, recuperar contraseña y catálogo /ui-kit
 ├── layout/          armazón propio (app-shell) y escritorio virtual; la barra, los menús y la bandeja vienen del kit
 ├── mock/            backend simulado, datos iniciales y usuarios de demostración
@@ -114,9 +115,9 @@ Tomen como modelo `modules/tesoreria/cuentas-bancarias/`:
    `siaf-solicitude-page-layout` para la solicitud y `siaf-query-report-page` para las consultas.
 4. **Rutas** en `modules/<área>/<área>.routes.ts`, cargadas desde `app.routes.ts`.
 5. **Menú y migas de pan**: sus hojas en `shared/utils/process-tree.util.ts` (`DEFAULT_PROCESS_TREE`).
-6. **Crear documento y notificaciones**: el tipo de documento en `/tipos-documento` del backend simulado, sus opciones
-   en `layout/shell/app-shell.component.ts` (`ROUTE_BY_PROCESO`) y la ruta que abre cada aviso en
-   `core/kit/fuentes-kit.ts` (`RUTA_POR_DOCUMENTO`).
+6. **Crear documento y notificaciones**: el tipo de documento en `/tipos-documento` del backend simulado y la ficha del
+   proceso (`ProcesoRegistrado`: rutas de sus solicitudes y opciones de «Crear documento») en su `config/`, registrada
+   con `provideProcesos(...)` en `main.ts`. El armazón y las notificaciones la leen de ahí: no se tocan.
 
 Antes de escribir markup, busquen el componente en `/ui-kit`: casi todo ya existe.
 

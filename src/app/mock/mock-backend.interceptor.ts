@@ -3,12 +3,12 @@ import { Observable, of, throwError, timer } from 'rxjs';
 import { delay, mergeMap } from 'rxjs/operators';
 
 import type { CambiarPerfilResponse, LoginResponse, PerfilItem } from '../core/api/auth-api.service';
-import type { SolicitudResponse } from '../core/api/solicitudes-api.service';
 import { APP_CONFIG } from '../core/config/app.config';
 import type { EstadoDocumento } from '../core/models/documento.model';
 import type { CuentaBancariaDatos } from '../modules/tesoreria/cuentas-bancarias/models/cuenta-bancaria.model';
 import {
   DatosTaller,
+  SolicitudGuardada,
   ENTIDAD_CREADORA,
   NotificacionMock,
   TIPO_DOCUMENTO,
@@ -172,7 +172,7 @@ const marcarLeidaDocumento: Manejador = ({ datos, sesion, params }) => {
   return ok(null, 204);
 };
 
-function notificar(datos: DatosTaller, s: SolicitudResponse, estado: EstadoDocumento, comentario: string | null): void {
+function notificar(datos: DatosTaller, s: SolicitudGuardada, estado: EstadoDocumento, comentario: string | null): void {
   const textos: Partial<Record<EstadoDocumento, { titulo: string; mensaje: string }>> = {
     VERIFICADO: { titulo: 'Solicitud por aprobar', mensaje: `La solicitud ${s.numero} fue verificada y espera su aprobación.` },
     APROBADO: { titulo: 'Solicitud aprobada', mensaje: `La solicitud ${s.numero} fue aprobada.` },
@@ -196,7 +196,7 @@ function notificar(datos: DatosTaller, s: SolicitudResponse, estado: EstadoDocum
 
 // ─── Solicitudes ───────────────────────────────────────────────────
 
-function buscarSolicitud(datos: DatosTaller, id: string): SolicitudResponse | undefined {
+function buscarSolicitud(datos: DatosTaller, id: string): SolicitudGuardada | undefined {
   return datos.solicitudes.find((s) => s.id === id);
 }
 
@@ -239,7 +239,7 @@ const crearSolicitud: Manejador = ({ req, datos, sesion }) => {
   const dto = (req.body ?? {}) as { tipoAccion?: string; organoLinea?: string; justificacion?: string };
   const ahora = new Date().toISOString();
   const id = nuevoId(datos, 'sol');
-  const s: SolicitudResponse = {
+  const s: SolicitudGuardada = {
     id,
     numero: null,
     catDocumento: TIPO_DOCUMENTO,

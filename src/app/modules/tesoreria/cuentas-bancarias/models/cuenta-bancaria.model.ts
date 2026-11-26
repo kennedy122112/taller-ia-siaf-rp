@@ -5,6 +5,7 @@
  * aprobador la aprueba, la observa o la rechaza. Al aprobarse, la cuenta pasa a los registros (pestaña Registros) y a
  * la consulta.
  */
+import type { SolicitudResponse } from '../../../../core/api/solicitudes-api.service';
 
 export type Moneda = 'PEN' | 'USD';
 export type TipoCuenta = 'CORRIENTE' | 'AHORROS';
@@ -51,6 +52,19 @@ export interface CuentaBancariaDatos {
   /** ¿Recauda ingresos de la entidad? */
   esRecaudadora: boolean;
 }
+
+/** La cuenta propuesta, tal como viaja en el detalle de la solicitud. */
+export interface DetalleCuentaBancaria extends CuentaBancariaDatos {
+  documentoId: string;
+}
+
+/**
+ * Una solicitud SRCB: la solicitud genérica de `core` más el detalle propio del proceso. `core` no conoce los procesos;
+ * cada uno extiende la solicitud con su detalle en su propio modelo.
+ */
+export type SolicitudCuentaBancaria = SolicitudResponse & {
+  detalleCuentaBancaria?: DetalleCuentaBancaria | null;
+};
 
 /** Una cuenta bancaria aprobada: la pestaña Registros y la consulta. */
 export interface CuentaBancariaRegistro extends CuentaBancariaDatos {

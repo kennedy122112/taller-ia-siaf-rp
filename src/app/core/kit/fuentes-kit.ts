@@ -22,6 +22,7 @@ import { NotificacionesApiService, type NotificacionResponse } from '../api/noti
 import { SolicitudesApiService } from '../api/solicitudes-api.service';
 import { AuthService } from '../auth/auth.service';
 import { PermissionService } from '../auth/permission.service';
+import { PROCESOS, type ProcesoRegistrado, rutaDeDocumento } from '../procesos/procesos.registro';
 import { NotificationsStateService } from '../realtime/notifications-state.service';
 import { SolicitudesFacadeService } from '../state/solicitudes-facade.service';
 import { SolicitudesStateService } from '../state/solicitudes-state.service';
@@ -32,21 +33,18 @@ import { SolicitudesStateService } from '../state/solicitudes-state.service';
  * servicios del taller (y, por debajo, en el backend simulado).
  */
 
-/** Ruta de la solicitud de cada tipo de documento. Un proceso nuevo suma aquí su código. */
-const RUTA_POR_DOCUMENTO: Record<string, string> = {
-  SRCB: '/procesos/registro-cuentas-bancarias/solicitud',
-};
-const RUTA_POR_DEFECTO = '/procesos/registro-cuentas-bancarias/solicitud';
-
-/** Ruta del router para el documento de una notificación, o `null` si no apunta a ninguno. */
-export function rutaDeNotificacion(n: NotificacionResponse): unknown[] | null {
+/**
+ * Ruta del router para el documento de una notificación: la solicitud de su tipo de documento en el registro de
+ * procesos (o la del primer proceso, si el tipo no viene). `null` si no apunta a ningún documento o proceso.
+ */
+export function rutaDeNotificacion(n: NotificacionResponse, procesos: readonly ProcesoRegistrado[]): unknown[] | null {
   const documento = n.documento;
   if (!documento?.id) return null;
-  const codigo = documento.catDocumento?.codigo?.toUpperCase() ?? '';
-  return [RUTA_POR_DOCUMENTO[codigo] ?? RUTA_POR_DEFECTO, documento.id];
+  const ruta = rutaDeDocumento(procesos, documento.catDocumento?.codigo ?? '') ?? procesos[0]?.rutaSolicitud;
+  return ruta ? [ruta, documento.id] : null;
 }
 
-function aNotificacionDelKit(n: NotificacionResponse): NotificacionDelKit {
+function aNotificacionDelKit(n: NotificacionResponse, procesos: readonly ProcesoRegistrado[]): NotificacionDelKit {
   return {
     id: n.id,
     titulo: n.titulo,
@@ -55,7 +53,7 @@ function aNotificacionDelKit(n: NotificacionResponse): NotificacionDelKit {
     createdAt: n.createdAt,
     tipoDocumento: n.documento?.catDocumento?.codigo ?? null,
     numero: n.documento?.numero ?? null,
-    ruta: rutaDeNotificacion(n),
+    ruta: rutaDeNotificacion(n, procesos),
   };
 }
 
@@ -80,8 +78,9 @@ export class TallerFuenteSesion extends FuenteSesion {
 export class TallerFuenteNotificaciones extends FuenteNotificaciones {
   private readonly estado = inject(NotificationsStateService);
   private readonly api = inject(NotificacionesApiService);
+  private readonly procesos = inject(PROCESOS);
 
-  readonly notificaciones = computed(() => this.estado.notifications().map(aNotificacionDelKit));
+  readonly notificaciones = computed(() => this.estado.notifications().map((n) => aNotificacionDelKit(n, this.procesos)));
   readonly cargando = this.estado.loading;
   readonly sinLeer = this.estado.unreadCount;
 
@@ -94,7 +93,7 @@ export class TallerFuenteNotificaciones extends FuenteNotificaciones {
   }
 
   historial(): Observable<NotificacionDelKit[]> {
-    return this.api.obtenerHistorial().pipe(map((lista) => lista.map(aNotificacionDelKit)));
+    return this.api.obtenerHistorial().pipe(map((lista) => lista.map((n) => aNotificacionDelKit(n, this.procesos))));
   }
 }
 

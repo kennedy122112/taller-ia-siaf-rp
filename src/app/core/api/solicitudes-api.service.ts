@@ -4,7 +4,6 @@ import { Observable } from 'rxjs';
 
 import { APP_CONFIG } from '../config/app.config';
 import { EstadoDocumento } from '../models/documento.model';
-import type { CuentaBancariaDatos } from '../../modules/tesoreria/cuentas-bancarias/models/cuenta-bancaria.model';
 
 // ─────────────────────────────────────────────────────────────
 // DTOs de creación — mantienen los nombres viejos por compat
@@ -310,8 +309,6 @@ export interface SolicitudResponse {
     items: EventoContableItemResponse[];
   } | null; // SEC / SCMEC
   detalleAsientoAjuste?: AsientoAjusteResponse | null; // SRAA
-  /** Taller: cuenta bancaria propuesta en la solicitud SRCB (proceso de ejemplo). */
-  detalleCuentaBancaria?: (CuentaBancariaDatos & { documentoId: string }) | null; // SRCB
   detalleConfiguracionMensual?: {
     documentoId: string;
     periodoContableId: string;

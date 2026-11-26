@@ -3,7 +3,6 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { NavigationEnd, Router, RouterOutlet } from '@angular/router';
 import { filter } from 'rxjs';
 
-import { CREATE_DOCUMENT_OPTIONS, REQUEST_ROUTE } from '../../modules/tesoreria/cuentas-bancarias/config/cuentas-bancarias.rutas';
 import {
   CreateDocumentAccepted,
   CreateDocumentComponent,
@@ -20,6 +19,7 @@ import {
 } from '@kennedy122112/siaf-rp-ui-angular';
 import { CatalogosApiService, TipoDocumentoResponse } from '../../core/api/catalogos-api.service';
 import { CurrentUserService } from '../../core/auth/current-user.service';
+import { PROCESOS } from '../../core/procesos/procesos.registro';
 import { PermissionService } from '../../core/auth/permission.service';
 import { ShellNavigationService } from './shell-navigation.service';
 import { ADMIN_MENU_TREE, DEFAULT_PROCESS_TREE } from '../../shared/utils/process-tree.util';
@@ -155,7 +155,9 @@ export class AppShellComponent implements OnInit {
   adminMenuOpen = false;
 
   // Fallback en caso de que el API tarde o falle — la maqueta sigue funcional
-  private readonly fallbackOptions: CreateDocumentProcessOption[] = [...CREATE_DOCUMENT_OPTIONS];
+  /** Los procesos registrados en `main.ts`: el armazón no importa sus módulos. */
+  private readonly procesos = inject(PROCESOS);
+  private readonly fallbackOptions: CreateDocumentProcessOption[] = this.procesos.flatMap((p) => p.opcionesCrear);
 
   readonly createDocumentOptions = signal<CreateDocumentProcessOption[]>(this.fallbackOptions);
 
@@ -183,21 +185,14 @@ export class AppShellComponent implements OnInit {
       grupos.get(procesoCodigo)!.tipos.push(t);
     }
 
-    const ROUTE_BY_PROCESO: Record<string, { processRoute: string; tipoRoutes: Record<string, string> }> = {
-      'registro-cuentas-bancarias': {
-        processRoute: REQUEST_ROUTE,
-        tipoRoutes: { SRCB: REQUEST_ROUTE },
-      },
-    };
-
     const result: CreateDocumentProcessOption[] = [];
     for (const [procesoCodigo, grupo] of grupos) {
-      const routeConfig = ROUTE_BY_PROCESO[procesoCodigo];
-      if (!routeConfig) continue; // Procesos no implementados todavía se ignoran
+      const proceso = this.procesos.find((p) => p.codigo === procesoCodigo);
+      if (!proceso) continue; // Procesos no registrados todavía se ignoran
 
       const documentOptions = grupo.tipos.map(t => ({
         label: t.nombre,
-        route: routeConfig.tipoRoutes[t.codigo] ?? routeConfig.processRoute,
+        route: proceso.rutasPorDocumento[t.codigo] ?? proceso.rutaSolicitud,
         actionTypes: (t.accionesPermitidas ?? []).map(a => this.formatAccion(a.tipoAccion)),
       }));
 
@@ -207,7 +202,7 @@ export class AppShellComponent implements OnInit {
       result.push({
         id: procesoCodigo,
         label: grupo.label,
-        route: routeConfig.processRoute,
+        route: proceso.rutaSolicitud,
         documents,
         documentOptions,
         actionTypes: allActionTypes,

@@ -4,7 +4,7 @@ import { Observable, of } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
 
 import { CatalogosApiService, TipoDocumentoResponse } from '../../../../../core/api/catalogos-api.service';
-import { SolicitudResponse, SolicitudesApiService } from '../../../../../core/api/solicitudes-api.service';
+import { SolicitudesApiService } from '../../../../../core/api/solicitudes-api.service';
 import { SustentosApiService } from '../../../../../core/api/sustentos-api.service';
 import { CurrentUserService } from '../../../../../core/auth/current-user.service';
 import { PermissionService } from '../../../../../core/auth/permission.service';
@@ -49,6 +49,7 @@ import {
   MONEDAS,
   Moneda,
   NOMBRE_DOCUMENTO,
+  SolicitudCuentaBancaria,
   TIPOS_CUENTA,
   TipoCuenta,
   nombreBanco,
@@ -135,7 +136,7 @@ export class CuentaBancariaRequestComponent implements OnInit {
 
   // ── Estado del documento ──────────────────────────────────────────
   /** Última respuesta del backend: de ella salen el estado, el formulario, el historial y la trazabilidad. */
-  private readonly solicitud = signal<SolicitudResponse | null>(null);
+  private readonly solicitud = signal<SolicitudCuentaBancaria | null>(null);
   readonly estado = computed(() => (this.solicitud()?.estado ?? 'NUEVO').toUpperCase());
   readonly editando = signal(false);
   readonly cargando = signal(false);
@@ -415,7 +416,7 @@ export class CuentaBancariaRequestComponent implements OnInit {
   // ── Carga ─────────────────────────────────────────────────────────
   private cargar(id: string): void {
     this.cargando.set(true);
-    this.solicitudesApi.obtenerDetalle(id).subscribe({
+    this.cuentasApi.obtenerSolicitud(id).subscribe({
       next: (s) => {
         this.solicitudId = s.id;
         this.solicitud.set(s);
@@ -429,7 +430,7 @@ export class CuentaBancariaRequestComponent implements OnInit {
     });
   }
 
-  private restaurarFormulario(s: SolicitudResponse | null): void {
+  private restaurarFormulario(s: SolicitudCuentaBancaria | null): void {
     const d = s?.detalleCuentaBancaria;
     this.form.set(d ? {
       bancoCodigo: d.bancoCodigo,

@@ -35,7 +35,14 @@ usuarios de demostración, el recorrido de la clase y cómo sumar un proceso.
   y el README del paquete en `node_modules/@kennedy122112/siaf-rp-ui-angular/`.
 - `src/app/core/kit/fuentes-kit.ts`: **fuentes de datos del kit**. La navbar, la bandeja, los historiales y
   `siaf-documents-records-page` no llaman a la API: piden a clases `Fuente*`, implementadas aquí sobre los servicios de
-  `core` y registradas en `main.ts` (`provideFuentesDelKit()`). `RUTA_POR_DOCUMENTO`: adónde lleva cada notificación.
+  `core` y registradas en `main.ts` (`provideFuentesDelKit()`).
+- `src/app/core/procesos/procesos.registro.ts`: **registro de procesos**. Cada módulo describe su proceso
+  (`ProcesoRegistrado`: código, rutas de sus solicitudes y opciones de «Crear documento») y `main.ts` lo registra con
+  `provideProcesos(...)`. El armazón y las notificaciones lo leen de ahí.
+- **Dirección de las dependencias**: `modules` → `core`/`shared`/kit; `core`, `layout` y `shared` nunca importan un
+  módulo. Lo que el armazón necesita de un proceso pasa por el registro; un detalle propio de una solicitud se tipa en
+  el modelo del módulo extendiendo `SolicitudResponse` (ver `SolicitudCuentaBancaria`). Solo `main.ts` y las rutas
+  conocen los módulos.
 - `src/app/layout/`: lo propio del taller, el armazón (`siaf-app-shell`, que arma la navbar, el sidebar, el menú de
   procesos y la bandeja del kit) y el escritorio virtual.
 - `src/app/shared/utils/process-tree.util.ts`: árbol del menú de procesos y base de las migas de pan
@@ -50,8 +57,8 @@ usuarios de demostración, el recorrido de la clase y cómo sumar un proceso.
    y `siaf-query-report-page` (configuración + `(queried)` + `(exported)`: el archivo lo genera la pantalla).
 4. Rutas en `modules/<área>/<área>.routes.ts` y en `app.routes.ts`.
 5. Hojas en `DEFAULT_PROCESS_TREE`.
-6. Tipo de documento en `/tipos-documento` (simulado), `ROUTE_BY_PROCESO` en `layout/shell/app-shell.component.ts` y
-   `RUTA_POR_DOCUMENTO` en `core/kit/fuentes-kit.ts`.
+6. Tipo de documento en `/tipos-documento` (simulado) y su `ProcesoRegistrado` en `config/` del módulo, registrado en
+   `provideProcesos(...)` de `main.ts`. Su tipo de solicitud, en `SolicitudGuardada` de `mock-db.ts`.
 
 ## Componentes y diseño
 

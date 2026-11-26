@@ -10,6 +10,8 @@ import { authInterceptor } from './app/core/http/auth.interceptor';
 import { errorInterceptor } from './app/core/http/error.interceptor';
 import { AuthService } from './app/core/auth/auth.service';
 import { provideFuentesDelKit } from './app/core/kit/fuentes-kit';
+import { provideProcesos } from './app/core/procesos/procesos.registro';
+import { PROCESO_CUENTAS_BANCARIAS } from './app/modules/tesoreria/cuentas-bancarias/config/cuentas-bancarias.rutas';
 import { mockBackendInterceptor } from './app/mock/mock-backend.interceptor';
 
 bootstrapApplication(AppComponent, {
@@ -21,6 +23,8 @@ bootstrapApplication(AppComponent, {
     provideHttpClient(withInterceptors([authInterceptor, errorInterceptor, mockBackendInterceptor])),
     // De dónde sacan sus datos la navbar, la bandeja, los historiales y «Documentos y registros» del kit.
     provideFuentesDelKit(),
+    // Los procesos de la app: «Crear documento» y adónde lleva cada notificación. Un proceso nuevo se suma aquí.
+    provideProcesos(PROCESO_CUENTAS_BANCARIAS),
     {
       provide: APP_INITIALIZER,
       useFactory: (authService: AuthService) => () => authService.initFromStorage(),

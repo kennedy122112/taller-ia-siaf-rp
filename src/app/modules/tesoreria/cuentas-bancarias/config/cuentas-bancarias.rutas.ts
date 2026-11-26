@@ -1,5 +1,7 @@
 import type { CreateDocumentProcessOption } from '@kennedy122112/siaf-rp-ui-angular';
-import { NOMBRE_DOCUMENTO } from '../models/cuenta-bancaria.model';
+
+import type { ProcesoRegistrado } from '../../../../core/procesos/procesos.registro';
+import { CODIGO_DOCUMENTO, NOMBRE_DOCUMENTO } from '../models/cuenta-bancaria.model';
 
 /** Rutas e ids del proceso de ejemplo. Los ids existen en `DEFAULT_PROCESS_TREE` (shared/utils/process-tree.util.ts). */
 export const PROCESS_ROUTE = '/procesos/registro-cuentas-bancarias';
@@ -23,3 +25,11 @@ export const CREATE_DOCUMENT_OPTIONS: CreateDocumentProcessOption[] = [
     actionTypes: ['Creación'],
   },
 ];
+
+/** El proceso en el registro de la app (`provideProcesos` en `main.ts`): «Crear documento» y las notificaciones. */
+export const PROCESO_CUENTAS_BANCARIAS: ProcesoRegistrado = {
+  codigo: 'registro-cuentas-bancarias',
+  rutasPorDocumento: { [CODIGO_DOCUMENTO]: REQUEST_ROUTE },
+  rutaSolicitud: REQUEST_ROUTE,
+  opcionesCrear: CREATE_DOCUMENT_OPTIONS,
+};

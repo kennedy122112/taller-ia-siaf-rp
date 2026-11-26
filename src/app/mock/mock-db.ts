@@ -1,11 +1,12 @@
 import type { NotificacionResponse } from '../core/api/notificaciones-api.service';
-import type { HistorialItem, SolicitudResponse } from '../core/api/solicitudes-api.service';
+import type { HistorialItem } from '../core/api/solicitudes-api.service';
 import type { EstadoDocumento } from '../core/models/documento.model';
 import {
   CODIGO_DOCUMENTO,
   CuentaBancariaDatos,
   CuentaBancariaRegistro,
   NOMBRE_DOCUMENTO,
+  SolicitudCuentaBancaria,
 } from '../modules/tesoreria/cuentas-bancarias/models/cuenta-bancaria.model';
 import { USUARIOS_DEMO, UsuarioDemo } from './usuarios-demo';
 
@@ -23,9 +24,15 @@ export interface NotificacionMock extends NotificacionResponse {
   paraRolCodigo?: 'CREADOR' | 'APROBADOR';
 }
 
+/**
+ * Una solicitud guardada: la de `core` con el detalle de su proceso. Un proceso nuevo suma aquí su tipo
+ * (`SolicitudCuentaBancaria | SolicitudDeOtroProceso`).
+ */
+export type SolicitudGuardada = SolicitudCuentaBancaria;
+
 export interface DatosTaller {
   version: number;
-  solicitudes: SolicitudResponse[];
+  solicitudes: SolicitudGuardada[];
   registros: CuentaBancariaRegistro[];
   notificaciones: NotificacionMock[];
   correlativoDocumento: number;
@@ -173,7 +180,7 @@ function crearDatosIniciales(): DatosTaller {
     }
     const ultima = historial[historial.length - 1].createdAt;
 
-    const solicitud: SolicitudResponse = {
+    const solicitud: SolicitudGuardada = {
       id,
       numero,
       catDocumento: TIPO_DOCUMENTO,
@@ -215,7 +222,7 @@ function crearDatosIniciales(): DatosTaller {
   }
 
   // Notificaciones: el aprobador tiene una solicitud por aprobar; el creador, una observada y otras ya leídas.
-  const aviso = (s: SolicitudResponse, tipo: string, titulo: string, mensaje: string, leida: boolean, destino: Pick<NotificacionMock, 'paraUsuarioId' | 'paraRolCodigo'>): NotificacionMock => ({
+  const aviso = (s: SolicitudGuardada, tipo: string, titulo: string, mensaje: string, leida: boolean, destino: Pick<NotificacionMock, 'paraUsuarioId' | 'paraRolCodigo'>): NotificacionMock => ({
     id: nuevoId(datos, 'not'),
     tipo,
     titulo,
