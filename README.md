@@ -22,6 +22,10 @@ npm start
 
 Abrir <http://127.0.0.1:4200>. Otro puerto: `npm start -- --port 4300`.
 
+Si `npm start` dice `"ng" no se reconoce como un comando`, faltan las dependencias de desarrollo (npm debe instalar unos
+680 paquetes). El `.npmrc` del proyecto ya las pide (`include=dev`): con el repositorio al día, borrar `node_modules` y
+volver a correr `npm ci`.
+
 ## Usuarios de demostración
 
 La contraseña de todos es **`Taller2026*`**. En el login, el panel «Usuarios de demostración» llena el DNI y la
