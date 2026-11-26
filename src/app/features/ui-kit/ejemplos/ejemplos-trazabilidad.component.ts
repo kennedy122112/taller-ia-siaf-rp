@@ -1,32 +1,16 @@
-import { ChangeDetectionStrategy, Component, Input, inject, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, signal, input } from '@angular/core';
 
-import { CurrentUserService } from '../../../core/auth/current-user.service';
-import {
-  AccountHistoryPanelComponent,
-  ActionTrackerComponent,
-  ActionTrackerSummary,
-  AsientoHistoryPanelComponent,
-  ButtonComponent,
-  DetailHistoryEntry,
-  DetailHistoryTabsComponent,
-  DocumentHistoryPanelComponent,
-  DocumentHistorySummary,
-  StepItem,
-  StepsComponent,
-  TimelineComponent,
-  TimelineItem,
-} from '@kennedy122112/siaf-rp-ui-angular';
+import { AccountHistoryPanelComponent, ActionTrackerComponent, ActionTrackerSummary, AsientoHistoryPanelComponent, ButtonComponent, DetailHistoryEntry, DetailHistoryTabsComponent, DocumentHistoryPanelComponent, DocumentHistorySummary, StepItem, StepsComponent, TimelineComponent, TimelineItem } from '@kennedy122112/siaf-rp-ui-angular';
 import {
   HISTORIAL_DOCUMENTO_DE_MUESTRA,
   PROVEEDORES_HISTORIAL_DE_MUESTRA,
   REGISTRO_ASIENTO_DE_MUESTRA,
   REGISTRO_CUENTA_DE_MUESTRA,
-  sembrarSesionDeMuestra,
 } from './datos-de-muestra';
 
 /**
  * Ejemplos en vivo de la categoría Trazabilidad del documento. Los paneles de historial
- * piden sus datos a la API: aquí la reciben de `datos-de-muestra.ts`, sin tocar la red.
+ * piden sus datos a una fuente que provee el proyecto: aquí, las de `datos-de-muestra.ts`.
  */
 @Component({
   selector: 'ui-kit-ejemplos-trazabilidad',
@@ -38,7 +22,7 @@ import {
     DocumentHistoryPanelComponent, StepsComponent, TimelineComponent,
   ],
   template: `
-    @switch (selector) {
+    @switch (selector()) {
       @case ('siaf-action-tracker') {
         <siaf-action-tracker [showSummaryCards]="true" [showTabs]="false" [summaryItems]="seguimiento" />
       }
@@ -58,7 +42,7 @@ import {
         <siaf-asiento-history-panel [open]="panel() === 'asiento'" [record]="registroAsiento" (closed)="panel.set(null)" />
       }
       @case ('siaf-timeline') {
-        <div class="flex flex-col gap-3 rounded-siaf-md bg-[var(--sys-color-bg-surfaces-surface-lowest)] p-3">
+        <div class="flex flex-col gap-3 rounded-siaf-md bg-bg-surfaces-surface-lowest p-3">
           <siaf-timeline
             title="Seguimiento del proceso inventario masivo de existencias 2026"
             processName="Proceso inventario masivo de existencias"
@@ -111,11 +95,7 @@ export class EjemplosTrazabilidadComponent {
     'siaf-action-tracker', 'siaf-detail-history-tabs', 'siaf-document-history-panel', 'siaf-account-history-panel',
     'siaf-asiento-history-panel', 'siaf-timeline', 'siaf-steps',
   ];
-  @Input({ required: true }) selector!: string;
-
-  constructor() {
-    sembrarSesionDeMuestra(inject(CurrentUserService));
-  }
+  readonly selector = input.required<string>();
 
   readonly panel = signal<'documento' | 'cuenta' | 'asiento' | null>(null);
   readonly registroCuenta = REGISTRO_CUENTA_DE_MUESTRA;

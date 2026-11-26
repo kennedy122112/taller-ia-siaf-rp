@@ -8,6 +8,10 @@ export interface EntradaComponente {
   porDefecto: string | null;
   requerida: boolean;
   descripcion: string | null;
+  /** Control del playground: texto, booleano, número u opciones (unión de literales de texto); sin él, no se juega. */
+  control?: 'texto' | 'booleano' | 'numero' | 'opciones';
+  /** Los valores de una entrada de opciones. */
+  opciones?: string[];
 }
 
 export interface EventoComponente {
@@ -42,6 +46,13 @@ export interface FichaComponente {
   /** Pestaña Accesibilidad: `@teclado` y `@accesibilidad` del JSDoc. */
   teclado: string | null;
   accesibilidad: string | null;
+  /** Lo que el componente no hace o lo que hay que saber al usarlo: `@limitaciones` del JSDoc. */
+  limitaciones: string | null;
+  /** Un uso incorrecto y su forma correcta (`@incorrecto` / `@correcto`), para «Así no / así sí». */
+  incorrecto: string | null;
+  correcto: string | null;
+  /** El patrón de la guía de prácticas de ARIA que sigue (`@waiAria tabs Pestañas`). */
+  waiAria: { nombre: string; url: string } | null;
   /** Nodos del Figma UI KIT: `@figma 2588:135 Nombre` y los «nodo 1234:567» citados en la descripción. */
   figma: NodoFigma[];
   /** Roles y atributos ARIA que declara la plantilla, el host o el código. */
@@ -133,7 +144,23 @@ export interface VariableSinDefinir {
   sinRespaldo: boolean;
 }
 
+/** Un prefijo responsive de Tailwind (`md:`), el ancho desde el que vale y cuántas veces lo usa la app. */
+export interface BreakpointTailwind {
+  prefijo: string;
+  desde: string;
+  usos: number;
+}
+
+/** Un dispositivo de los tokens del Figma: los tamaños de texto, espacios e íconos cambian en tablet y móvil. */
+export interface DispositivoFigma {
+  nombre: string;
+  rango: string;
+  /** La consulta de `figma.css`; null en escritorio, que es el valor base. */
+  media: string | null;
+}
+
 export interface FundamentosUiKit {
+  breakpoints: { tailwind: BreakpointTailwind[]; dispositivos: DispositivoFigma[] };
   colores: GrupoColor[];
   paleta: FamiliaPaleta[];
   tipografia: {

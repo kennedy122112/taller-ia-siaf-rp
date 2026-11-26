@@ -55,8 +55,9 @@ verificación es `123456`.
    los botones y las notificaciones.
 7. **Consultas y reportes**: elegir el rango de fechas de apertura y consultar. Probar los filtros, la **vista de
    gráficas** (KPI, barras, dona y línea) y **Exportar** a Excel, CSV o PDF.
-8. **Catálogo de componentes** en `/ui-kit` (enlace «Ver componentes» del login): cada componente con su ficha, sus
-   entradas y su ejemplo.
+8. **Catálogo de componentes** en `/ui-kit` (enlace «Ver componentes» del login): primeros pasos, fundamentos y una
+   página por componente con su guía de uso, su playground (cambiar entradas y copiar el código), su API y su
+   ejemplo en vivo. El buscador se abre con `Ctrl K`.
 
 Para empezar de cero: **Reiniciar datos** en el login (o borrar el almacenamiento del sitio).
 
@@ -70,7 +71,7 @@ Para empezar de cero: **Reiniciar datos** en el login (o borrar el almacenamient
 | `/procesos/registro-cuentas-bancarias` | Documentos y registros | `siaf-documents-records-page` |
 | `/procesos/registro-cuentas-bancarias/solicitud` y `/solicitud/:id` | Solicitud de Registro de Cuenta Bancaria | `siaf-solicitude-page-layout` |
 | `/procesos/registro-cuentas-bancarias/consultas` | Consultas y reportes | `siaf-query-report-page` |
-| `/ui-kit` | Catálogo de componentes (sin sesión) | — |
+| `/ui-kit` | Catálogo de componentes (sin sesión): portada, `primeros-pasos/:id`, `fundamentos/:id` y `componentes/:id` | — |
 
 ## Cómo funcionan los datos simulados
 
@@ -132,7 +133,7 @@ Antes de escribir markup, busquen el componente en `/ui-kit`: casi todo ya exist
 | `npm start` | Servidor de desarrollo |
 | `npx ng build --configuration=development` | Compilar |
 | `npx ng test --watch=false --browsers=ChromeHeadless` | Pruebas unitarias |
-| `npm run ui-kit:manifest` | Regenerar las fichas del catálogo tras actualizar el kit (o cambiar el armazón) |
+| `npm run ui-kit:manifest` | Regenerar las fichas del catálogo, sus cargadores y su Markdown tras actualizar el kit (o cambiar el armazón) |
 | `npm run ui-kit:check` | Verificar que el catálogo está al día |
 | `npm run icons:check` | Verificar que los íconos existen en Material Icons |
 
@@ -148,7 +149,10 @@ SIAF-RP.
 - **Fuentes de datos**: la barra superior, la bandeja, los paneles de historial y «Documentos y registros» no llaman a
   la API: piden sus datos a clases `Fuente*` del kit, que el taller implementa en `core/kit/fuentes-kit.ts` sobre el
   backend simulado y registra en `main.ts`.
-- **Catálogo**: `npm run ui-kit:manifest` arma las fichas de `/ui-kit` leyendo el paquete instalado.
+- **Catálogo**: `npm run ui-kit:manifest` arma las fichas de `/ui-kit` leyendo el paquete instalado (su JavaScript y
+  sus tipos, con el JSDoc: uso, limitaciones, «así no / así sí», WAI-ARIA…). También escribe `ui-kit.cargadores.ts`
+  (los componentes del playground y la versión del kit) y la versión en Markdown en `public/`: `llms.txt` y una ficha
+  `.md` por componente, para leerla fuera de la app o pasársela a un asistente de IA.
 
 **Para actualizarlo**: copiar el `.tgz` nuevo a `vendor/` (y borrar el anterior), cambiar la ruta en `package.json`,
 `npm install`, leer la sección «Actualizar desde otra versión» del README del paquete

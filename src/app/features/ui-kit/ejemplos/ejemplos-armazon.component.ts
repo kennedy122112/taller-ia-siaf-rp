@@ -1,22 +1,9 @@
-import { ChangeDetectionStrategy, Component, Input, inject, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, signal, input } from '@angular/core';
 
 import { CurrentUserService } from '../../../core/auth/current-user.service';
 import { PermissionService } from '../../../core/auth/permission.service';
 import { SolicitudesStateService } from '../../../core/state/solicitudes-state.service';
-import {
-  ButtonComponent,
-  MobileNavigationMenuComponent,
-  NavbarComponent,
-  NotificationsPanelComponent,
-  ProcessMenuNode,
-  ProcessMenuTreeComponent,
-  SidebarComponent,
-  SidebarItem,
-  SidebarNavigation,
-  TrayDocumentsViewComponent,
-  TrayMenuComponent,
-  TrayNotificationsViewComponent,
-} from '@kennedy122112/siaf-rp-ui-angular';
+import { ButtonComponent, MobileNavigationMenuComponent, NavbarComponent, NotificationsPanelComponent, ProcessMenuNode, ProcessMenuTreeComponent, SidebarComponent, SidebarItem, SidebarNavigation, TrayDocumentsViewComponent, TrayMenuComponent, TrayNotificationsViewComponent } from '@kennedy122112/siaf-rp-ui-angular';
 import { ADMIN_MENU_TREE } from '../../../shared/utils/process-tree.util';
 import { PROVEEDORES_SHELL_DE_MUESTRA, sembrarSesionDeMuestra } from './datos-de-muestra';
 
@@ -35,7 +22,7 @@ type PanelArmazon = 'movil' | 'Proceso' | 'Bandeja' | 'Ajustes' | null;
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [MobileNavigationMenuComponent, ProcessMenuTreeComponent, SidebarComponent],
   template: `
-    @switch (selector) {
+    @switch (selector()) {
       @case ('siaf-sidebar') {
         <div class="flex h-[360px] gap-6 overflow-hidden">
           <siaf-sidebar variant="rail" [navigation]="navegacion()" (navigationChanged)="navegacion.set($event)" />
@@ -48,27 +35,37 @@ type PanelArmazon = 'movil' | 'Proceso' | 'Bandeja' | 'Ajustes' | null;
         </div>
       }
       @case ('siaf-process-menu-tree') {
-        <div class="grid gap-4 sm:grid-cols-2">
+        <!-- Cada árbol ocupa el alto de su marco; el fondo deja ver la sombra de elevación 16. -->
+        <div class="grid gap-4 xl:grid-cols-2">
           <div class="min-w-0">
             <p class="mb-2 text-[11px] font-bold uppercase tracking-widest text-text-muted">Procesos (árbol por defecto)</p>
-            <div class="overflow-hidden rounded-siaf-md border border-border">
+            <div class="h-[560px] overflow-hidden rounded-siaf-md bg-bg-surfaces-surface-lowest p-siaf-md">
               <siaf-process-menu-tree />
             </div>
           </div>
           <div class="min-w-0">
             <p class="mb-2 text-[11px] font-bold uppercase tracking-widest text-text-muted">Ajustes (ADMIN_MENU_TREE)</p>
-            <div class="overflow-hidden rounded-siaf-md border border-border">
+            <div class="h-[560px] overflow-hidden rounded-siaf-md bg-bg-surfaces-surface-lowest p-siaf-md">
               <siaf-process-menu-tree
                 title="Ajustes"
                 subtitle="Seleccionar configuracion"
                 placeholder="Buscar configuracion"
-                searchLabel="Buscar configuracion"
                 [nodes]="arbolAjustes"
               />
             </div>
           </div>
+          <div class="min-w-0">
+            <p class="mb-2 text-[11px] font-bold uppercase tracking-widest text-text-muted">Árbol del Figma · siete niveles y un nodo marcado</p>
+            <div class="h-[560px] overflow-hidden rounded-siaf-md bg-bg-surfaces-surface-lowest p-siaf-md">
+              <siaf-process-menu-tree [nodes]="arbolFigma" />
+            </div>
+          </div>
         </div>
-        <p class="mt-3 text-xs text-text-muted">El mismo componente con otro arreglo de nodos y otros textos. Solo emite nodeSelected: la navegación la decide quien lo usa.</p>
+        <p class="mt-3 text-xs text-text-muted">
+          El mismo componente con otro arreglo de nodos y otros textos. Solo emite nodeSelected: la navegación la decide
+          quien lo usa. Al abrir no marca nada y se marca el nodo que se pulsa; el árbol del Figma llega con un nodo
+          marcado y abre el camino hasta él. Escribe en el buscador algo que no esté en el árbol para ver «Sin resultados».
+        </p>
       }
     }
   `,
@@ -77,7 +74,63 @@ export class EjemplosArmazonComponent {
   static readonly selectores = ['siaf-sidebar', 'siaf-mobile-navigation-menu', 'siaf-process-menu-tree'];
 
   readonly arbolAjustes = ADMIN_MENU_TREE;
-  @Input({ required: true }) selector!: string;
+  /** El árbol de muestra del Figma («Sidenav with tree view»): siete niveles, dos ramas y el nodo 7.1 marcado. */
+  readonly arbolFigma: ProcessMenuNode[] = [
+    {
+      id: 'nivel-1',
+      label: 'Nivel 1',
+      expanded: true,
+      children: [
+        {
+          id: 'nivel-2',
+          label: 'Nivel 2',
+          children: [
+            {
+              id: 'nivel-3',
+              label: 'Nivel 3',
+              children: [
+                {
+                  id: 'nivel-4',
+                  label: 'Nivel 4',
+                  children: [
+                    {
+                      id: 'nivel-5',
+                      label: 'Nivel 5',
+                      children: [
+                        {
+                          id: 'nivel-6',
+                          label: 'Nivel 6',
+                          children: [
+                            { id: 'nivel-7-1', label: 'Nivel 7.1', selected: true },
+                            { id: 'nivel-7-2', label: 'Nivel 7.2' },
+                          ],
+                        },
+                      ],
+                    },
+                  ],
+                },
+              ],
+            },
+          ],
+        },
+        {
+          id: 'nivel-2-b',
+          label: 'Nivel 2',
+          children: [
+            {
+              id: 'nivel-3-b',
+              label: 'Nivel 3',
+              children: [
+                { id: 'nivel-4-1', label: 'Nivel 4.1' },
+                { id: 'nivel-4-2', label: 'Nivel 4.2' },
+              ],
+            },
+          ],
+        },
+      ],
+    },
+  ];
+  readonly selector = input.required<string>();
 
   readonly navegacion = signal<NavegacionShell>('Panel');
 
@@ -114,10 +167,10 @@ export class EjemplosArmazonComponent {
     TrayNotificationsViewComponent,
   ],
   template: `
-    @switch (selector) {
+    @switch (selector()) {
       @case ('siaf-navbar') {
         <!-- Se muestra en marcos de escritorio y móvil (EJEMPLOS_RESPONSIVE). Mismas clases de posición que siaf-app-shell. -->
-        <div class="min-h-screen bg-[var(--sys-color-bg-surfaces-surface-lowest)] text-text">
+        <div class="min-h-screen bg-bg-surfaces-surface-lowest text-text">
           <siaf-navbar
             class="sticky top-0 z-30 block"
             homeHref="/ui-kit"
@@ -163,7 +216,6 @@ export class EjemplosArmazonComponent {
                   title="Ajustes"
                   subtitle="Seleccionar configuracion"
                   placeholder="Buscar configuracion"
-                  searchLabel="Buscar configuracion"
                   [nodes]="arbolAjustes"
                   (nodeSelected)="elegirNodo($event)"
                 />
@@ -227,7 +279,7 @@ export class EjemplosArmazonComponent {
 })
 export class EjemplosArmazonSesionComponent {
   static readonly selectores = ['siaf-navbar', 'siaf-notifications-panel', 'siaf-tray-menu', 'siaf-tray-documents-view', 'siaf-tray-notifications-view'];
-  @Input({ required: true }) selector!: string;
+  readonly selector = input.required<string>();
 
   constructor() {
     sembrarSesionDeMuestra(inject(CurrentUserService), inject(PermissionService), inject(SolicitudesStateService));

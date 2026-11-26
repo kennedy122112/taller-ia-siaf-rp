@@ -1,19 +1,6 @@
-import { ChangeDetectionStrategy, Component, Input, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, signal, input } from '@angular/core';
 
-import {
-  ButtonComponent,
-  ButtonGroupItem,
-  ButtonsGroupComponent,
-  ButtonVariant,
-  CascadingMenuComponent,
-  CascadingMenuGroup,
-  IconDropdownMenuComponent,
-  IconDropdownMenuItem,
-  MenuComponent,
-  MenuDensity,
-  MenuItem,
-  MenuLeading,
-} from '@kennedy122112/siaf-rp-ui-angular';
+import { ButtonComponent, ButtonGroupItem, ButtonsGroupComponent, ButtonVariant, CascadingMenuComponent, CascadingMenuGroup, IconDropdownMenuComponent, IconDropdownMenuItem, MenuComponent, MenuDensity, MenuItem, MenuLeading } from '@kennedy122112/siaf-rp-ui-angular';
 
 /** Ejemplos en vivo de la categoría Botones y acciones. */
 @Component({
@@ -22,7 +9,7 @@ import {
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [ButtonComponent, ButtonsGroupComponent, CascadingMenuComponent, IconDropdownMenuComponent, MenuComponent],
   template: `
-    @switch (selector) {
+    @switch (selector()) {
       @case ('siaf-button') {
         <!-- Matriz del Figma: variante × tamaño, habilitado y deshabilitado. Hover, foco (Tab) y clic muestran sus estados. -->
         <div class="overflow-x-auto">
@@ -131,6 +118,19 @@ import {
           <siaf-icon-dropdown-menu icon="file_download" variant="accent" ariaLabel="Exportar" [items]="exportar" />
           <siaf-icon-dropdown-menu label="Exportar" icon="open_in_new" density="standard" [menuWidth]="200" [items]="formatosExportacion" />
         </div>
+        <p class="mb-2 mt-4 text-[11px] font-bold uppercase tracking-widest text-text-muted">En un contenedor con scroll · floatingMenu</p>
+        <div class="max-h-24 overflow-auto rounded-siaf-md border border-divider-default p-siaf-md" data-ejemplo-menu-flotante>
+          <siaf-icon-dropdown-menu
+            label="Agregar nuevo asiento contable"
+            icon="add"
+            align="left"
+            density="standard"
+            [menuWidth]="280"
+            [floatingMenu]="true"
+            [items]="nuevoAsiento"
+          />
+        </div>
+        <p class="mt-2 text-xs text-text-muted">El menú flota junto al botón: sin floatingMenu agrandaría el scroll del contenedor.</p>
       }
       @case ('siaf-cascading-menu') {
         <div class="flex min-h-[220px] justify-end">
@@ -146,7 +146,7 @@ import {
 })
 export class EjemplosAccionesComponent {
   static readonly selectores = ['siaf-button', 'siaf-buttons-group', 'siaf-menu', 'siaf-icon-dropdown-menu', 'siaf-cascading-menu'];
-  @Input({ required: true }) selector!: string;
+  readonly selector = input.required<string>();
 
   readonly variantesBoton: ButtonVariant[] = ['filled', 'outline', 'text'];
   /** En los botones de ícono el Figma llama «standard» a la variante sin borde. */
@@ -241,6 +241,12 @@ export class EjemplosAccionesComponent {
     { label: 'Excel', value: 'excel', icon: 'table_view' },
     { label: 'CSV', value: 'csv', icon: 'table_chart' },
     { label: 'PDF', value: 'pdf', icon: 'picture_as_pdf' },
+  ];
+
+  /** «Agregar nuevo asiento contable» de la configuración de asiento de cierre anual (`floatingMenu`). */
+  readonly nuevoAsiento: IconDropdownMenuItem[] = [
+    { label: 'Agregar asiento de cierre', value: 'cierre' },
+    { label: 'Agregar asiento de apertura', value: 'apertura' },
   ];
 
   readonly grupos: CascadingMenuGroup[] = [

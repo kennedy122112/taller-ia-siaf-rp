@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 
 import {
   LandingCardsCarouselComponent,
@@ -33,7 +33,7 @@ const RESUMEN = 'Conoce información, servicios y herramientas que fortalecen la
     LandingSystemsBarComponent,
   ],
   template: `
-    @switch (selector) {
+    @switch (selector()) {
       @case ('siaf-landing-header') {
         <siaf-landing-header />
       }
@@ -71,7 +71,7 @@ export class EjemplosLandingComponent {
     'siaf-landing-footer',
     'siaf-landing-chat-button',
   ];
-  @Input({ required: true }) selector!: string;
+  readonly selector = input('');
 
   readonly sistemas: SistemaLanding[] = [
     { slug: 'contabilidad', nombre: 'Contabilidad', icono: 'savings' },

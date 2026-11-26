@@ -47,7 +47,12 @@ usuarios de demostración, el recorrido de la clase y cómo sumar un proceso.
   procesos y la bandeja del kit) y el escritorio virtual.
 - `src/app/shared/utils/process-tree.util.ts`: árbol del menú de procesos y base de las migas de pan
   (`buildProcessBreadcrumbs`). Un proceso nuevo es una hoja más, no otro componente.
-- `/ui-kit` (`features/ui-kit/`): catálogo de componentes, generado desde el paquete instalado (`scripts/generar-ui-kit.mjs`).
+- `/ui-kit` (`features/ui-kit/`, rutas en `ui-kit.routes.ts`): catálogo de componentes con portada, primeros pasos,
+  fundamentos y una página por componente (playground, API, accesibilidad). Lo genera `scripts/generar-ui-kit.mjs` desde
+  el paquete instalado: `ui-kit.manifest.ts`, `ui-kit.fundamentos.ts`, `ui-kit.cargadores.ts` y el Markdown de
+  `public/` (`llms.txt` y `ui-kit/componentes/*.md`); no se editan a mano. Las secciones de una pantalla del kit no
+  tienen ficha (`SECCIONES_DEL_KIT` del generador). Es una copia adaptada del catálogo del SIAF-RP: al traer cambios de
+  allá, las importaciones van al paquete y las fichas del kit no enlazan a su código.
 
 ### Un proceso nuevo, paso a paso
 
@@ -70,7 +75,7 @@ usuarios de demostración, el recorrido de la clase y cómo sumar un proceso.
   `@if`/`@for`. Un `computed()` que depende de un `@Input()` necesita `@Input() set` a una signal. En specs OnPush,
   `fixture.componentRef.setInput(...)`.
 - **Colores: nunca hex crudo**. `var(--sys-color-*)` (tokens del kit, `estilos/tema.css`) o clases Tailwind conectadas a
-  tokens; buscar el color en `/ui-kit#color`. Espaciado con `siaf-xs/sm/md/lg/xl` (8/12/16/24/32 px).
+  tokens; buscar el color en `/ui-kit/fundamentos/color`. Espaciado con `siaf-xs/sm/md/lg/xl` (8/12/16/24/32 px).
 - **Íconos: solo Material Icons con `siaf-icon`**. Un nombre inexistente no falla al compilar: `npm run icons:check`.
 - **Botones** (`siaf-button`): `filled` / `outline` / `text`, tamaños `md` y `sm`. No hay `danger`: lo destructivo es
   `filled` con modal de confirmación.

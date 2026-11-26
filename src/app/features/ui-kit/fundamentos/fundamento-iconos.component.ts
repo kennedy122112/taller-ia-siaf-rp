@@ -1,13 +1,6 @@
 import { ChangeDetectionStrategy, Component, DestroyRef, ElementRef, computed, inject, signal } from '@angular/core';
 
-import {
-  ButtonGroupItem,
-  ButtonsGroupComponent,
-  IconComponent,
-  IconVariant,
-  PaginationComponent,
-  TextFieldComponent,
-} from '@kennedy122112/siaf-rp-ui-angular';
+import { ButtonGroupItem, ButtonsGroupComponent, IconComponent, IconVariant, PaginationComponent, TextFieldComponent } from '@kennedy122112/siaf-rp-ui-angular';
 import { FUNDAMENTOS_UI_KIT } from '../ui-kit.fundamentos';
 
 /** Íconos por página: la lista completa son más de 2000. */
@@ -26,7 +19,7 @@ export const ICONOS_POR_PAGINA = 120;
         <div class="min-w-0 max-w-full">
           <p class="mb-1 text-[11px] font-bold uppercase tracking-widest text-text-muted">Variante</p>
           <div class="overflow-x-auto pr-px" data-iconos-variante>
-            <siaf-buttons-group [items]="variantes" [value]="variante()" (valueChange)="variante.set($any($event))" />
+            <siaf-buttons-group [items]="variantes" [value]="variante()" (valueChange)="variante.set($event)" />
           </div>
         </div>
         <div class="min-w-0 max-w-full">
@@ -43,11 +36,11 @@ export const ICONOS_POR_PAGINA = 120;
     </p>
 
     @if (visibles().length) {
-      <ul class="grid scroll-mt-42 grid-cols-[repeat(auto-fill,minmax(104px,1fr))] gap-2 lg:scroll-mt-28" data-iconos-grilla>
+      <ul class="grid scroll-mt-20 grid-cols-[repeat(auto-fill,minmax(104px,1fr))] gap-2" data-iconos-grilla>
         @for (nombre of visibles(); track nombre) {
           <li>
             <button
-              class="flex h-24 w-full flex-col items-center justify-center gap-2 rounded-siaf-md border border-border px-1 text-text transition hover:border-[var(--sys-color-border-states-hover)] hover:bg-surface-muted"
+              class="flex h-24 w-full flex-col items-center justify-center gap-2 rounded-siaf-md border border-border px-1 text-text transition hover:border-border-states-hover hover:bg-surface-muted"
               type="button"
               [attr.data-icono]="nombre"
               [attr.aria-label]="(copiado() === nombre ? 'Copiado: ' : 'Copiar ') + nombre"
@@ -81,7 +74,7 @@ export class FundamentoIconosComponent {
 
   readonly nombres = FUNDAMENTOS_UI_KIT.iconos.nombres;
   readonly porPagina = ICONOS_POR_PAGINA;
-  readonly variantes: ButtonGroupItem[] = (['outlined', 'filled', 'round', 'sharp', 'two-tone'] as IconVariant[]).map((v) => ({ label: v, value: v }));
+  readonly variantes: ButtonGroupItem<IconVariant>[] = (['outlined', 'filled', 'round', 'sharp', 'two-tone'] as IconVariant[]).map((v) => ({ label: v, value: v }));
   readonly tamanos: ButtonGroupItem[] = FUNDAMENTOS_UI_KIT.iconos.tamanos.map((t) => ({ label: t.escritorio ?? t.escala, value: `${parseInt(t.escritorio ?? '20', 10)}` }));
 
   readonly busqueda = signal('');

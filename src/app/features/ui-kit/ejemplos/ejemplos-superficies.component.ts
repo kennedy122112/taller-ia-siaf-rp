@@ -1,28 +1,6 @@
-import { ChangeDetectionStrategy, Component, Input, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, signal, input } from '@angular/core';
 
-import {
-  AccordionComponent,
-  AccordionItem,
-  ButtonComponent,
-  CardComponent,
-  CollapsibleCardComponent,
-  DeskCardComponent,
-  DeskCardTone,
-  DocumentSummaryCardComponent,
-  ExpansionPanelComponent,
-  IconDropdownMenuItem,
-  PopoverAction,
-  PopoverComponent,
-  ReportSummaryCardComponent,
-  SolicitudeFormCardComponent,
-  SolicitudeInfoCardComponent,
-  SolicitudeInfoField,
-  StepperCardComponent,
-  StepperCardField,
-  SummaryCardComponent,
-  SummaryCardField,
-  TextFieldComponent,
-} from '@kennedy122112/siaf-rp-ui-angular';
+import { AccordionComponent, AccordionItem, ButtonComponent, CardComponent, CollapsibleCardComponent, DeskCardComponent, DeskCardTone, DocumentSummaryCardComponent, ExpansionPanelComponent, IconDropdownMenuItem, PopoverAction, PopoverComponent, ReportSummaryCardComponent, SolicitudeFormCardComponent, SolicitudeInfoCardComponent, SolicitudeInfoField, StepperCardComponent, StepperCardField, SummaryCardComponent, SummaryCardField, TextFieldComponent } from '@kennedy122112/siaf-rp-ui-angular';
 import { DATOS_RESUMEN_DE_MUESTRA } from './reporte-de-muestra';
 
 /** Ejemplos en vivo de la categoría Superficies: todas las tarjetas y contenedores. */
@@ -36,7 +14,7 @@ import { DATOS_RESUMEN_DE_MUESTRA } from './reporte-de-muestra';
     SolicitudeInfoCardComponent, StepperCardComponent, SummaryCardComponent, TextFieldComponent,
   ],
   template: `
-    @switch (selector) {
+    @switch (selector()) {
       @case ('siaf-card') {
         <siaf-card title="Comisión de inventario" description="Órgano que conduce la toma de inventario">
           <p class="text-sm text-text-muted">El contenido de la tarjeta va proyectado.</p>
@@ -54,7 +32,10 @@ import { DATOS_RESUMEN_DE_MUESTRA } from './reporte-de-muestra';
         <siaf-solicitude-info-card [fields]="datos" />
       }
       @case ('siaf-summary-card') {
-        <siaf-summary-card [fields]="resumen" [showIndicator]="true" [bordered]="true" [showClose]="true" />
+        <div class="flex flex-col gap-4">
+          <siaf-summary-card [fields]="resumen" [showIndicator]="true" [bordered]="true" [showClose]="true" />
+          <siaf-summary-card [fields]="datosDelPedido" [bordered]="true" [showClose]="false" [columns]="4" />
+        </div>
       }
       @case ('siaf-report-summary-card') {
         <siaf-report-summary-card
@@ -76,7 +57,7 @@ import { DATOS_RESUMEN_DE_MUESTRA } from './reporte-de-muestra';
       }
       @case ('siaf-desk-card') {
         <!-- Sobre el fondo del Panel: las tarjetas son de color superficie y en la ficha no se distinguirían. -->
-        <div class="flex flex-col gap-siaf-md rounded-siaf-md bg-[var(--sys-color-bg-surfaces-surface-lowest)] p-siaf-md">
+        <div class="flex flex-col gap-siaf-md rounded-siaf-md bg-bg-surfaces-surface-lowest p-siaf-md">
           <siaf-desk-card variant="featured" title="Bandeja de Documentos" icon="inbox" tone="accent" [value]="12" />
           <siaf-desk-card
             variant="featured"
@@ -123,8 +104,8 @@ import { DATOS_RESUMEN_DE_MUESTRA } from './reporte-de-muestra';
           @for (tarjeta of tarjetasColapsables(); track tarjeta.id) {
             <siaf-collapsible-card [expanded]="tarjeta.abierta" (closed)="quitarTarjeta(tarjeta.id)">
               <div card-info class="flex flex-col gap-0.5 leading-[normal]">
-                <span class="text-sm font-bold text-[var(--sys-color-text-neutral-high)]">{{ tarjeta.titulo }}</span>
-                <span class="text-xs text-[var(--sys-color-text-neutral-low)]">{{ tarjeta.subtitulo }}</span>
+                <span class="text-sm font-bold text-text-neutral-high">{{ tarjeta.titulo }}</span>
+                <span class="text-xs text-text-neutral-low">{{ tarjeta.subtitulo }}</span>
               </div>
               <dl class="m-0 grid gap-siaf-md p-siaf-lg sm:grid-cols-3">
                 @for (campo of tarjeta.campos; track campo.label) {
@@ -175,7 +156,7 @@ export class EjemplosSuperficiesComponent {
     'siaf-card', 'siaf-solicitude-form-card', 'siaf-solicitude-info-card', 'siaf-summary-card', 'siaf-report-summary-card',
     'siaf-document-summary-card', 'siaf-stepper-card', 'siaf-desk-card', 'siaf-accordion', 'siaf-expansion-panel', 'siaf-collapsible-card', 'siaf-popover',
   ];
-  @Input({ required: true }) selector!: string;
+  readonly selector = input.required<string>();
 
   readonly datos: SolicitudeInfoField[] = [
     { label: 'Número', value: 'PCC-SCC-00001-2026-MEF-DGCP' },
@@ -189,6 +170,16 @@ export class EjemplosSuperficiesComponent {
     { label: 'Código', value: '1101.01' },
     { label: 'Denominación', value: 'Caja M/N' },
     { label: 'Nivel', value: 5 },
+  ];
+
+  /** Con `columns`: los datos generales de un pedido de contabilización, en cuatro columnas. */
+  readonly datosDelPedido: SummaryCardField[] = [
+    { label: 'Origen', value: 'DIRECTO EN COLA' },
+    { label: 'Nombre de entidad', value: 'Ministerio de Economía y Finanzas' },
+    { label: 'Módulo origen', value: 'Sistema Nacional de Tesorería' },
+    { label: 'Tipo de documento', value: 'Procesamiento de Conciliación Diaria' },
+    { label: 'ID evento', value: 'E0000015' },
+    { label: 'ID evento contable', value: 'EC0000003' },
   ];
 
   readonly camposPaso: StepperCardField[] = [

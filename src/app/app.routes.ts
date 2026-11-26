@@ -15,16 +15,18 @@ export const routes: Routes = [
       import('./features/otp-verification/otp-verification.component').then((m) => m.OtpVerificationComponent)
   },
   // ── Catálogo de componentes (sin sesión) ──
-  {
-    path: 'ui-kit',
-    loadComponent: () =>
-      import('./features/ui-kit/ui-kit.component').then((m) => m.UiKitComponent)
-  },
-  // Un ejemplo del catálogo a pantalla completa: lo cargan los marcos de escritorio y móvil.
+  // Un ejemplo del catálogo a pantalla completa: lo cargan los marcos de escritorio y móvil. Va antes que `ui-kit`,
+  // que lleva todo lo demás de /ui-kit a su portada.
   {
     path: 'ui-kit/vista/:selector',
     loadComponent: () =>
       import('./features/ui-kit/ui-kit-vista.component').then((m) => m.UiKitVistaComponent)
+  },
+  // Portada, primeros pasos y una página por fundamento y por componente (ui-kit.routes.ts).
+  {
+    path: 'ui-kit',
+    loadChildren: () =>
+      import('./features/ui-kit/ui-kit.routes').then((m) => m.UI_KIT_ROUTES)
   },
   {
     path: '',

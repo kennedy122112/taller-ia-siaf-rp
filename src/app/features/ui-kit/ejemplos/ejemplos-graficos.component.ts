@@ -1,21 +1,7 @@
-import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 
-import {
-  ChartLegendComponent,
-  ChartLegendItem,
-  ChartSectionComponent,
-  ChartTooltipComponent,
-  ChartTooltipItem,
-  KpiCardComponent,
-  tokenDeSerie,
-} from '@kennedy122112/siaf-rp-ui-angular';
-import {
-  BarChartComponent,
-  ChartSeries,
-  DivergingChartComponent,
-  DonutChartComponent,
-  LineChartComponent,
-} from '@kennedy122112/siaf-rp-ui-angular/graficos';
+import { ChartLegendComponent, ChartLegendItem, ChartSectionComponent, ChartTooltipComponent, ChartTooltipItem, KpiCardComponent, tokenDeSerie } from '@kennedy122112/siaf-rp-ui-angular';
+import { BarChartComponent, ChartSeries, DivergingChartComponent, DonutChartComponent, LineChartComponent } from '@kennedy122112/siaf-rp-ui-angular/graficos';
 
 /** Ejemplos en vivo de la categoría Gráficos, con los datos de muestra del Figma («Graphics»). */
 @Component({
@@ -33,7 +19,7 @@ import {
     LineChartComponent,
   ],
   template: `
-    @switch (selector) {
+    @switch (selector()) {
       @case ('siaf-chart-section') {
         <siaf-chart-section title="Evolución comparada" description="Crecimiento acumulado de recaudación">
           <siaf-bar-chart [categories]="meses" [series]="activos" ariaLabel="Activos por mes" categoryLabel="Mes" />
@@ -105,7 +91,7 @@ export class EjemplosGraficosComponent {
     'siaf-chart-legend',
     'siaf-chart-tooltip',
   ];
-  @Input({ required: true }) selector!: string;
+  readonly selector = input.required<string>();
 
   readonly meses = ['Ene', 'Feb', 'Mar', 'Abr', 'May'];
   readonly mesesHorizontal = ['Feb', 'Mar', 'Abr', 'May', 'Jun'];

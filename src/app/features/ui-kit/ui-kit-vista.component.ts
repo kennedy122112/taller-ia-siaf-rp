@@ -4,8 +4,7 @@ import { toSignal } from '@angular/core/rxjs-interop';
 import { ActivatedRoute } from '@angular/router';
 import { map } from 'rxjs';
 
-import { MessageBoxComponent } from '@kennedy122112/siaf-rp-ui-angular';
-import { leerTemaGuardado } from '@kennedy122112/siaf-rp-ui-angular';
+import { leerTemaGuardado, MessageBoxComponent } from '@kennedy122112/siaf-rp-ui-angular';
 import { EJEMPLO_POR_SELECTOR } from './ejemplos';
 
 /**

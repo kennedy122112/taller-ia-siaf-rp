@@ -1,0 +1,167 @@
+# SIAF-RP UI Kit
+
+> Design system del SIAF-RP para Angular 21 (kit 0.4.1): componentes standalone con OnPush y signals, y los tokens del Figma en claro y oscuro. Cada componente tiene su ficha en Markdown con la API real, generada desde el código.
+
+Reglas del proyecto: colores solo con tokens (`text-…`, `bg-…`, nunca hex), íconos de Material Icons con `siaf-icon`, entradas con `input()` y estado con `signal()`. Antes de escribir markup, buscar el componente en este índice.
+
+## Primeros pasos
+
+- [Instalación](/ui-kit/primeros-pasos/instalacion): el paquete .tgz, los estilos con o sin Tailwind y la fuente.
+- [Uso](/ui-kit/primeros-pasos/uso): importar, entradas y eventos, gráficos, fuentes de datos y tema oscuro.
+- [Convenciones](/ui-kit/primeros-pasos/convenciones): colores, íconos, foco, formularios.
+- [Versiones](/ui-kit/primeros-pasos/versiones): política, soporte y migraciones.
+
+## Fundamentos
+
+- [Icon (`siaf-icon`)](/ui-kit/componentes/siaf-icon.md): Icono de Material Icons por nombre, con tamaño en px, variante de familia y alias para nombres que no existen en la fuente; decorativo por defecto (`aria-hidden`).
+- [Divider (`siaf-divider`)](/ui-kit/componentes/siaf-divider.md): Línea separadora de 1 px con `role="separator"` (Figma UI KIT, nodo 8184:10561 «Dividers»).
+- [Tooltip (`siafTooltip`)](/ui-kit/componentes/siafTooltip.md): Tooltip para textos truncados y elementos con ayuda contextual.
+
+## Botones y acciones
+
+- [Button (`siaf-button`)](/ui-kit/componentes/siaf-button.md): Botón base del design system (Figma UI KIT, nodo 8305:2071 «Buttons»).
+- [Buttons group (`siaf-buttons-group`)](/ui-kit/componentes/siaf-buttons-group.md): Grupo de botones segmentado y unido, con una sola opción activa a la vez.
+- [Menu (`siaf-menu`)](/ui-kit/componentes/siaf-menu.md): Menú de opciones del design system (Figma UI KIT, nodo 7440:34249 «menus»): panel de 280 px con sombra de elevación 8 y una opción por fila.
+- [Icon dropdown menu (`siaf-icon-dropdown-menu`)](/ui-kit/componentes/siaf-icon-dropdown-menu.md): Botón cuadrado (40×40) con icono que abre un menú flotante.
+- [Cascading menu (`siaf-cascading-menu`)](/ui-kit/componentes/siaf-cascading-menu.md): Menú de dos niveles anclado a un disparador: una lista de categorías y, al elegir una, sus opciones al costado.
+
+## Formularios
+
+- [Text field (`siaf-input`)](/ui-kit/componentes/siaf-input.md): Input canónico del design system: texto, número, decimal, correo, contraseña y select simple/múltiple, con etiqueta flotante, borde verde de éxito al escribir e integración con formularios reactivos.
+- [Text area control (`text-area-control`)](/ui-kit/componentes/text-area-control.md): Textarea del design system con etiqueta flotante, contador de caracteres y estados error/éxito.
+- [Checkbox (`siaf-checkbox`)](/ui-kit/componentes/siaf-checkbox.md): Checkbox con etiqueta, descripción y marca de requerido, integrado a formularios vía ControlValueAccessor.
+- [Switch (`siaf-switch`)](/ui-kit/componentes/siaf-switch.md): Interruptor on/off con etiqueta al costado.
+- [Radio (`siaf-radio-group`)](/ui-kit/componentes/siaf-radio-group.md): Grupo de radios (`siaf-radio-group`) con leyenda, marca de requerido y `ControlValueAccessor`.
+- [Select options (`siaf-select-options`)](/ui-kit/componentes/siaf-select-options.md): Listbox de opciones (simple o múltiple) con check en las seleccionadas y navegación por teclado.
+- [Date time picker (`siaf-date-time-picker`)](/ui-kit/componentes/siaf-date-time-picker.md): Selector de fecha (y opcionalmente hora) con calendario propio, label flotante, estados de error/éxito y `[minDate]` para deshabilitar días anteriores.
+- [Uploader (`siaf-uploader`)](/ui-kit/componentes/siaf-uploader.md): Zona de drag & drop con tarjetas de progreso, que valida cada archivo contra `accept` y `maxSizeMb`.
+- [Uploaded file card (`siaf-uploaded-file-card`)](/ui-kit/componentes/siaf-uploaded-file-card.md): Tarjeta de un archivo ya adjunto: ícono por formato, nombre truncado con tooltip, peso y acciones de reemplazar/quitar.
+- [Readonly field (`readonly-field`)](/ui-kit/componentes/readonly-field.md): Campo de solo lectura con caption flotante que muestra el valor o `--` cuando está vacío.
+- [Readonly (`siaf-readonly`)](/ui-kit/componentes/siaf-readonly.md): Bloque de solo lectura: etiqueta en mayúsculas sobre el valor, dentro de un recuadro gris.
+
+## Datos y tablas
+
+- [Table (`siaf-table`)](/ui-kit/componentes/siaf-table.md): Envoltorio mínimo sobre `siaf-data-table`: tabla de columnas y filas, sin selección ni paginación.
+- [Data table (`siaf-data-table`)](/ui-kit/componentes/siaf-data-table.md): Tabla de solo lectura: una cabecera con las `columns` y una fila por registro con el texto de cada celda (`row[column.key]`); `idKey` identifica las filas.
+- [Report table (`siaf-report-table`)](/ui-kit/componentes/siaf-report-table.md): Tabla de datos de un reporte (Guía de Estructura de Pantallas, «Tabla de datos detallada»): cabecera gris en dos niveles cuando las columnas tienen `group` (el grupo centrado arriba y cada columna debajo), filas de al menos 48 px que pasan a dos líneas si el texto no entra, importes alineados a la derecha, valores `link` en azul y la última columna fija a la derecha con sombra al desplazar horizontalmente.
+- [Documents records table (`siaf-documents-records-table`)](/ui-kit/componentes/siaf-documents-records-table.md): Tabla de las pestañas Documentos / Registros: columnas configurables, celdas por tipo (enlace al documento, tag de flujo, tag de registro), checkbox de selección y botón de historial.
+- [Table controls (`siaf-table-controls`)](/ui-kit/componentes/siaf-table-controls.md): Barra superior estándar de las grillas: checkbox de seleccionar todo (con estado indeterminado), acciones sobre las filas elegidas y, a la derecha, `siaf-pagination` en posición `Top`.
+- [Pagination (`siaf-pagination`)](/ui-kit/componentes/siaf-pagination.md): Paginación de las grillas: contador «1-10 de 800» y flechas Página anterior / Página siguiente, que se deshabilitan solas en la primera y la última página.
+- [Table skeleton (`siaf-table-skeleton`)](/ui-kit/componentes/siaf-table-skeleton.md): Skeleton loader para tablas.
+- [Records search toolbar (`siaf-records-search-toolbar`)](/ui-kit/componentes/siaf-records-search-toolbar.md): Variante de `siaf-form-table-search` para Documentos y registros: el mismo campo con lupa a todo el ancho, pero sin los botones fijos Filtrar y Más opciones; las acciones de la derecha se proyectan con el atributo `actions`.
+- [Form table search (`siaf-form-table-search`)](/ui-kit/componentes/siaf-form-table-search.md): Buscador de tabla: un `siaf-input` con lupa a todo el ancho y, a la derecha, dos botones de ícono: Filtrar y Más opciones, que emiten `filter` y `more`.
+- [Filter pill (`siaf-filter-pill`)](/ui-kit/componentes/siaf-filter-pill.md): Píldora dropdown de filtro, dibujada con `siaf-tag` en variante `filter` (Figma «Filter tags»), con dos estados: 1.
+- [Consultas filtros chips (`siaf-consultas-filtros-chips`)](/ui-kit/componentes/siaf-consultas-filtros-chips.md): Filtros aplicados (Figma UI KIT «Applied filters MFD»): una línea de etiquetas «Etiqueta: valores» con scroll horizontal invisible (sin barra; se desplaza con rueda o arrastre) y, fija a la derecha con 16 px de separación, la etiqueta de acción «Borrar filtros» con papelera, que emite `cleared`.
+- [Parametros aplicados (`siaf-parametros-aplicados`)](/ui-kit/componentes/siaf-parametros-aplicados.md): «Parámetros aplicados» de Consultas y reportes (Figma «Guía de Estructura de Pantallas», nodo 22402:16429): una fila de tarjetas con el ícono, el nombre y el valor de cada parámetro con que se hizo la consulta.
+- [Custom filter (`siaf-custom-filter`)](/ui-kit/componentes/siaf-custom-filter.md): Panel de filtros personalizados: filas de condición con los selects Campo, Condición y Valor (`siaf-input`) que se agregan o quitan; cambiar el Campo vacía la Condición y el Valor, e `initialRows` precarga las filas al editar un filtro ya aplicado.
+- [Tree view (`siaf-tree-view`)](/ui-kit/componentes/siaf-tree-view.md): Árbol genérico de solo lectura que pinta nodos anidados con ícono y estado `expanded` recursivo.
+- [List (`siaf-list`)](/ui-kit/componentes/siaf-list.md): Lista de ítems (Figma UI KIT, nodo 7421:7061 «Lists»): cada ítem con título, texto de apoyo y overline opcionales, un elemento inicial (ícono, avatar con iniciales, switch o thumbnail) y uno final (ícono, badge contador o switch).
+- [Reordenable (`siafReordenable`)](/ui-kit/componentes/siafReordenable.md): Lista cuyos elementos se reordenan arrastrándolos con su manija o con el teclado.
+- [Reordenable item (`siafReordenableItem`)](/ui-kit/componentes/siafReordenableItem.md): Un elemento de una lista `siafReordenable`: el que se arrastra.
+- [Drag handle (`siaf-drag-handle`)](/ui-kit/componentes/siaf-drag-handle.md): Manija para arrastrar: el botón de ícono con los seis puntos (`drag_indicator`) que dice que el elemento se puede mover.
+
+## Gráficos
+
+- [Chart section (`siaf-chart-section`)](/ui-kit/componentes/siaf-chart-section.md): Sección de gráfico (Figma UI KIT, nodo 22743:668 «Section-graph»): tarjeta con título, descripción opcional y el gráfico proyectado debajo.
+- [Kpi card (`siaf-kpi-card`)](/ui-kit/componentes/siaf-kpi-card.md): Tarjeta de indicador (Figma UI KIT, nodo 22743:662 «KPI card»): título, ícono en una caja de color, el monto destacado y la barra de avance con su porcentaje, que siempre se muestra, como en el Figma (0 % sin `progress`).
+- [Bar chart (`siaf-bar-chart`)](/ui-kit/componentes/siaf-bar-chart.md): Gráfico de barras del kit (Figma UI KIT, página «Graphics»: «Bar», «Bar grouped», «Comparative bars» y «Stacked bar»), dibujado con Chart.js.
+- [Line chart (`siaf-line-chart`)](/ui-kit/componentes/siaf-line-chart.md): Gráfico de línea del kit (Figma UI KIT, página «Graphics»: «Line»), dibujado con Chart.js: por serie, una línea de 4 px con un punto de 12 px en cada categoría, para seguir cómo evoluciona un valor.
+- [Diverging chart (`siaf-diverging-chart`)](/ui-kit/componentes/siaf-diverging-chart.md): Gráfico divergente del kit (Figma UI KIT, página «Graphics»: «Divergente»), dibujado con Chart.js: una barra horizontal por categoría que sale de la línea del cero (`divider-strong`) hacia la izquierda si el valor es negativo y hacia la derecha si es positivo.
+- [Donut chart (`siaf-donut-chart`)](/ui-kit/componentes/siaf-donut-chart.md): Gráfico de dona del kit (Figma UI KIT, página «Graphics»: «Progress» y su pieza «.a.progress»), dibujado con Chart.js: un anillo de 150 px con las partes de un total, cada una con su color y su nombre en la leyenda.
+- [Chart legend (`siaf-chart-legend`)](/ui-kit/componentes/siaf-chart-legend.md): Leyenda de los gráficos del kit (Figma UI KIT, página «Graphics», «Leyenda»): un punto de 15 px con el color de cada serie y su nombre, alineados a la derecha sobre el gráfico.
+- [Chart tooltip (`siaf-chart-tooltip`)](/ui-kit/componentes/siaf-chart-tooltip.md): Tooltip de los gráficos (Figma UI KIT, nodo 22758:6756 «Tooltip-graph»): caja oscura con un título (la categoría) y una fila por serie con su cuadrado de color y el valor.
+
+## Estado y feedback
+
+- [Status tag (`siaf-status-tag`)](/ui-kit/componentes/siaf-status-tag.md): Etiqueta de estado del kit (Figma UI KIT, sección «Semántica»): cinco tonos (`default`, `info`, `success`, `warning` y `danger`) en tres estilos, que son los de las familias de etiquetas del Figma: `solid` («flow tags», fondo oscuro y texto blanco), `soft` («Period», «Expediente» y «Conciliación tags», fondo claro con borde) y `outline` («status items tags», solo borde y el ícono del tono).
+- [Flow status tag (`siaf-flow-status-tag`)](/ui-kit/componentes/siaf-flow-status-tag.md): Etiqueta del estado de flujo de un documento (Elaborado, Verificado, Observado, Anulado…), con el estilo `solid` de `siaf-status-tag`: fondo oscuro del tono y texto blanco.
+- [Record status tag (`siaf-record-status-tag`)](/ui-kit/componentes/siaf-record-status-tag.md): Etiqueta del estado de un registro (Activo, Anulado, Abierto, Cerrado, Procesado…), dibujada con `siaf-status-tag`.
+- [Tag (`siaf-tag`)](/ui-kit/componentes/siaf-tag.md): Tag del kit (Figma UI KIT, «Input tags», «Choice tags», «Filter tags» y «Action tags»): la misma forma (borde, esquinas de 8 px, íconos de 20 px y 32 o 24 px de alto) con cuatro usos, en `variant`.
+- [Badge (`siaf-badge`)](/ui-kit/componentes/siaf-badge.md): Badge de notificación (Figma UI KIT, nodo 7262:6493 «Badges»): indica una notificación o el número de elementos de un destino.
+- [Alert (`siaf-alert`)](/ui-kit/componentes/siaf-alert.md): Mensaje de feedback en línea, con tono (neutral/info/éxito/advertencia/error), ícono y cierre opcional.
+- [Message box (`message-box`)](/ui-kit/componentes/message-box.md): Recuadro informativo de una línea: fondo de superficie baja y un texto secundario.
+- [Snackbar (`siaf-snackbar`)](/ui-kit/componentes/siaf-snackbar.md): Aviso flotante animado con textos predefinidos por `variant` (registro grabado, archivo subido, solicitud elaborada/verificada/aprobada…) o mensaje libre.
+- [Loader (`siaf-loader`)](/ui-kit/componentes/siaf-loader.md): Indicador de carga en línea: ocho puntos en círculo que se atenúan por turnos.
+- [Loader overlay (`siaf-loader-overlay`)](/ui-kit/componentes/siaf-loader-overlay.md): Capa a pantalla completa que oscurece la vista y muestra el `siaf-loader` con un mensaje.
+- [Loading progress (`siaf-loading-progress`)](/ui-kit/componentes/siaf-loading-progress.md): Indicador de progreso en dos variantes: spinner circular o barra horizontal con porcentaje.
+- [Progress circular (`siaf-progress-circular`)](/ui-kit/componentes/siaf-progress-circular.md): Avance circular: anillo que se llena en sentido horario desde arriba, con el porcentaje al centro y una etiqueta opcional encima (Figma UI KIT, nodo 20157:95 «Progress/circular»).
+- [Empty section (`empty-section`)](/ui-kit/componentes/empty-section.md): Bloque de estado vacío de una sección: título, botón de acción (lupa por defecto) y recuadro con el mensaje; `[message]` se reemplaza por el valor una vez que el usuario elige uno.
+- [Empty state (`siaf-empty-state`)](/ui-kit/componentes/siaf-empty-state.md): Estado vacío ilustrado para pantallas de consulta, reportes y listados.
+
+## Navegación
+
+- [Breadcrumb (`siaf-breadcrumb`)](/ui-kit/componentes/siaf-breadcrumb.md): Ruta de navegación (migas de pan) de la página: enlace de inicio con ícono de casa y los niveles hasta la pantalla actual, en un `<nav>` con lista ordenada.
+- [Tabs (`siaf-tabs`)](/ui-kit/componentes/siaf-tabs.md): Pestañas del design system (Figma UI KIT, nodo 2588:135 «Tabs content»).
+- [Records tabs (`siaf-records-tabs`)](/ui-kit/componentes/siaf-records-tabs.md): Pestañas de la franja debajo del header de la página de bandeja: `Documentos \| Registros`.
+
+## Superficies
+
+- [Card (`siaf-card`)](/ui-kit/componentes/siaf-card.md): Contenedor con borde, cabecera opcional (título y descripción) y cuerpo proyectado.
+- [Solicitude form card (`siaf-solicitude-form-card`)](/ui-kit/componentes/siaf-solicitude-form-card.md): Tarjeta de sección de las pantallas de solicitud y de los formularios de Admin: cabecera con el título en mayúsculas (`h2`), un ícono (i) opcional con `titleInfo` y las acciones proyectadas con el atributo `card-actions`, y debajo el cuerpo proyectado.
+- [Solicitude info card (`siaf-solicitude-info-card`)](/ui-kit/componentes/siaf-solicitude-info-card.md): Tarjeta de datos generales de una solicitud, de solo lectura: una fila por campo con la etiqueta en mayúsculas (columna de 140 px desde `md`) y el valor en negrita.
+- [Summary card (`siaf-summary-card`)](/ui-kit/componentes/siaf-summary-card.md): Card resumen de campos etiqueta/valor, con indicador lateral, borde opcional y ✕ para limpiar.
+- [Report summary card (`siaf-report-summary-card`)](/ui-kit/componentes/siaf-report-summary-card.md): «Card resumen» del resultado de un reporte (Guía de Estructura de Pantallas, nodo 22402:16450): sobre un fondo gris con borde, una etiqueta en versalitas, el ítem consultado con su ícono, título y descripción, y a la derecha sus datos clave, cada uno con su etiqueta encima y el valor destacado.
+- [Document summary card (`siaf-document-summary-card`)](/ui-kit/componentes/siaf-document-summary-card.md): Card de cabecera de un documento: N° de documento, N° de documento contable (opcional) y su estado de flujo, con layout distinto en móvil y escritorio.
+- [Stepper card (`siaf-stepper-card`)](/ui-kit/componentes/siaf-stepper-card.md): Card seleccionable en forma de paso, con lista de campos etiqueta/valor e indicador lateral.
+- [Desk card (`siaf-desk-card`)](/ui-kit/componentes/siaf-desk-card.md): Tarjeta del Panel de inicio (escritorio virtual): ícono, título y un número opcional, en las tres formas de esa pantalla.
+- [Accordion (`siaf-accordion`)](/ui-kit/componentes/siaf-accordion.md): Lista de secciones colapsables (details/summary) a partir de un arreglo de ítems.
+- [Expansion panel (`siaf-expansion-panel`)](/ui-kit/componentes/siaf-expansion-panel.md): Panel expandible de una sola sección (Figma UI KIT, nodo 9214:5839 «Expansion panels»): tarjeta con borde, cabecera con la flecha, el título y un menú ⋮ opcional, y el contenido proyectado debajo al expandir.
+- [Collapsible card (`siaf-collapsible-card`)](/ui-kit/componentes/siaf-collapsible-card.md): Tarjeta colapsable (Figma UI KIT, nodo 19632:66 «accordion/collapsible_card»): cabecera de 60 px con una marca azul a la izquierda, la flecha, la información del ítem y una X para quitarlo; al abrir, el detalle aparece debajo separado por una línea.
+- [Popover (`siaf-popover`)](/ui-kit/componentes/siaf-popover.md): Popover: panel flotante anclado a un disparador, con título, texto y acciones de texto al pie (Figma UI KIT, nodo 9059:20300: «Full», «Title + Content» y «Content + Actions»).
+
+## Trazabilidad del documento
+
+- [Action tracker (`siaf-action-tracker`)](/ui-kit/componentes/siaf-action-tracker.md): Trazabilidad de una solicitud: pestañas Detalle/Historial y tarjetas de quién hizo qué y cuándo.
+- [Detail history tabs (`siaf-detail-history-tabs`)](/ui-kit/componentes/siaf-detail-history-tabs.md): Tabs reutilizables "Detalle \| Historial" para vistas de solicitudes.
+- [Document history panel (`siaf-document-history-panel`)](/ui-kit/componentes/siaf-document-history-panel.md): Panel lateral a pantalla completa «Historial del documento», que abre la bandeja `siaf-documents-records-page` desde la pestaña Documentos.
+- [Account history panel (`siaf-account-history-panel`)](/ui-kit/componentes/siaf-account-history-panel.md): Panel lateral a pantalla completa «Historial del registro» de una cuenta contable, que abre la bandeja `siaf-documents-records-page` desde la pestaña Registros.
+- [Asiento history panel (`siaf-asiento-history-panel`)](/ui-kit/componentes/siaf-asiento-history-panel.md): Historial del registro para asientos de ajuste (SRAA) — pestaña Registros.
+- [Timeline (`siaf-timeline`)](/ui-kit/componentes/siaf-timeline.md): Seguimiento horizontal del avance de un proceso: título, «Ver detalle» y una barra con un punto por hito (Figma UI KIT, nodo 19149:1300 «TIMELINE»).
+- [Steps (`siaf-steps`)](/ui-kit/componentes/siaf-steps.md): Pasos numerados de un flujo con el paso activo resaltado (Figma UI KIT: «Step colum», nodo 1264:580, y «Steps Rows», nodo 2582:7222).
+
+## Overlays
+
+- [Modal (`siaf-modal`)](/ui-kit/componentes/siaf-modal.md): Modal de confirmación con presets por acción (grabar, verificar, aprobar, observar, rechazar…) que resuelven título, descripción, ilustración y motivo obligatorio; `custom` deja todo abierto.
+- [Request approval modals (`siaf-request-approval-modals`)](/ui-kit/componentes/siaf-request-approval-modals.md): Bloque de modales del flujo de aprobación de una solicitud/documento (grabar, verificar, eliminar, aprobar, observar, rechazar) + loader overlay + snackbar de confirmación.
+- [Annulment modal (`siaf-annulment-modal`)](/ui-kit/componentes/siaf-annulment-modal.md): Modal de confirmación de una solicitud de anulación: detalle obligatorio y sustento .pdf antes de un paso que no se puede revertir.
+- [Side nav (`siaf-side-nav`)](/ui-kit/componentes/siaf-side-nav.md): Side nav del kit (Figma UI KIT, «Sidenav»): panel lateral de 420 px con el título en mayúsculas, la X, el contenido proyectado con su propio scroll y el pie Cancelar / Aceptar.
+- [Side panel (`siaf-side-panel`)](/ui-kit/componentes/siaf-side-panel.md): Side panel del kit (Figma UI KIT, «Side Panel»): panel grande que entra desde la derecha y ocupa toda el área de contenido, a la derecha del riel, con el título en mayúsculas, la X, el cuerpo con su propio scroll y el pie Cancelar / Aceptar.
+- [Selection side nav (`siaf-selection-side-nav`)](/ui-kit/componentes/siaf-selection-side-nav.md): Side-nav genérico para seleccionar uno o varios elementos de un catálogo.
+- [Upload side nav (`siaf-upload-side-nav`)](/ui-kit/componentes/siaf-upload-side-nav.md): Panel lateral animado de carga de archivos: envuelve `siaf-uploader` y confirma con Aceptar/Cancelar.
+- [Timeline detail panel (`siaf-timeline-detail-panel`)](/ui-kit/componentes/siaf-timeline-detail-panel.md): Panel lateral «Detalle del seguimiento» de `siaf-timeline` (Figma Control de Inventarios, nodo 20182:155604): una tarjeta con el avance (barra, «9/11» y «9 procedimientos completados de 11») y la línea de tiempo vertical con un hito por fila (Figma UI KIT, TL_GOAL_VERTICAL: cumplido, en curso y pendiente).
+- [Column visibility panel (`siaf-column-visibility-panel`)](/ui-kit/componentes/siaf-column-visibility-panel.md): Panel lateral modal para mostrar u ocultar columnas de una grilla, agrupadas en Predeterminado / Más columnas / Interno (estas últimas fijas, no desmarcables).
+- [Query parameters panel (`siaf-query-parameters-panel`)](/ui-kit/componentes/siaf-query-parameters-panel.md): Panel lateral «Parámetros de consulta» (Guía de Estructura de Pantallas, nodo 22402:15484): los campos que la pantalla declara (fechas, selects y selects múltiples con «Seleccionar todo»), «Limpiar todo» y «Aplicar consulta», que se habilita cuando están los obligatorios y hay al menos un valor.
+- [Foco (`siafFoco`)](/ui-kit/componentes/siafFoco.md): Maneja el foco de un diálogo, panel lateral o panel desplegable, con el patrón que ya tenía `siaf-modal` (WCAG 2.4.3 Orden del foco, 2.1.1 Teclado y 2.1.2 Sin trampas de teclado): - Al activarse guarda el elemento enfocado y lleva el foco adentro: al elemento marcado con `data-foco-inicial`, si no al primer control y, si no hay controles, al propio contenedor (que recibe `tabindex="-1"`).
+
+## Layouts de página
+
+- [Solicitude page layout (`siaf-solicitude-page-layout`)](/ui-kit/componentes/siaf-solicitude-page-layout.md): Armazón de las pantallas de solicitud: breadcrumb y `siaf-solicitude-header` en una cabecera que queda fija bajo el navbar en escritorio, y debajo el contenido proyectado (las tarjetas del formulario).
+- [Solicitude header (`siaf-solicitude-header`)](/ui-kit/componentes/siaf-solicitude-header.md): Encabezado de una pantalla de solicitud: Regresar, título (`heading`) con etiqueta («Nuevo», «Edición»), texto secundario y la botonera del flujo (Cancelar, Grabar, Verificar, Editar, Eliminar, Aprobar, Observar, Rechazar).
+- [Page shell (`siaf-page-shell`)](/ui-kit/componentes/siaf-page-shell.md): Esqueleto de pagina autenticada NO formulario.
+- [Page header (`siaf-page-header`)](/ui-kit/componentes/siaf-page-header.md): Header simple de pagina (titulo en mayusculas + slot de acciones).
+- [Create document (`siaf-create-document`)](/ui-kit/componentes/siaf-create-document.md): Formulario «Crear documento»: pide proceso, documento y tipo de acción y emite `accepted` con esa selección y la ruta de la solicitud a abrir.
+
+## Plantillas de pantalla
+
+- [Documents records page (`siaf-documents-records-page`)](/ui-kit/componentes/siaf-documents-records-page.md): Pantalla «Documentos y registros» de un proceso, armada desde un `DocumentsRecordsConfig`: breadcrumb, título, «Crear documento», pestañas Documentos / Registros, buscador con menús y filtros, grilla estándar con paginación y los paneles de historial y de columnas.
+- [Query report page (`siaf-query-report-page`)](/ui-kit/componentes/siaf-query-report-page.md): Plantilla de pantalla «Consultas y reportes» (Guía de Estructura de Pantallas, nodo 9455:107865): la nueva versión de las consultas, armada desde un `QueryReportConfig`.
+
+## Armazón de la aplicación
+
+- [Navbar (`siaf-navbar`)](/ui-kit/componentes/siaf-navbar.md): Barra superior del shell autenticado: logo, campana de notificaciones y menú de usuario.
+- [Sidebar (`siaf-sidebar`)](/ui-kit/componentes/siaf-sidebar.md): Barra lateral de navegación del shell autenticado, en dos variantes: `rail` (iconos) y `expanded` (lista).
+- [Mobile navigation menu (`siaf-mobile-navigation-menu`)](/ui-kit/componentes/siaf-mobile-navigation-menu.md): Versión móvil del sidebar: la navegación principal del shell cuando no hay espacio para la barra fija.
+- [Process menu tree (`siaf-process-menu-tree`)](/ui-kit/componentes/siaf-process-menu-tree.md): Árbol canónico de procesos del shell (Figma UI KIT, «Sidenav with tree view»): el menú jerárquico que abre la opción "Procesos" del sidebar.
+- [Notifications panel (`siaf-notifications-panel`)](/ui-kit/componentes/siaf-notifications-panel.md): Desplegable de notificaciones que abre la campana del navbar (lista, skeleton, vacío y "marcar leídas").
+- [Tray menu (`siaf-tray-menu`)](/ui-kit/componentes/siaf-tray-menu.md): Menú de la Bandeja de Documentos: lista Recibidos, Enviados, Borradores, Notificaciones y Papelera con su contador, y emite en `selected` la sección elegida.
+- [Tray documents view (`siaf-tray-documents-view`)](/ui-kit/componentes/siaf-tray-documents-view.md): Vista de la Bandeja de Documentos: la grilla de una sección (`title` = Recibidos, Enviados, Borradores o Papelera) con buscador, filtros de Estado y Tipo de acción, filtros personalizados y favoritos.
+- [Tray notifications view (`siaf-tray-notifications-view`)](/ui-kit/componentes/siaf-tray-notifications-view.md): Sección Notificaciones de la bandeja: historial paginado con filtro Todas / No leídas / Leídas y acción "Marcar todas como leídas".
+
+## Landing público
+
+- [Landing header (`siaf-landing-header`)](/ui-kit/componentes/siaf-landing-header.md): Cabecera del sitio público: el logo del SIAF-RP a la izquierda y el acceso a Entidades y proveedores (que lleva al login) a la derecha.
+- [Landing systems bar (`siaf-landing-systems-bar`)](/ui-kit/componentes/siaf-landing-systems-bar.md): Barra de los sistemas gubernamentales: una fila de accesos con ícono y nombre, bajo el hero.
+- [Landing detail hero (`siaf-landing-detail-hero`)](/ui-kit/componentes/siaf-landing-detail-hero.md): Encabezado de las páginas de detalle del landing: título, bajada e imagen ancha.
+- [Landing cards carousel (`siaf-landing-cards-carousel`)](/ui-kit/componentes/siaf-landing-cards-carousel.md): Carrusel horizontal de tarjetas con título y flechas: cada tarjeta lleva su etiqueta de familia, su título, su bajada y un enlace.
+- [Landing footer (`siaf-landing-footer`)](/ui-kit/componentes/siaf-landing-footer.md): Pie del sitio público: redes sociales, identidad institucional del MEF y enlaces de ayuda, sobre los azules de la paleta del landing.
+- [Landing chat button (`siaf-landing-chat-button`)](/ui-kit/componentes/siaf-landing-chat-button.md): Botón flotante de chat por WhatsApp, fijo abajo a la derecha en todas las páginas del landing.

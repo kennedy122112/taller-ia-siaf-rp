@@ -14,19 +14,24 @@
  * También escribe ui-kit.fundamentos.ts con los fundamentos visuales (color, tipografía, espaciado, radios, sombras e
  * íconos) leídos de los tokens del kit: ver scripts/ui-kit-fundamentos.mjs.
  *
- *   node scripts/generar-ui-kit.mjs           → escribe el manifiesto y los fundamentos
- *   node scripts/generar-ui-kit.mjs --check   → falla si alguno de los dos está desactualizado
+ * Además escribe ui-kit.cargadores.ts (la carga diferida de cada componente para el playground y la versión del kit) y
+ * la versión en Markdown del catálogo en public/ (llms.txt y una ficha .md por componente): ver scripts/ui-kit-markdown.mjs.
+ *
+ *   node scripts/generar-ui-kit.mjs           → escribe el manifiesto, los fundamentos, los cargadores y el Markdown
+ *   node scripts/generar-ui-kit.mjs --check   → falla si alguno está desactualizado
  */
-import { readFileSync, writeFileSync, existsSync, readdirSync, statSync } from 'node:fs';
+import { readFileSync, writeFileSync, existsSync, readdirSync, statSync, mkdirSync, rmSync } from 'node:fs';
 import { dirname, join, relative, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import ts from 'typescript';
 
 import { generarFundamentos, utilidadesTailwind } from './ui-kit-fundamentos.mjs';
+import { generarMarkdown } from './ui-kit-markdown.mjs';
 
 const RAIZ = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const SALIDA = join(RAIZ, 'src/app/features/ui-kit/ui-kit.manifest.ts');
 const SALIDA_FUNDAMENTOS = join(RAIZ, 'src/app/features/ui-kit/ui-kit.fundamentos.ts');
+const SALIDA_CARGADORES = join(RAIZ, 'src/app/features/ui-kit/ui-kit.cargadores.ts');
 
 const PAQUETE = '@kennedy122112/siaf-rp-ui-angular';
 const DIR_PAQUETE = join(RAIZ, 'node_modules', PAQUETE);
@@ -64,13 +69,21 @@ const CAPA_DEL_KIT = {
     'siaf-tray-documents-view', 'siaf-tray-menu', 'siaf-tray-notifications-view',
   ],
 };
+/**
+ * Secciones de un componente del kit: el paquete las exporta, pero son partes de esa pantalla (su carpeta `sections/`
+ * en el SIAF-RP), no piezas sueltas. No tienen ficha: lo que pintan, sus roles y atributos ARIA y sus tokens cuentan
+ * como del componente. El paquete no trae las carpetas, así que se declaran aquí.
+ */
+const SECCIONES_DEL_KIT = {
+  'siaf-documents-records-page': ['siaf-encabezado-section', 'siaf-filtros-section', 'siaf-acciones-en-lote-section'],
+};
+const PADRE_DE_SECCION = new Map(Object.entries(SECCIONES_DEL_KIT).flatMap(([padre, hijas]) => hijas.map((h) => [h, padre])));
+
 const capaDelKit = (selector) =>
   CAPA_DEL_KIT.components.includes(selector) ? 'components' : CAPA_DEL_KIT.layout.includes(selector) ? 'layout' : 'ui';
 
 /** En el código local, importar de aquí vuelve al componente dependiente de sesión: sin ejemplo en una ruta pública. */
 const DEPENDENCIA_DE_SESION = /core\/(api|state|auth)\b|@angular\/common\/http/;
-/** En el kit, un componente depende de la sesión si pide una de sus fuentes de datos (`FuenteSesion`, `FuenteBandeja`…). */
-const PIDE_FUENTE = /\binject\(\s*Fuente[A-Z]\w*/;
 const MAX_TIPO = 180;
 
 const check = process.argv.includes('--check');
@@ -120,6 +133,13 @@ function etiquetasJsDoc(nodo) {
     }
   }
   return etiquetas;
+}
+
+/** `@waiAria tabs Pestañas` → el patrón de la guía de prácticas de ARIA (APG) con su enlace. */
+function patronWaiAria(etiquetas) {
+  const texto = etiquetas.waiAria?.[0];
+  const m = texto && /^([\w-]+)\s*(.*)$/s.exec(texto);
+  return m ? { nombre: limpiar(m[2]) || m[1], url: `https://www.w3.org/WAI/ARIA/apg/patterns/${m[1]}/` } : null;
 }
 
 const unir = (textos) => (textos?.filter(Boolean).length ? textos.filter(Boolean).join('\n\n') : null);
@@ -224,6 +244,36 @@ function tipoDeEntradaEnSenal(tipo) {
   return args.length ? tipoTexto(args[0]) : tipoTexto(tipo);
 }
 
+/**
+ * Qué control le sirve a la entrada en el playground del catálogo: texto, booleano, número u opciones (una unión de
+ * literales de texto, también detrás de un alias como `SnackbarVariant`). Vacío si su tipo no cabe en un control.
+ */
+function controlDe(tipo) {
+  const partes = (tipo.isUnion() ? tipo.types : [tipo]).filter((t) => !(t.flags & (ts.TypeFlags.Undefined | ts.TypeFlags.Null)));
+  if (!partes.length) return {};
+  if (partes.every((t) => t.flags & (ts.TypeFlags.Boolean | ts.TypeFlags.BooleanLiteral))) return { control: 'booleano' };
+  if (partes.length === 1 && partes[0].flags & ts.TypeFlags.String) return { control: 'texto' };
+  if (partes.length === 1 && partes[0].flags & ts.TypeFlags.Number) return { control: 'numero' };
+  if (partes.every((t) => t.isStringLiteral())) return { control: 'opciones', opciones: ordenDelAlias(tipo, partes.map((t) => t.value)) };
+  return {};
+}
+
+/** Los valores de una unión en el orden en que los escribe su alias (`'neutral' | 'info' | …`): el compilador los reordena. */
+function ordenDelAlias(tipo, valores) {
+  const nodo = tipo.aliasSymbol?.declarations?.find(ts.isTypeAliasDeclaration)?.type;
+  if (!nodo || !ts.isUnionTypeNode(nodo)) return valores;
+  const escritos = nodo.types.filter((t) => ts.isLiteralTypeNode(t) && ts.isStringLiteral(t.literal)).map((t) => t.literal.text);
+  return [...escritos.filter((v) => valores.includes(v)), ...valores.filter((v) => !escritos.includes(v))];
+}
+
+/** El tipo que recibe una entrada en señal (como `tipoDeEntradaEnSenal`), como objeto del compilador. */
+function tipoRecibidoEnSenal(tipo) {
+  const args = argumentosDeTipo(tipo);
+  const nombre = tipo.aliasSymbol?.name ?? tipo.getSymbol()?.name;
+  if (nombre === 'InputSignalWithTransform' && args.length > 1) return args[1];
+  return args.length ? args[0] : tipo;
+}
+
 function valorPorDefecto(init) {
   if (!init) return null;
   if (ts.isNewExpression(init) || ts.isCallExpression(init)) return null;
@@ -281,12 +331,14 @@ function miembrosLocales(clase) {
         requerida = propiedad(arg, 'required')?.kind === ts.SyntaxKind.TrueKeyword;
       }
       const nodoTipo = ts.isSetAccessorDeclaration(m) ? m.parameters[0] : m;
+      const tipoIn = checker.getTypeAtLocation(nodoTipo);
       entradas.push({
         nombre: alias ?? nombre,
-        tipo: tipoTexto(checker.getTypeAtLocation(nodoTipo)),
+        tipo: tipoTexto(tipoIn),
         porDefecto: ts.isPropertyDeclaration(m) ? valorPorDefecto(m.initializer) : null,
         requerida,
         descripcion,
+        ...controlDe(tipoIn),
       });
       continue;
     }
@@ -305,13 +357,14 @@ function miembrosLocales(clase) {
     if (ts.isPropertyDeclaration(m)) {
       const senal = funcionDeSenal(m.initializer);
       if (!senal) continue;
-      const tipo = argumentoDeTipo(checker.getTypeAtLocation(m));
+      const tipoT = tipoRecibidoEnSenal(checker.getTypeAtLocation(m));
+      const tipo = tipoTexto(tipoT);
       if (senal.fn === 'output' || senal.fn === 'outputFromObservable') {
         eventos.push({ nombre: aliasDeOpciones(senal.call.arguments[0]) ?? nombre, tipo, descripcion });
       } else {
         const opciones = senal.required ? senal.call.arguments[0] : senal.call.arguments[1];
         const inicial = senal.required ? null : valorPorDefecto(senal.call.arguments[0]);
-        entradas.push({ nombre: aliasDeOpciones(opciones) ?? nombre, tipo, porDefecto: inicial, requerida: senal.required, descripcion });
+        entradas.push({ nombre: aliasDeOpciones(opciones) ?? nombre, tipo, porDefecto: inicial, requerida: senal.required, descripcion, ...controlDe(tipoT) });
         if (senal.fn === 'model') eventos.push({ nombre: `${aliasDeOpciones(opciones) ?? nombre}Change`, tipo, descripcion });
       }
     }
@@ -340,6 +393,10 @@ const fichaBase = (datos, etiquetas, codigo) => ({
   evitar: unir(etiquetas.evitar),
   teclado: unir(etiquetas.teclado),
   accesibilidad: unir(etiquetas.accesibilidad),
+  limitaciones: unir(etiquetas.limitaciones),
+  incorrecto: unir(etiquetas.incorrecto),
+  correcto: unir(etiquetas.correcto),
+  waiAria: patronWaiAria(etiquetas),
   figma: nodosFigma(etiquetas, datos.descripcion),
   aria: ariaDe(codigo),
   tokens: tokensDe(codigo),
@@ -495,9 +552,11 @@ for (const entrada of ENTRADAS_DEL_PAQUETE) {
     const entradas = entradasDeclaradas(decl.obj).map((e) => {
       const miembro = miembroDeTipos(claseDeTipos, e.propiedad);
       let tipo = 'unknown';
+      let control = {};
       if (miembro) {
         const t = checker.getTypeAtLocation(ts.isSetAccessorDeclaration(miembro) ? miembro.parameters[0] : miembro);
         tipo = e.senal ? tipoDeEntradaEnSenal(t) : tipoTexto(t);
+        control = controlDe(e.senal ? tipoRecibidoEnSenal(t) : t);
       }
       return {
         nombre: e.publico,
@@ -505,6 +564,7 @@ for (const entrada of ENTRADAS_DEL_PAQUETE) {
         porDefecto: e.requerida ? null : (iniciales.get(e.propiedad) ?? null),
         requerida: e.requerida,
         descripcion: (miembro && limpiar(textoJsDoc(miembro))) || null,
+        ...control,
       };
     });
     const eventos = eventosDeclarados(decl.obj).map((e) => {
@@ -516,7 +576,9 @@ for (const entrada of ENTRADAS_DEL_PAQUETE) {
       };
     });
 
-    const usaSesion = PIDE_FUENTE.test(codigo);
+    // El kit no llama a ninguna API: lo de la app lo pide a sus fuentes (`FuenteSesion`, `FuenteBandeja`…), que la app
+    // registra. Así se puede pintar sin sesión, con fuentes de muestra.
+    const usaSesion = false;
     codigoPorSelector.set(selector, codigo);
     sesionDirecta.set(selector, usaSesion);
     dependenciasPorSelector.set(selector, dependenciasDeclaradas(decl.obj));
@@ -541,6 +603,25 @@ for (const entrada of ENTRADAS_DEL_PAQUETE) {
       ),
     );
   });
+}
+
+// ── Secciones: su código, sus dependencias y su ARIA pasan a su componente, y su ficha se quita ───────────────────────
+
+for (const [seccion, padre] of PADRE_DE_SECCION) {
+  const ficha = fichas.find((x) => x.selector === padre);
+  if (!ficha || !codigoPorSelector.has(seccion)) throw new Error(`Sección del kit desconocida: ${seccion} (de ${padre})`);
+  const codigo = `${codigoPorSelector.get(padre)}\n${codigoPorSelector.get(seccion)}`;
+  codigoPorSelector.set(padre, codigo);
+  dependenciasPorSelector.set(padre, [...new Set([...(dependenciasPorSelector.get(padre) ?? []), ...(dependenciasPorSelector.get(seccion) ?? [])])]);
+  ficha.aria = ariaDe(codigo);
+  ficha.tokens = tokensDe(codigo);
+  codigoPorSelector.delete(seccion);
+  dependenciasPorSelector.delete(seccion);
+  sesionDirecta.delete(seccion);
+  fichas.splice(fichas.findIndex((x) => x.selector === seccion), 1);
+}
+for (const [selector, deps] of dependenciasPorSelector) {
+  dependenciasPorSelector.set(selector, (deps ?? []).filter((d) => !PADRE_DE_SECCION.has(d)));
 }
 
 // ── Relaciones entre fichas ──────────────────────────────────────────────────────────────────────────────────────────
@@ -606,6 +687,7 @@ for (const x of fichas) {
 fichas.sort((a, b) => a.selector.localeCompare(b.selector));
 
 const version = JSON.parse(readFileSync(join(DIR_PAQUETE, 'package.json'), 'utf8')).version;
+
 const contenido = `// GENERADO por scripts/generar-ui-kit.mjs — no editar a mano.
 // Sale de ${PAQUETE} ${version} y de src/app/layout: regenerar con \`npm run ui-kit:manifest\` después de actualizar el kit.
 import type { FichaComponente } from './ui-kit.model';
@@ -627,11 +709,46 @@ export const FUNDAMENTOS_UI_KIT: FundamentosUiKit = {${JSON.stringify(fundamento
 };
 `;
 
+// Playground del catálogo: carga diferida de cada componente que se puede pintar sin la sesión (las directivas no). Los
+// del kit salen del paquete; los propios, de su archivo.
+const DIR_UI_KIT = join(RAIZ, 'src/app/features/ui-kit');
+const rutaDeCarga = (x) => {
+  if (x.importacion.startsWith(PAQUETE)) return x.importacion;
+  const r = aPosix(relative(DIR_UI_KIT, join(RAIZ, x.archivo))).replace(/\.ts$/, '');
+  return r.startsWith('.') ? r : `./${r}`;
+};
+const contenidoCargadores = `// GENERADO por scripts/generar-ui-kit.mjs — no editar a mano.
+// Regenerar con \`npm run ui-kit:manifest\` después de actualizar el kit.
+import type { Type } from '@angular/core';
+
+/** Versión del paquete del kit instalado (su package.json). */
+export const VERSION_KIT = '${version}';
+
+/** Carga diferida de cada componente para el playground del catálogo: sin las directivas ni lo que usa la sesión. */
+export const CARGADORES_UI_KIT: Readonly<Record<string, () => Promise<Type<unknown>>>> = {
+${fichas
+  .filter((x) => x.tipo === 'componente' && !x.usaSesion)
+  .map((x) => `  '${x.selector}': () => import('${rutaDeCarga(x)}').then((m) => m.${x.clase}),`)
+  .join('\n')}
+};
+`;
+
+// Versión en Markdown del catálogo (llms.txt y una ficha .md por componente), en public/.
+const DIR_PUBLICO = join(RAIZ, 'public');
+const DIR_FICHAS_MD = join(DIR_PUBLICO, 'ui-kit/componentes');
+const archivosMarkdown = generarMarkdown(RAIZ, fichas, version);
+const sobrantesMarkdown = existsSync(DIR_FICHAS_MD)
+  ? readdirSync(DIR_FICHAS_MD).filter((n) => n.endsWith('.md') && !archivosMarkdown.has(`ui-kit/componentes/${n}`))
+  : [];
+
 const leer = (ruta) => (existsSync(ruta) ? readFileSync(ruta, 'utf8').replace(/\r\n/g, '\n') : '');
 const actual = leer(SALIDA);
 const actualFundamentos = leer(SALIDA_FUNDAMENTOS);
+const actualCargadores = leer(SALIDA_CARGADORES);
 if (check) {
-  if (actual !== contenido || actualFundamentos !== contenidoFundamentos) {
+  const markdownDesactualizado =
+    sobrantesMarkdown.length > 0 || [...archivosMarkdown].some(([ruta, texto]) => leer(join(DIR_PUBLICO, ruta)) !== texto);
+  if (actual !== contenido || actualFundamentos !== contenidoFundamentos || actualCargadores !== contenidoCargadores || markdownDesactualizado) {
     console.error('✖ El manifiesto del ui-kit está desactualizado. Corre: npm run ui-kit:manifest');
     process.exit(1);
   }
@@ -639,6 +756,11 @@ if (check) {
 } else {
   if (actual !== contenido) writeFileSync(SALIDA, contenido, 'utf8');
   if (actualFundamentos !== contenidoFundamentos) writeFileSync(SALIDA_FUNDAMENTOS, contenidoFundamentos, 'utf8');
+  if (actualCargadores !== contenidoCargadores) writeFileSync(SALIDA_CARGADORES, contenidoCargadores, 'utf8');
+  mkdirSync(DIR_FICHAS_MD, { recursive: true });
+  for (const [ruta, texto] of archivosMarkdown) if (leer(join(DIR_PUBLICO, ruta)) !== texto) writeFileSync(join(DIR_PUBLICO, ruta), texto, 'utf8');
+  for (const n of sobrantesMarkdown) rmSync(join(DIR_FICHAS_MD, n));
+  console.log(`✔ Markdown: llms.txt y ${archivosMarkdown.size - 1} fichas → public/`);
   const sinDoc = fichas.filter((x) => !x.descripcion).map((x) => x.selector);
   const sinTipo = fichas.flatMap((x) => [...x.entradas, ...x.eventos].filter((m) => m.tipo === 'unknown').map((m) => `${x.selector}.${m.nombre}`));
   console.log(`✔ ${fichas.length} componentes · ${fichas.reduce((n, x) => n + x.entradas.length, 0)} entradas · ${fichas.reduce((n, x) => n + x.eventos.length, 0)} eventos → ${relative(RAIZ, SALIDA)}`);

@@ -1,4 +1,4 @@
-import { Type } from '@angular/core';
+import { InputSignal, Type } from '@angular/core';
 
 import { EjemplosAccionesComponent } from './ejemplos-acciones.component';
 import { EjemplosArmazonComponent, EjemplosArmazonSesionComponent } from './ejemplos-armazon.component';
@@ -16,7 +16,7 @@ import { EjemplosSuperficiesComponent } from './ejemplos-superficies.component';
 import { EjemplosTrazabilidadComponent } from './ejemplos-trazabilidad.component';
 
 /** Un componente de ejemplos por categoría: recibe `selector` y pinta el caso que corresponde. */
-type ComponenteEjemplos = Type<{ selector: string }> & { readonly selectores: readonly string[] };
+type ComponenteEjemplos = Type<{ selector: InputSignal<string> }> & { readonly selectores: readonly string[] };
 
 export const COMPONENTES_EJEMPLO: readonly ComponenteEjemplos[] = [
   EjemplosFundamentosComponent,
@@ -70,6 +70,8 @@ export const EJEMPLOS_RESPONSIVE: Readonly<Record<string, VistaResponsive>> = {
     nota: 'Rol aprobador con el documento verificado. En móvil las acciones pasan a la barra fija al pie.',
   },
   'siaf-notifications-panel': { altoEscritorio: 480, altoMovil: 560, nota: 'Pulsa «Notificaciones»: en escritorio se ancla al botón y en móvil ocupa el ancho de la pantalla.' },
+  'siaf-landing-footer': { altoEscritorio: 560, altoMovil: 900, nota: 'En escritorio las columnas van en fila; en móvil se apilan y los enlaces de ayuda quedan al final.' },
+  'siaf-landing-systems-bar': { altoEscritorio: 160, altoMovil: 160, nota: 'En pantallas angostas la fila de sistemas se desplaza en horizontal.' },
 };
 
 /** Por qué un componente no tiene ejemplo en vivo. Hoy todos lo tienen: declararlo aquí solo si alguno no pudiera. */

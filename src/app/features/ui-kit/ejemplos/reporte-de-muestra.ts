@@ -3,8 +3,7 @@
  * Pantallas, nodo 9455:107865): movimientos de las libretas de las cuentas de registro. Nada de esto se usa fuera del
  * catálogo.
  */
-import type { QueryReportConfig, QueryReportParameterField, QueryReportResult } from '../../../shared/types/query-report.types';
-import type { ReportSummaryField, ReportTableColumn, ReportTableRow } from '@kennedy122112/siaf-rp-ui-angular';
+import { type QueryReportConfig, type QueryReportParameterField, type QueryReportResult, type ReportSummaryField, type ReportTableColumn, type ReportTableRow } from '@kennedy122112/siaf-rp-ui-angular';
 
 export const CAMPOS_PARAMETROS_DE_MUESTRA: QueryReportParameterField[] = [
   { key: 'desde', label: 'Fecha desde', type: 'date', required: true, icon: 'calendar_today' },

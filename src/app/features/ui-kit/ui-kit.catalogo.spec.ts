@@ -52,6 +52,22 @@ describe('Catálogo de componentes (ui-kit)', () => {
     expect(porSelector.get('[siafTooltip]')?.sinUso).toBeFalse();
   });
 
+  it('lo que pinta un componente en uso también está en uso', () => {
+    const porSelector = new Map(MANIFIESTO_UI_KIT.map((f) => [f.selector, f]));
+    const huerfanos = MANIFIESTO_UI_KIT.filter((f) => !f.sinUso).flatMap((f) => f.usa.filter((s) => porSelector.get(s)?.sinUso).map((s) => `${f.selector} → ${s}`));
+    expect(huerfanos).toEqual([]);
+  });
+
+  it('las secciones de una pantalla (sections/) no tienen ficha: lo que pintan cuenta como de su componente', () => {
+    expect(MANIFIESTO_UI_KIT.filter((f) => f.archivo.includes('/sections/')).map((f) => f.selector)).toEqual([]);
+    const bandeja = MANIFIESTO_UI_KIT.find((f) => f.selector === 'siaf-documents-records-page')!;
+    // Los pintan sus secciones (encabezado, filtros y acciones en lote), no la plantilla de la página.
+    expect(bandeja.usa).toEqual(jasmine.arrayContaining(['siaf-breadcrumb', 'siaf-records-tabs', 'siaf-create-document', 'siaf-filter-pill', 'siaf-custom-filter', 'siaf-modal', 'siaf-snackbar']));
+    expect(bandeja.aria.roles).toContain('button');
+    // Desde la Fase 2 del kit pide lo de la app a `FuenteDocumentosRegistros`: no importa la sesión ni la API.
+    expect(bandeja.usaSesion).toBeFalse();
+  });
+
   it('una familia va entera en una categoría: todos los paneles laterales en Overlays', () => {
     for (const panel of ['siaf-side-nav', 'siaf-side-panel', 'siaf-selection-side-nav', 'siaf-upload-side-nav', 'siaf-column-visibility-panel', 'siaf-query-parameters-panel']) {
       expect(CATEGORIA_POR_SELECTOR[panel]).withContext(panel).toBe('overlays');

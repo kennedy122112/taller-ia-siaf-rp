@@ -1,4 +1,4 @@
-import { Type } from '@angular/core';
+import { InputSignal, Type } from '@angular/core';
 
 import { EJEMPLOS_RESPONSIVE, EJEMPLO_POR_SELECTOR, MOTIVO_SIN_EJEMPLO, VistaResponsive } from './ejemplos';
 import { ValorToken, seccionDeToken, valorDeToken } from './fundamentos/valores';
@@ -25,12 +25,16 @@ export type BloqueDescripcion =
 export interface FichaVista extends FichaComponente {
   /** Cómo se escribe al usarlo: el selector de etiqueta tal cual; en una directiva, el atributo sin corchetes. */
   nombre: string;
-  /** Ancla de la ficha en la URL (`/ui-kit#siaf-menu`). */
+  /** Nombre legible de la página, de la clase: `IconDropdownMenuComponent` → «Icon dropdown menu». */
+  titulo: string;
+  /** Su página en el catálogo: `/ui-kit/componentes/siaf-menu`. */
   id: string;
+  /** Categoría del catálogo; null mientras no tenga una (cae en «Otros»). */
+  categoria: CategoriaUiKit | null;
   bloques: BloqueDescripcion[];
   snippetImport: string;
   snippetUso: string;
-  ejemplo: Type<{ selector: string }> | null;
+  ejemplo: Type<{ selector: InputSignal<string> }> | null;
   /** Si se muestra en marcos de escritorio y móvil en vez de en línea. */
   responsive: VistaResponsive | null;
   /** Por qué no hay ejemplo en vivo; null si lo hay. */
@@ -40,6 +44,10 @@ export interface FichaVista extends FichaComponente {
   bloquesEvitar: BloqueDescripcion[];
   bloquesTeclado: BloqueDescripcion[];
   bloquesAccesibilidad: BloqueDescripcion[];
+  bloquesLimitaciones: BloqueDescripcion[];
+  /** El archivo del componente en el repositorio, para leerlo o editar su JSDoc, y su ficha en Markdown. */
+  /** Código fuente y edición: null en las piezas del kit, que vienen del paquete. */
+  enlaces: { codigoFuente: string | null; editar: string | null; markdown: string };
   /** Pestaña Especificaciones. */
   enlacesFigma: { nodo: string; nombre: string | null; url: string }[];
   tokensConValor: { token: string; via: string[]; valor: ValorToken | null; seccion: string }[];
@@ -67,6 +75,33 @@ export function nombreDeUso(selector: string): string {
 export function idDeSelector(selector: string): string {
   return selector.replace(/[^a-zA-Z0-9-]/g, '');
 }
+
+/** `IconDropdownMenuComponent` → «Icon dropdown menu»; `TooltipDirective` → «Tooltip». */
+export function tituloDeClase(clase: string): string {
+  const palabras = clase
+    .replace(/(Component|Directive)$/, '')
+    .replace(/([a-z0-9])([A-Z])/g, '$1 $2')
+    .replace(/([A-Z]+)([A-Z][a-z])/g, '$1 $2')
+    .split(' ');
+  return palabras.map((p, i) => (i === 0 || /^[A-Z0-9]{2,}$/.test(p) ? p : p.toLowerCase())).join(' ');
+}
+
+/**
+ * El repositorio del taller: el código fuente y «Editar esta página» de las fichas propias (src/app/layout) llevan a él.
+ * Las del kit no tienen enlace: su código está en el paquete (`vendor/`), no en un repositorio público.
+ */
+export const REPOSITORIO = 'https://github.com/kennedy122112/taller-ia-siaf-rp';
+export const RAMA_DEL_REPOSITORIO = 'main';
+export const enlaceAlCodigo = (archivo: string): string => `${REPOSITORIO}/blob/${RAMA_DEL_REPOSITORIO}/${archivo}`;
+export const enlaceParaEditar = (archivo: string): string => `${REPOSITORIO}/edit/${RAMA_DEL_REPOSITORIO}/${archivo}`;
+/** Si la ficha sale del paquete del kit instalado (sus tipos en node_modules). */
+export const delPaquete = (archivo: string): boolean => archivo.startsWith('node_modules/');
+
+/** Raíz del catálogo y la página de cada componente y fundamento. */
+export const RUTA_UI_KIT = '/ui-kit';
+export const rutaDeFicha = (id: string): string => `${RUTA_UI_KIT}/componentes/${id}`;
+export const rutaDeFundamento = (id: string): string => `${RUTA_UI_KIT}/fundamentos/${id}`;
+export const rutaDePrimerosPasos = (id: string): string => `${RUTA_UI_KIT}/primeros-pasos/${id}`;
 
 export function segmentar(texto: string): SegmentoTexto[] {
   return texto
@@ -174,6 +209,8 @@ export function aVista(f: FichaComponente): FichaVista {
     ...f,
     id: idDeSelector(f.selector),
     nombre: nombreDeUso(f.selector),
+    titulo: tituloDeClase(f.clase),
+    categoria: CATEGORIAS_UI_KIT.find((c) => c.id === CATEGORIA_POR_SELECTOR[f.selector]) ?? null,
     bloques: bloquesDeDescripcion(f.descripcion),
     snippetImport: snippetImport(f),
     snippetUso: snippetUso(f),
@@ -184,6 +221,12 @@ export function aVista(f: FichaComponente): FichaVista {
     bloquesEvitar: bloquesDeDescripcion(f.evitar ?? ''),
     bloquesTeclado: bloquesDeDescripcion(f.teclado ?? ''),
     bloquesAccesibilidad: bloquesDeDescripcion(f.accesibilidad ?? ''),
+    bloquesLimitaciones: bloquesDeDescripcion(f.limitaciones ?? ''),
+    enlaces: {
+      codigoFuente: delPaquete(f.archivo) ? null : enlaceAlCodigo(f.archivo),
+      editar: delPaquete(f.archivo) ? null : enlaceParaEditar(f.archivo),
+      markdown: `${rutaDeFicha(idDeSelector(f.selector))}.md`,
+    },
     enlacesFigma: f.figma.map((n) => ({ ...n, url: urlDeNodoFigma(n.nodo) })),
     tokensConValor: f.tokens.map((t) => ({ ...t, valor: valorDeToken(t.token), seccion: seccionDeToken(t.token) })),
     componentesUsados: f.usa.map((selector) => ({ selector, nombre: nombreDeUso(selector), id: idDeSelector(selector) })),
@@ -232,6 +275,7 @@ export function enlazarFichas(fichas: readonly FichaVista[]): FichaVista[] {
       bloquesEvitar: bloques(f.bloquesEvitar),
       bloquesTeclado: bloques(f.bloquesTeclado),
       bloquesAccesibilidad: bloques(f.bloquesAccesibilidad),
+      bloquesLimitaciones: bloques(f.bloquesLimitaciones),
     };
   });
 }
@@ -249,38 +293,25 @@ export function agrupar(fichas: readonly FichaComponente[]): GrupoUiKit[] {
   }));
   const sinCategoria = visibles.filter((f) => !CATEGORIA_POR_SELECTOR[f.selector]);
   if (sinCategoria.length) {
-    grupos.push({ categoria: { id: 'fundamentos', titulo: 'Otros', descripcion: 'Componentes todavía sin categoría.' }, fichas: sinCategoria });
+    grupos.push({ categoria: { id: 'fundamentos', titulo: 'Otros', descripcion: 'Componentes todavía sin categoría.', icono: 'help_outline' }, fichas: sinCategoria });
   }
   return grupos.filter((g) => g.fichas.length > 0);
 }
 
-/** Una sección de la página (fundamento o ficha) y el borde superior de su caja respecto de la ventana. */
-export interface PosicionSeccion {
-  id: string;
-  arriba: number;
-}
-
-/**
- * La sección que se está leyendo: la última, en el orden del documento, cuyo borde superior ya subió hasta la línea
- * de lectura. Null si todavía no llegó ninguna (la introducción). Corta en la primera que está debajo, así que las
- * posiciones pueden medirse a medida que se recorren.
- */
-export function seccionEnLectura(secciones: Iterable<PosicionSeccion>, linea: number): string | null {
-  let actual: string | null = null;
-  for (const seccion of secciones) {
-    if (seccion.arriba > linea) break;
-    actual = seccion.id;
-  }
-  return actual;
+/** La anterior y la siguiente en el orden del catálogo, para los enlaces al pie de cada página. */
+export function vecinas<T extends { id: string }>(lista: readonly T[], id: string): { anterior: T | null; siguiente: T | null } {
+  const i = lista.findIndex((x) => x.id === id);
+  if (i < 0) return { anterior: null, siguiente: null };
+  return { anterior: lista[i - 1] ?? null, siguiente: lista[i + 1] ?? null };
 }
 
 const normalizar = (s: string): string => s.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase();
 
-/** Búsqueda por selector, clase o descripción, sin distinguir acentos ni mayúsculas. */
+/** Búsqueda por título, selector, clase o descripción, sin distinguir acentos ni mayúsculas. */
 export function filtrar(grupos: readonly GrupoUiKit[], consulta: string): GrupoUiKit[] {
   const q = normalizar(consulta.trim());
   if (!q) return [...grupos];
   return grupos
-    .map((g) => ({ ...g, fichas: g.fichas.filter((f) => normalizar(`${f.selector} ${f.clase} ${f.descripcion}`).includes(q)) }))
+    .map((g) => ({ ...g, fichas: g.fichas.filter((f) => normalizar(`${f.titulo} ${f.selector} ${f.clase} ${f.descripcion}`).includes(q)) }))
     .filter((g) => g.fichas.length > 0);
 }

@@ -1,42 +1,7 @@
 import { NgTemplateOutlet } from '@angular/common';
-import { ChangeDetectionStrategy, Component, Input, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, signal, input } from '@angular/core';
 
-import {
-  ButtonComponent,
-  ConsultasFiltrosChipsComponent,
-  CustomFilterComponent,
-  DataTableColumn,
-  DataTableComponent,
-  DataTableRow,
-  DocumentsRecordsTableComponent,
-  DragHandleComponent,
-  FilterPillComponent,
-  FilterPillOption,
-  FilterRow,
-  FiltroChip,
-  FormTableSearchComponent,
-  IconDropdownMenuComponent,
-  IconDropdownMenuItem,
-  ListComponent,
-  ListItem,
-  PaginationComponent,
-  ParametroAplicado,
-  ParametrosAplicadosComponent,
-  RecordsSearchToolbarComponent,
-  ReordenableDirective,
-  ReordenableItemDirective,
-  type Reordenamiento,
-  ReportTableComponent,
-  TableComponent,
-  TableControlsComponent,
-  TableSkeletonComponent,
-  TextFieldComponent,
-  TextFieldOption,
-  TreeViewComponent,
-  TreeViewNode,
-  reordenar,
-} from '@kennedy122112/siaf-rp-ui-angular';
-import { DocumentsRecordsColumn, DocumentsRecordsRow } from '../../../shared/types/documents-records.types';
+import { ButtonComponent, ConsultasFiltrosChipsComponent, CustomFilterComponent, DataTableColumn, DataTableComponent, DataTableRow, DocumentsRecordsColumn, DocumentsRecordsRow, DocumentsRecordsTableComponent, DragHandleComponent, FilterPillComponent, FilterPillOption, FilterRow, FiltroChip, FormTableSearchComponent, IconDropdownMenuComponent, IconDropdownMenuItem, ListComponent, ListItem, PaginationComponent, ParametroAplicado, ParametrosAplicadosComponent, RecordsSearchToolbarComponent, ReordenableDirective, ReordenableItemDirective, Reordenamiento, reordenar, ReportTableComponent, TableComponent, TableControlsComponent, TableSkeletonComponent, TextFieldComponent, TextFieldOption, TreeViewComponent, TreeViewNode } from '@kennedy122112/siaf-rp-ui-angular';
 import { COLUMNAS_REPORTE_DE_MUESTRA, FILAS_REPORTE_DE_MUESTRA } from './reporte-de-muestra';
 
 /** Ejemplos en vivo de la categoría Datos y tablas. */
@@ -45,18 +10,29 @@ import { COLUMNAS_REPORTE_DE_MUESTRA, FILAS_REPORTE_DE_MUESTRA } from './reporte
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
-    ButtonComponent, ConsultasFiltrosChipsComponent, CustomFilterComponent, DataTableComponent, DragHandleComponent, NgTemplateOutlet,
-    ReordenableDirective, ReordenableItemDirective, TextFieldComponent,
+    ConsultasFiltrosChipsComponent, CustomFilterComponent, DataTableComponent,
     DocumentsRecordsTableComponent, FilterPillComponent, FormTableSearchComponent, IconDropdownMenuComponent, ListComponent, PaginationComponent,
     ParametrosAplicadosComponent, RecordsSearchToolbarComponent, ReportTableComponent, TableComponent, TableControlsComponent, TableSkeletonComponent, TreeViewComponent,
+    ButtonComponent, DragHandleComponent, NgTemplateOutlet, ReordenableDirective, ReordenableItemDirective, TextFieldComponent,
   ],
   template: `
-    @switch (selector) {
+    @switch (selector()) {
       @case ('siaf-table') {
         <siaf-table [columns]="columnas" [rows]="filas" />
       }
       @case ('siaf-data-table') {
-        <siaf-data-table [columns]="columnas" [rows]="filas" />
+        <div class="grid gap-6">
+          <siaf-data-table [columns]="columnas" [rows]="filas" />
+          <div class="min-w-0">
+            <p class="mb-2 text-[11px] font-bold uppercase tracking-widest text-text-muted">reordenable · arrastra la manija o usa Espacio y ↑ ↓</p>
+            <siaf-data-table [columns]="columnas" [rows]="filasReordenables()" [reordenable]="true" (reordenado)="filasReordenables.update((f) => reordenar(f, $event))" />
+            <p class="mt-2 text-xs text-text-muted" aria-live="polite">Orden: {{ ordenDeFilas() }}</p>
+          </div>
+          <div class="min-w-0">
+            <p class="mb-2 text-[11px] font-bold uppercase tracking-widest text-text-muted">padreKey · a qué fila pertenece cada una (línea de nivel y chevron)</p>
+            <siaf-data-table [columns]="columnasCuentas" [rows]="cuentasJerarquicas" padreKey="padre" />
+          </div>
+        </div>
       }
       @case ('[siafReordenable]') {
         <ng-container [ngTemplateOutlet]="listaCampos" />
@@ -104,6 +80,7 @@ import { COLUMNAS_REPORTE_DE_MUESTRA, FILAS_REPORTE_DE_MUESTRA } from './reporte
         <siaf-report-table
           [columns]="columnasReporte"
           [rows]="filasReporte"
+          [totals]="totalesReporte"
           rowKey="secuencia"
           ariaLabel="Movimientos de las libretas"
           (linkClicked)="documentoReporte.set($event.row['documento'])"
@@ -171,7 +148,17 @@ import { COLUMNAS_REPORTE_DE_MUESTRA, FILAS_REPORTE_DE_MUESTRA } from './reporte
         </div>
       }
       @case ('siaf-consultas-filtros-chips') {
-        <siaf-consultas-filtros-chips [chips]="chips" />
+        <div class="grid gap-siaf-lg">
+          <siaf-consultas-filtros-chips [chips]="chips" />
+          <!-- Sin título y con la × de cada filtro, como debajo del buscador de un panel. -->
+          <siaf-consultas-filtros-chips
+            title=""
+            [removable]="true"
+            [chips]="chipsQuitables()"
+            (removed)="chipsQuitables.set(quitarChip($event))"
+            (cleared)="chipsQuitables.set(chips)"
+          />
+        </div>
       }
       @case ('siaf-parametros-aplicados') {
         <siaf-parametros-aplicados [parametros]="parametrosAplicados" />
@@ -216,6 +203,7 @@ import { COLUMNAS_REPORTE_DE_MUESTRA, FILAS_REPORTE_DE_MUESTRA } from './reporte
       }
     }
 
+    <!-- «Tipo de resultado: Agregado» de Filtros avanzados (Guía de Estructura de Pantallas, Figma 22402:16163). -->
     <ng-template #listaCampos>
       <div class="max-w-[388px]">
         <p class="mb-2 text-[11px] font-bold uppercase tracking-widest text-text-muted">Campos del resultado agregado · arrastra o usa Espacio y ↑ ↓</p>
@@ -239,11 +227,18 @@ export class EjemplosDatosComponent {
     'siaf-custom-filter', 'siaf-form-table-search', 'siaf-records-search-toolbar', 'siaf-filter-pill', 'siaf-consultas-filtros-chips', 'siaf-parametros-aplicados',
     'siaf-tree-view', 'siaf-list', '[siafReordenable]', '[siafReordenableItem]', 'siaf-drag-handle',
   ];
-  @Input({ required: true }) selector!: string;
+  readonly selector = input.required<string>();
 
   readonly columnasReporte = COLUMNAS_REPORTE_DE_MUESTRA;
   /** Los seis movimientos del 28/06, los de la tabla del Figma. */
   readonly filasReporte = FILAS_REPORTE_DE_MUESTRA.filter((fila) => fila['fecha'].startsWith('28/06/'));
+  /** Al pie, la fila de totales (`totals`): lo que suman los seis movimientos. */
+  readonly totalesReporte: Record<string, string> = {
+    operacion: 'TOTALES',
+    saldoFinal: this.filasReporte
+      .reduce((total, fila) => total + Number(fila['saldoFinal'].replace(/,/g, '')), 0)
+      .toLocaleString('es-PE', { minimumFractionDigits: 2, maximumFractionDigits: 2 }),
+  };
   readonly documentoReporte = signal('');
 
   readonly columnas: DataTableColumn[] = [
@@ -256,6 +251,51 @@ export class EjemplosDatosComponent {
     { id: '2', numero: '00002', documento: 'Registro de asiento de ajuste', estado: 'Verificado' },
     { id: '3', numero: '00003', documento: 'Catálogo de eventos', estado: 'Elaborado' },
   ];
+
+  protected readonly reordenar = reordenar;
+  readonly filasReordenables = signal<DataTableRow[]>(this.filas);
+  readonly ordenDeFilas = (): string => this.filasReordenables().map((f) => f['numero']).join(', ');
+  readonly columnasCuentas: DataTableColumn[] = [
+    { key: 'cuenta', label: 'Cuenta' },
+    { key: 'saldo', label: 'Saldo' },
+  ];
+  /** Cuentas con sus subcuentas y divisionarias: `padre` es el id de la fila de la que dependen. */
+  readonly cuentasJerarquicas: DataTableRow[] = [
+    { id: '1.1', padre: '', cuenta: '1.1 Efectivo y equivalentes', saldo: '1,250,000.00' },
+    { id: '1.1.1', padre: '1.1', cuenta: '1.1.1 Caja', saldo: '50,000.00' },
+    { id: '1.1.2', padre: '1.1', cuenta: '1.1.2 Bancos', saldo: '1,200,000.00' },
+    { id: '1.1.2.1', padre: '1.1.2', cuenta: '1.1.2.1 Cuenta corriente', saldo: '900,000.00' },
+    { id: '1.1.2.2', padre: '1.1.2', cuenta: '1.1.2.2 Cuenta de ahorros', saldo: '300,000.00' },
+    { id: '1.2', padre: '', cuenta: '1.2 Inversiones financieras', saldo: '400,000.00' },
+    { id: '1.3', padre: '', cuenta: '1.3 Cuentas por cobrar', saldo: '75,500.00' },
+    { id: '1.3.1', padre: '1.3', cuenta: '1.3.1 Impuestos por cobrar', saldo: '75,500.00' },
+  ];
+  readonly columnasOrden = signal(['Año', 'Mes', 'Pliego', 'Entidad']);
+
+  readonly opcionesCampo: TextFieldOption[] = [
+    { label: 'Pliego', value: 'pliego' },
+    { label: 'Entidad', value: 'entidad' },
+    { label: 'Cuenta contable', value: 'cuenta' },
+  ];
+  readonly camposAgregado = signal([
+    { id: 1, valor: 'pliego' },
+    { id: 2, valor: 'entidad' },
+    { id: 3, valor: 'cuenta' },
+  ]);
+  readonly ultimoCambio = signal('');
+
+  nombreDeCampo(valor: string): string {
+    return this.opcionesCampo.find((o) => o.value === valor)?.label ?? valor;
+  }
+
+  alReordenarCampos(cambio: Reordenamiento): void {
+    this.camposAgregado.update((c) => reordenar(c, cambio));
+    this.ultimoCambio.set(`de la posición ${cambio.anterior + 1} a la ${cambio.actual + 1}`);
+  }
+
+  quitarCampo(id: number): void {
+    this.camposAgregado.update((c) => (c.length > 1 ? c.filter((x) => x.id !== id) : c));
+  }
 
   readonly columnasDocumentos: DocumentsRecordsColumn[] = [
     { key: 'number', label: 'N° documento', visibility: 'visible', group: 'default', kind: 'document-link' },
@@ -312,6 +352,13 @@ export class EjemplosDatosComponent {
     { label: 'Estado', values: ['Aprobado', 'Verificado'] },
     { label: 'Año', values: ['2026'] },
   ];
+  /** Los del ejemplo sin título: la × quita uno y «Borrar filtros» los vuelve a poner, para seguir probándolo. */
+  readonly chipsQuitables = signal<FiltroChip[]>(this.chips);
+
+  quitarChip(chip: FiltroChip): FiltroChip[] {
+    const quedan = this.chipsQuitables().filter((otro) => otro.label !== chip.label);
+    return quedan.length ? quedan : this.chips;
+  }
 
   /** Parámetros de una consulta con los íconos del Figma («Guía de Estructura de Pantallas», nodo 22402:16429). */
   readonly parametrosAplicados: ParametroAplicado[] = [
@@ -377,34 +424,4 @@ export class EjemplosDatosComponent {
   ];
   readonly itemLista = signal<string | null>('plan');
   readonly cambioSwitchLista = signal('');
-
-  // ── Reordenar ──
-  protected readonly reordenar = reordenar;
-  readonly filasReordenables = signal<DataTableRow[]>(this.filas);
-  readonly ordenDeFilas = (): string => this.filasReordenables().map((f) => f['numero']).join(', ');
-  readonly columnasOrden = signal(['Año', 'Mes', 'Pliego', 'Entidad']);
-  readonly opcionesCampo: TextFieldOption[] = [
-    { label: 'Pliego', value: 'pliego' },
-    { label: 'Entidad', value: 'entidad' },
-    { label: 'Cuenta contable', value: 'cuenta' },
-  ];
-  readonly camposAgregado = signal([
-    { id: 1, valor: 'pliego' },
-    { id: 2, valor: 'entidad' },
-    { id: 3, valor: 'cuenta' },
-  ]);
-  readonly ultimoCambio = signal('');
-
-  nombreDeCampo(valor: string): string {
-    return this.opcionesCampo.find((o) => o.value === valor)?.label ?? valor;
-  }
-
-  alReordenarCampos(cambio: Reordenamiento): void {
-    this.camposAgregado.update((c) => reordenar(c, cambio));
-    this.ultimoCambio.set(`de la posición ${cambio.anterior + 1} a la ${cambio.actual + 1}`);
-  }
-
-  quitarCampo(id: number): void {
-    this.camposAgregado.update((c) => (c.length > 1 ? c.filter((x) => x.id !== id) : c));
-  }
 }

@@ -1,27 +1,7 @@
-import { ChangeDetectionStrategy, Component, Input, computed, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, signal, input } from '@angular/core';
 
-import {
-  AnnulmentModalComponent,
-  AnnulmentRequest,
-  ButtonComponent,
-  ColumnVisibilityPanelComponent,
-  FocoDirective,
-  ModalComponent,
-  QueryParametersPanelComponent,
-  RequestApprovalModalsComponent,
-  SelectionColumn,
-  SelectionSideNavComponent,
-  SideNavComponent,
-  SidePanelComponent,
-  TextFieldComponent,
-  TextFieldOption,
-  TimelineDetailPanelComponent,
-  TimelineItem,
-  UploadSideNavComponent,
-} from '@kennedy122112/siaf-rp-ui-angular';
-import type { QueryReportParameters } from '../../../shared/types/query-report.types';
+import { AnnulmentModalComponent, AnnulmentRequest, ButtonComponent, ColumnVisibilityPanelComponent, DocumentsRecordsColumn, FocoDirective, ModalComponent, QueryParametersPanelComponent, type QueryReportParameters, RequestApprovalModalsComponent, SelectionColumn, SelectionSideNavComponent, SideNavComponent, SidePanelComponent, TextFieldComponent, TextFieldOption, TimelineDetailPanelComponent, TimelineItem, UploadSideNavComponent } from '@kennedy122112/siaf-rp-ui-angular';
 import { CAMPOS_PARAMETROS_DE_MUESTRA } from './reporte-de-muestra';
-import { DocumentsRecordsColumn } from '../../../shared/types/documents-records.types';
 
 interface CuentaEjemplo {
   id: string;
@@ -40,7 +20,7 @@ interface CuentaEjemplo {
     UploadSideNavComponent,
   ],
   template: `
-    @switch (selector) {
+    @switch (selector()) {
       @case ('siaf-modal') {
         <div class="flex flex-wrap gap-3">
           <siaf-button variant="secondary" (click)="modal.set('save')">Grabar</siaf-button>
@@ -104,7 +84,7 @@ interface CuentaEjemplo {
       @case ('siaf-side-nav') {
         <siaf-button variant="secondary" (click)="panel.set(true)">Abrir side nav</siaf-button>
         <siaf-side-nav title="Detalle del registro" [open]="panel()" (closed)="panel.set(false)" (confirmed)="panel.set(false)">
-          <p class="m-0 text-sm text-[var(--sys-color-text-neutral-medium)]">Contenido proyectado en el side nav: un detalle breve o un formulario corto.</p>
+          <p class="m-0 text-sm text-text-neutral-medium">Contenido proyectado en el side nav: un detalle breve o un formulario corto.</p>
         </siaf-side-nav>
       }
       @case ('siaf-side-panel') {
@@ -121,7 +101,7 @@ interface CuentaEjemplo {
           (navCanceled)="eventoSidePanel.set('Emitió «navCanceled».')"
           (navConfirmed)="eventoSidePanel.set('Emitió «navConfirmed»: la pantalla filtra el contenido.')"
         >
-          <p class="m-0 text-sm text-[var(--sys-color-text-neutral-medium)]">
+          <p class="m-0 text-sm text-text-neutral-medium">
             Contenido a todo el ancho: una tabla grande, la vista previa de un documento o un detalle con muchas columnas.
           </p>
           <div class="flex flex-col gap-siaf-lg" sidePanelNav>
@@ -144,6 +124,36 @@ interface CuentaEjemplo {
           (selectionChange)="cuentasElegidas.set($event)"
           (accepted)="seleccion.set(false)"
           (closed)="seleccion.set(false)"
+        />
+        <siaf-button class="ml-siaf-xs" variant="secondary" icon="checklist" (click)="abrirSeleccionPaginada()">
+          Seleccionar varias (paginado)
+        </siaf-button>
+        <siaf-selection-side-nav
+          title="Seleccionar cuentas contables"
+          mode="multiple"
+          idKey="id"
+          [open]="seleccionPaginada()"
+          [columns]="columnasCuenta"
+          [rows]="filasPaginaCuentas()"
+          [selectedIds]="cuentasPaginadasElegidas()"
+          [requireSelection]="false"
+          [paginated]="true"
+          [showSelectAll]="true"
+          selectAllLabel="Seleccionar las cuentas de la página"
+          [selectAllChecked]="paginaCuentasMarcada()"
+          [selectAllIndeterminate]="paginaCuentasParcial()"
+          [page]="paginaCuentas()"
+          [pageSize]="filasCuentas()"
+          [totalItems]="cuentasPaginadas.length"
+          [totalPages]="totalPaginasCuentas()"
+          [rowsPerPage]="filasCuentas()"
+          (selectionChange)="cuentasPaginadasElegidas.set($event)"
+          (selectAllChange)="marcarPaginaCuentas($event)"
+          (previousPage)="irAPaginaCuentas(paginaCuentas() - 1)"
+          (nextPage)="irAPaginaCuentas(paginaCuentas() + 1)"
+          (rowsPerPageChange)="cambiarFilasCuentas($event)"
+          (accepted)="seleccionPaginada.set(false)"
+          (closed)="seleccionPaginada.set(false)"
         />
       }
       @case ('siaf-timeline-detail-panel') {
@@ -221,7 +231,7 @@ export class EjemplosOverlaysComponent {
     { label: 'Conciliación de cuentas' },
     { label: 'Estados financieros' },
   ];
-  @Input({ required: true }) selector!: string;
+  readonly selector = input.required<string>();
 
   readonly modal = signal<'save' | 'delete-request' | null>(null);
   readonly anulacion = signal(false);
@@ -257,6 +267,71 @@ export class EjemplosOverlaysComponent {
     { id: 'c2', codigo: '1101.02', nombre: 'Caja M/E' },
     { id: 'c3', codigo: '2101.01', nombre: 'Cuentas por pagar' },
   ];
+
+  // Selección múltiple paginada: el padre pagina y decide qué cuenta como «todo seleccionado» (la página visible).
+  readonly seleccionPaginada = signal(false);
+  readonly cuentasPaginadasElegidas = signal<string[]>([]);
+  readonly paginaCuentas = signal(1);
+  readonly filasCuentas = signal(10);
+  readonly cuentasPaginadas: CuentaEjemplo[] = [
+    'Caja',
+    'Fondos de caja chica',
+    'Banco CUT - Tesoro',
+    'Banco fondos recaudados',
+    'Fideicomisos',
+    'Fondos de terceros en garantía',
+    'Depósitos a plazo',
+    'Cuentas por cobrar al personal',
+    'Anticipos a proveedores',
+    'Préstamos por cobrar',
+    'Impuestos por cobrar',
+    'Multas por cobrar',
+    'Venta de bienes por cobrar',
+    'Venta de servicios por cobrar',
+    'Depósitos en garantía',
+    'Otras cuentas por cobrar',
+  ].flatMap((nombre, i) =>
+    ['M/N', 'M/E'].map((moneda, j) => ({
+      id: `p${i * 2 + j + 1}`,
+      codigo: `1.1.${i + 1}.${j + 1}`,
+      nombre: `${nombre} en ${moneda}`,
+    })),
+  );
+  readonly totalPaginasCuentas = computed(() => Math.max(1, Math.ceil(this.cuentasPaginadas.length / this.filasCuentas())));
+  readonly filasPaginaCuentas = computed(() => {
+    const desde = (this.paginaCuentas() - 1) * this.filasCuentas();
+    return this.cuentasPaginadas.slice(desde, desde + this.filasCuentas());
+  });
+  readonly paginaCuentasMarcada = computed(() => {
+    const elegidas = new Set(this.cuentasPaginadasElegidas());
+    const filas = this.filasPaginaCuentas();
+    return filas.length > 0 && filas.every((c) => elegidas.has(c.id));
+  });
+  readonly paginaCuentasParcial = computed(() => {
+    const elegidas = new Set(this.cuentasPaginadasElegidas());
+    return !this.paginaCuentasMarcada() && this.filasPaginaCuentas().some((c) => elegidas.has(c.id));
+  });
+
+  abrirSeleccionPaginada(): void {
+    this.paginaCuentas.set(1);
+    this.seleccionPaginada.set(true);
+  }
+
+  irAPaginaCuentas(pagina: number): void {
+    this.paginaCuentas.set(Math.min(this.totalPaginasCuentas(), Math.max(1, pagina)));
+  }
+
+  cambiarFilasCuentas(filas: number): void {
+    this.filasCuentas.set(filas);
+    this.paginaCuentas.set(1);
+  }
+
+  marcarPaginaCuentas(marcar: boolean): void {
+    const pagina = this.filasPaginaCuentas().map((c) => c.id);
+    this.cuentasPaginadasElegidas.update((actuales) =>
+      marcar ? [...new Set([...actuales, ...pagina])] : actuales.filter((id) => !pagina.includes(id)),
+    );
+  }
 
   readonly columnasBase: DocumentsRecordsColumn[] = [
     { key: 'number', label: 'N° documento', visibility: 'visible', group: 'default' },

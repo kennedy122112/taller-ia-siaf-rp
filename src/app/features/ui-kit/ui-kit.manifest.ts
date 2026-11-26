@@ -26,7 +26,8 @@ export const MANIFIESTO_UI_KIT: readonly FichaComponente[] = [
         "tipo": "boolean",
         "porDefecto": "true",
         "requerida": false,
-        "descripcion": "Tab da la vuelta dentro del contenedor (diálogos modales). En false, solo mueve el foco y atiende Escape."
+        "descripcion": "Tab da la vuelta dentro del contenedor (diálogos modales). En false, solo mueve el foco y atiende Escape.",
+        "control": "booleano"
       }
     ],
     "eventos": [
@@ -45,6 +46,10 @@ export const MANIFIESTO_UI_KIT: readonly FichaComponente[] = [
     "evitar": "- Reescribir a mano en otro componente el guardado y devolución del foco o la vuelta de Tab: usar esta directiva.\n- En menús de opciones con flechas: `siaf-menu` ya maneja su propio teclado.\n- En contenido que no se abre ni se cierra (una tarjeta, una sección de la página).",
     "teclado": "- **Tab / Shift + Tab**: con `siafFocoAtrapar` en true, recorren los controles del contenedor y dan la vuelta del\n  último al primero; en false, siguen el orden normal de la página.\n- **Escape**: emite `siafFocoEscape` para que el componente cierre; el foco vuelve a donde estaba al abrir.\n- **Tab** fuera de un desplegable: emite `siafFocoSalida` y el foco sigue al control siguiente.",
     "accesibilidad": "- **2.4.3 Orden del foco (A)**: mueve el foco al abrir y lo devuelve al cerrar, así el recorrido con Tab sigue\n  desde el control que abrió el panel.\n- **2.1.2 Sin trampas de teclado (A)**: el foco queda atrapado solo mientras el diálogo está activo y Escape siempre\n  ofrece la salida cuando el componente escucha `siafFocoEscape`.\n- **2.1.1 Teclado (A)**: cerrar con Escape equivale al botón de cerrar.\n- **4.1.2 Nombre, función y valor (A)**: no pone roles: el componente declara `role=\"dialog\"`, `aria-modal` y el\n  nombre (`aria-labelledby` o `aria-label`).",
+    "limitaciones": null,
+    "incorrecto": null,
+    "correcto": null,
+    "waiAria": null,
     "figma": [],
     "aria": {
       "roles": [],
@@ -70,7 +75,12 @@ export const MANIFIESTO_UI_KIT: readonly FichaComponente[] = [
         "tipo": "'horizontal' | 'vertical'",
         "porDefecto": "'vertical'",
         "requerida": false,
-        "descripcion": "Uno debajo de otro (↑ ↓) o uno al lado de otro (← →)."
+        "descripcion": "Uno debajo de otro (↑ ↓) o uno al lado de otro (← →).",
+        "control": "opciones",
+        "opciones": [
+          "vertical",
+          "horizontal"
+        ]
       }
     ],
     "eventos": [
@@ -84,6 +94,10 @@ export const MANIFIESTO_UI_KIT: readonly FichaComponente[] = [
     "evitar": "- Para ordenar por una columna (alfabético, por fecha): eso es un orden de la consulta, no un arrastre.\n- Para listas paginadas: el arrastre solo ve la página actual y movería un elemento a otra posición de la que el\n  usuario cree.\n- Para mover elementos entre dos listas: esta directiva reordena dentro de una sola.",
     "teclado": "- **Tab**: llega a la manija de cada elemento.\n- **Espacio / Enter** en la manija: toma el elemento; otra vez, lo suelta donde está.\n- **↑ / ↓** (o **← / →** en una lista horizontal): con el elemento tomado, lo mueve una posición; el foco sigue en\n  su manija.\n- **Escape**: con el elemento tomado, lo devuelve a la posición en que se tomó.",
     "accesibilidad": "- **2.1.1 Teclado (A)**: todo lo que se hace arrastrando se hace también con el teclado desde la manija.\n- **2.5.7 Movimientos de arrastre (AA)**: hay una alternativa sin arrastre, la del teclado, que también funciona con\n  un lector de pantalla en un móvil (doble toque para tomar y soltar no basta: ahí la pantalla puede ofrecer además\n  botones de subir y bajar).\n- **4.1.3 Mensajes de estado (AA)**: tomar, mover, soltar y cancelar se anuncian con el `LiveAnnouncer` del CDK\n  («Movido a la posición 2 de 3»), sin mover el foco.\n- La manija tomada lleva `aria-pressed=\"true\"`: el lector dice que está presionada mientras se mueve.",
+    "limitaciones": "- No cambia el arreglo: sin `(reordenado)` que actualice la lista, el elemento vuelve a su sitio al soltarlo.\n- Cada elemento necesita su `siaf-drag-handle`: sin manija no se puede tomar con el teclado (con el ratón, el CDK\n  deja arrastrar desde todo el elemento).\n- Las filas de una tabla se arrastran dentro de la tabla (`contenedorDeVistaPrevia=\"parent\"`, que pone\n  `siaf-data-table`): fuera de ella la fila perdía el ancho de sus columnas.",
+    "incorrecto": "<div siafReordenable>",
+    "correcto": "<div siafReordenable (reordenado)=\"campos.update((c) => reordenar(c, $event))\">",
+    "waiAria": null,
     "figma": [],
     "aria": {
       "roles": [],
@@ -111,7 +125,12 @@ export const MANIFIESTO_UI_KIT: readonly FichaComponente[] = [
         "tipo": "'global' | 'parent'",
         "porDefecto": "'global'",
         "requerida": false,
-        "descripcion": "Dónde va la copia que sigue al puntero: `global` (al final del `body`, por defecto) o `parent` (dentro del mismo contenedor, para que conserve sus estilos; lo usa la fila de una tabla)."
+        "descripcion": "Dónde va la copia que sigue al puntero: `global` (al final del `body`, por defecto) o `parent` (dentro del mismo contenedor, para que conserve sus estilos; lo usa la fila de una tabla).",
+        "control": "opciones",
+        "opciones": [
+          "global",
+          "parent"
+        ]
       }
     ],
     "eventos": [],
@@ -119,6 +138,10 @@ export const MANIFIESTO_UI_KIT: readonly FichaComponente[] = [
     "evitar": "- Fuera de un `siafReordenable`: se podría arrastrar, pero nadie recibe el cambio.\n- Sin `siaf-drag-handle` adentro: el elemento no se podría tomar con el teclado.",
     "teclado": "- No recibe foco: el teclado actúa sobre su manija (ver `siafReordenable`).",
     "accesibilidad": "- **2.1.1 Teclado (A)**: se mueve desde la manija con Espacio y las flechas; el elemento no necesita foco propio.\n- **2.3.3 Animación por interacción (AAA)**: con `prefers-reduced-motion`, los demás elementos saltan a su sitio sin\n  deslizarse.",
+    "limitaciones": "- La copia que sigue al puntero va al final del `body` salvo con `contenedorDeVistaPrevia=\"parent\"`: allí no le llegan\n  los estilos que dependen del contenedor.",
+    "incorrecto": null,
+    "correcto": null,
+    "waiAria": null,
     "figma": [],
     "aria": {
       "roles": [],
@@ -144,21 +167,35 @@ export const MANIFIESTO_UI_KIT: readonly FichaComponente[] = [
         "tipo": "string | null | undefined",
         "porDefecto": null,
         "requerida": false,
-        "descripcion": "Texto a mostrar. Vacío = usa el textContent del elemento (modo truncado)."
+        "descripcion": "Texto a mostrar. Vacío = usa el textContent del elemento (modo truncado).",
+        "control": "texto"
       },
       {
         "nombre": "tooltipMode",
         "tipo": "'auto' | 'always' | 'truncated'",
         "porDefecto": "'auto'",
         "requerida": false,
-        "descripcion": "Fuerza el comportamiento respecto al truncado: - `auto` (default): si NO se pasó texto, solo aparece cuando está truncado. - `always`: aparece siempre. - `truncated`: aparece solo cuando el contenido está truncado."
+        "descripcion": "Fuerza el comportamiento respecto al truncado: - `auto` (default): si NO se pasó texto, solo aparece cuando está truncado. - `always`: aparece siempre. - `truncated`: aparece solo cuando el contenido está truncado.",
+        "control": "opciones",
+        "opciones": [
+          "auto",
+          "always",
+          "truncated"
+        ]
       },
       {
         "nombre": "tooltipPosition",
         "tipo": "'top' | 'right' | 'bottom' | 'left'",
         "porDefecto": "'top'",
         "requerida": false,
-        "descripcion": "Lado en que sale el globo (`top` por defecto); si no entra, pasa al opuesto."
+        "descripcion": "Lado en que sale el globo (`top` por defecto); si no entra, pasa al opuesto.",
+        "control": "opciones",
+        "opciones": [
+          "top",
+          "right",
+          "bottom",
+          "left"
+        ]
       }
     ],
     "eventos": [],
@@ -166,6 +203,13 @@ export const MANIFIESTO_UI_KIT: readonly FichaComponente[] = [
     "evitar": "- Para información imprescindible, instrucciones o errores: dejarla visible (`siaf-input` con su error, `message-box`\n  o `siaf-alert`); el globo solo aparece con el puntero o el foco y en móvil exige una pulsación larga.\n- Para contenido con título, enlaces o botones: usar `siaf-popover`; el globo solo muestra texto.\n- Para texto que puede envolver en pantallas chicas: usar `sm:truncate` en vez de `truncate` y no depender del globo.\n- Un globo hecho a mano con CSS o con el atributo `title`: esta directiva es el único tooltip del kit.",
     "teclado": "- **Tab**: al llegar el foco al elemento, o al control que contiene el texto (una opción de `siaf-menu`,\n  `siaf-select-options` o `siaf-list`, un botón, un enlace), aparece el globo; al salir se oculta. Si el control\n  tiene varios textos cortados, muestra el primero. En dispositivos sin hover no aparece con el foco.\n- **Escape**: oculta el globo; el menú o el panel que lo contiene sigue recibiendo la tecla.",
     "accesibilidad": "- **4.1.2 Nombre, función y valor (A)**: con texto de ayuda, el control queda enlazado por `aria-describedby` a una\n  descripción oculta que existe desde el inicio, así el lector la anuncia al enfocarlo aunque el globo no se haya\n  pintado; si el nombre del control ya incluye ese texto, no lo repite. El globo es `role=\"tooltip\"` con\n  `aria-hidden` (solo visual). En modo truncado no se enlaza: el texto completo ya está en el DOM.\n- **1.4.13 Contenido en hover o foco (AA)**: Escape lo oculta sin mover el puntero ni el foco; se puede llevar el\n  puntero sobre el globo sin que desaparezca (espera 150 ms al salir del elemento) y sigue visible mientras el\n  elemento tenga el puntero o el foco. Se oculta al desplazar la página.\n- **1.4.3 Contraste mínimo (AA)**: `text-brand-white` sobre `bg-feedback-dark-default` 12.24:1 en claro; en oscuro,\n  sobre `bg-snackbar` (el mismo fondo del snackbar), 15.71:1.\n- **Pendiente · 2.1.1 Teclado (A)**: la directiva no agrega `tabindex`: un texto cortado que no está dentro de un\n  control enfocable (un título, una celda, una etiqueta) solo se completa con el mouse o con la pulsación larga; el\n  lector de pantalla sí lee el texto entero.",
+    "limitaciones": null,
+    "incorrecto": null,
+    "correcto": null,
+    "waiAria": {
+      "nombre": "Tooltip",
+      "url": "https://www.w3.org/WAI/ARIA/apg/patterns/tooltip/"
+    },
     "figma": [],
     "aria": {
       "roles": [
@@ -227,28 +271,32 @@ export const MANIFIESTO_UI_KIT: readonly FichaComponente[] = [
         "tipo": "string",
         "porDefecto": "'search'",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "texto"
       },
       {
         "nombre": "disabled",
         "tipo": "boolean",
         "porDefecto": "false",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "booleano"
       },
       {
         "nombre": "message",
         "tipo": "string",
         "porDefecto": "'No se ha seleccionado ningún tipo. Haga clic en el botón p…",
         "requerida": false,
-        "descripcion": "Texto del recuadro: se reemplaza por el valor una vez seleccionado."
+        "descripcion": "Texto del recuadro: se reemplaza por el valor una vez seleccionado.",
+        "control": "texto"
       },
       {
         "nombre": "title",
         "tipo": "string",
         "porDefecto": "''",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "texto"
       }
     ],
     "eventos": [
@@ -262,6 +310,10 @@ export const MANIFIESTO_UI_KIT: readonly FichaComponente[] = [
     "evitar": "- Rehacer a mano el título, el botón y el `message-box`: este es el componente canónico.\n- Cuando ya hay un ítem elegido con varios datos: pasar a `siaf-summary-card` (como «Buscar evento» en el\n  catálogo de eventos contables) o a la grilla estándar con `siaf-table-controls` si son dos o más.\n- Para una pantalla de consulta sin resultados: usar `siaf-empty-state`.",
     "teclado": "- **Tab**: enfoca el botón de acción; deshabilitado no recibe el foco.\n- **Enter / Espacio**: emiten `actionClicked` (el botón sigue `siaf-button`).",
     "accesibilidad": "- **1.3.1 Información y relaciones (A)**: es un `<section>` con el título en un `<h3>` de nivel fijo y el\n  mensaje en un párrafo (`message-box`).\n- **4.1.2 Nombre, función y valor (A)**: el botón de ícono recibe `title` como `ariaLabel`, así que nombra la\n  sección y no la acción; sin `title` se leería el nombre del ícono. El padre debe dar siempre `title`.\n- **1.1.1 Contenido no textual (A)**: la lupa es decorativa; el nombre del botón sale de `ariaLabel`.\n- **4.1.3 Mensajes de estado (AA)**: el recuadro no es región viva: al elegir un valor, el texto nuevo no se\n  anuncia.\n- **1.4.3 Contraste mínimo (AA)**: título `text-neutral-high` 16.29:1 (16.53:1 en oscuro) y mensaje\n  `text-neutral-medium` sobre `bg-surfaces-surface-low` 13.46:1 (12.09:1).\n- **2.4.7 Foco visible (AA)**: el botón muestra el borde `border-states-focus` (5.35:1) y la capa de foco.\n- **2.5.8 Tamaño del objetivo (AA)**: el botón mide 40 × 40 px.",
+    "limitaciones": null,
+    "incorrecto": null,
+    "correcto": null,
+    "waiAria": null,
     "figma": [],
     "aria": {
       "roles": [],
@@ -303,7 +355,8 @@ export const MANIFIESTO_UI_KIT: readonly FichaComponente[] = [
         "tipo": "string",
         "porDefecto": "''",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "texto"
       }
     ],
     "eventos": [],
@@ -311,6 +364,10 @@ export const MANIFIESTO_UI_KIT: readonly FichaComponente[] = [
     "evitar": "- Para el patrón título + lupa + recuadro: usar `empty-section`.\n- Para avisos con tono (información, advertencia, error) o que deben anunciarse: usar `siaf-alert`.\n- Para confirmar una acción que acaba de terminar: usar `siaf-snackbar`.\n- Para una pantalla de consulta sin resultados: usar `siaf-empty-state`.",
     "teclado": "- No recibe foco: no es interactivo.",
     "accesibilidad": "- **1.3.1 Información y relaciones (A)**: es un párrafo dentro de un recuadro, sin rol ni encabezado propio:\n  el título lo pone la sección que lo contiene.\n- **1.4.3 Contraste mínimo (AA)**: `text-neutral-medium` sobre `bg-surfaces-surface-low`, 13.46:1 en claro y\n  12.09:1 en oscuro.\n- **4.1.3 Mensajes de estado (AA)**: no es región viva: si el texto cambia tras una acción, no se anuncia.",
+    "limitaciones": null,
+    "incorrecto": null,
+    "correcto": null,
+    "waiAria": null,
     "figma": [],
     "aria": {
       "roles": [],
@@ -367,28 +424,36 @@ export const MANIFIESTO_UI_KIT: readonly FichaComponente[] = [
         "tipo": "string",
         "porDefecto": "''",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "texto"
       },
       {
         "nombre": "required",
         "tipo": "boolean",
         "porDefecto": "false",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "booleano"
       },
       {
         "nombre": "value",
         "tipo": "string",
         "porDefecto": "''",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "texto"
       },
       {
         "nombre": "variant",
         "tipo": "'default' | 'monto'",
         "porDefecto": "'default'",
         "requerida": false,
-        "descripcion": "`monto`: importe en negrita, a la derecha y sobre `bg-surfaces-highlight`."
+        "descripcion": "`monto`: importe en negrita, a la derecha y sobre `bg-surfaces-highlight`.",
+        "control": "opciones",
+        "opciones": [
+          "default",
+          "monto"
+        ]
       }
     ],
     "eventos": [],
@@ -396,6 +461,10 @@ export const MANIFIESTO_UI_KIT: readonly FichaComponente[] = [
     "evitar": "- Para un dato que el usuario puede cambiar: usar `siaf-input`, `text-area-control` o `siaf-date-time-picker`.\n- Para el ítem elegido desde un panel lateral: usar `siaf-summary-card`; para un aviso breve, `message-box`.\n- Confundirlo con `siaf-readonly`, el recuadro gris con etiqueta en mayúsculas que ninguna pantalla usa.\n- `monto` para los importes de una tabla: van en sus columnas, alineados a la derecha.",
     "teclado": "- No recibe foco: no es interactivo.",
     "accesibilidad": "- **1.3.1 Información y relaciones (A)**: es texto estático, no un campo: el caption va antes del valor en el DOM,\n  así que se leen juntos y en orden; no usa `dt`/`dd` ni `aria-labelledby`.\n- **1.4.3 Contraste mínimo (AA)**: caption `text-neutral-low` 5.01:1 (8.86:1 oscuro), valor `text-neutral-high`\n  16.29:1 y asterisco `text-feedback-danger` 9.84:1 sobre `bg-surfaces-surface`. En `monto`, el valor sobre\n  `bg-surfaces-highlight` da 14.2:1 (11.0:1 oscuro).\n- **1.4.1 Uso del color (A)**: el obligatorio se marca con un asterisco, no solo con el color; el fondo de `monto`\n  solo resalta el importe, que va escrito.",
+    "limitaciones": null,
+    "incorrecto": null,
+    "correcto": null,
+    "waiAria": null,
     "figma": [],
     "aria": {
       "roles": [],
@@ -467,56 +536,6 @@ export const MANIFIESTO_UI_KIT: readonly FichaComponente[] = [
     "sinUso": false
   },
   {
-    "selector": "siaf-acciones-en-lote-section",
-    "clase": "AccionesEnLoteSectionComponent",
-    "tipo": "componente",
-    "capa": "components",
-    "importacion": "@kennedy122112/siaf-rp-ui-angular",
-    "archivo": "node_modules/@kennedy122112/siaf-rp-ui-angular/types/kennedy122112-siaf-rp-ui-angular.d.ts",
-    "descripcion": "Verificar y Aprobar en lote de «Documentos y registros»: el modal de confirmación de cada acción, el cambio de estado\nde las solicitudes elegidas y el snackbar con el resultado.\n\nExtraída de `siaf-documents-records-page` siguiendo docs/patron-componentes-solicitud.md («Regla de\nmantenimiento»): las filas y su selección son de la página, que pinta el botón de la acción y la abre con `abrir`.\nLas filas con `documentId` cambian en el sistema (`FuenteDocumentosRegistros`) y la bandeja se recarga; las de un\nproceso sin backend cambian en pantalla y se le pasan a `cambioEstadoLocal` para que su almacén las conserve.",
-    "usaSesion": true,
-    "proyectaContenido": false,
-    "entradas": [
-      {
-        "nombre": "config",
-        "tipo": "DocumentsRecordsConfig",
-        "porDefecto": null,
-        "requerida": true,
-        "descripcion": "Configuración del proceso con las reglas de rol aplicadas (`effectiveConfig` de la página)."
-      },
-      {
-        "nombre": "filas",
-        "tipo": "DocumentsRecordsRow[]",
-        "porDefecto": null,
-        "requerida": true,
-        "descripcion": "Filas de la pestaña Documentos con su selección: son de la página y cambian en su lugar."
-      }
-    ],
-    "eventos": [],
-    "usar": null,
-    "evitar": null,
-    "teclado": null,
-    "accesibilidad": null,
-    "figma": [],
-    "aria": {
-      "roles": [],
-      "atributos": []
-    },
-    "tokens": [
-      {
-        "token": "--sys-gap-base-lg",
-        "via": [
-          "bottom-siaf-lg"
-        ]
-      }
-    ],
-    "usa": [
-      "siaf-modal",
-      "siaf-snackbar"
-    ],
-    "sinUso": false
-  },
-  {
     "selector": "siaf-accordion",
     "clase": "AccordionComponent",
     "tipo": "componente",
@@ -539,14 +558,20 @@ export const MANIFIESTO_UI_KIT: readonly FichaComponente[] = [
         "tipo": "string",
         "porDefecto": "''",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "texto"
       },
       {
         "nombre": "variant",
         "tipo": "'default' | 'landing'",
         "porDefecto": "'default'",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "opciones",
+        "opciones": [
+          "default",
+          "landing"
+        ]
       }
     ],
     "eventos": [],
@@ -554,6 +579,10 @@ export const MANIFIESTO_UI_KIT: readonly FichaComponente[] = [
     "evitar": "- Para contenido rico (formularios, grillas, botones): el ítem solo acepta texto; usar `siaf-expansion-panel`.\n- Para ítems de una selección que se quitan con X: usar `siaf-collapsible-card`.\n- Para secciones obligatorias de una solicitud: dejarlas visibles en `siaf-solicitude-form-card`.\n- Marcar `disabled` para esconder un ítem: sigue enfocable y se despliega vacío; mejor no incluirlo.",
     "teclado": "- **Tab**: pasa de un título a otro (cada título es un `summary` nativo).\n- **Enter / Espacio**: abren o cierran la sección enfocada (comportamiento nativo de `details`).",
     "accesibilidad": "- **Pendiente · 4.1.2 Nombre, función y valor (A)**: `details` y `summary` nativos anuncian cada título como\n  desplegable con su estado, sin ARIA extra; pero un ítem `disabled` solo se atenúa (`opacity-50`): su `summary`\n  sigue recibiendo foco, se despliega vacío al pulsarlo y no publica `aria-disabled`.\n- **1.1.1 Contenido no textual (A)**: la flecha y los íconos más / menos de `landing` son `siaf-icon` decorativos\n  (`aria-hidden`).\n- **1.4.1 Uso del color (A)**: abierto o cerrado se ve en la flecha que gira o en el cambio de más a menos, no solo\n  en el fondo.\n- **1.4.3 Contraste mínimo (AA)**: en `default`, título `text-neutral-high` 16.29:1 (oscuro 16.53:1) y contenido\n  `text-neutral-low` 5.01:1 (8.86:1) sobre la superficie; `landing` usa la paleta propia del sitio público (`--sys-color-landing-*`) fuera de\n  los tokens, así que su contraste depende del fondo de la portada.\n- **2.4.7 Foco visible (AA)**: no define estilo de foco ni lo quita: el `summary` muestra el contorno por defecto\n  del navegador.\n- **2.5.8 Tamaño del objetivo (AA)**: cada título ocupa todo el ancho y mide al menos 48 px de alto (72 px en\n  `landing`).",
+    "limitaciones": null,
+    "incorrecto": null,
+    "correcto": null,
+    "waiAria": null,
     "figma": [],
     "aria": {
       "roles": [],
@@ -630,7 +659,7 @@ export const MANIFIESTO_UI_KIT: readonly FichaComponente[] = [
     "importacion": "@kennedy122112/siaf-rp-ui-angular",
     "archivo": "node_modules/@kennedy122112/siaf-rp-ui-angular/types/kennedy122112-siaf-rp-ui-angular.d.ts",
     "descripcion": "Panel lateral a pantalla completa «Historial del registro» de una cuenta contable, que abre la bandeja\n`siaf-documents-records-page` desde la pestaña Registros.\n\nAl abrirse con un `record` pide a `FuenteHistorialCuenta` (la provee el proyecto: el kit no llama a ninguna API) la\ncuenta y sus solicitudes, y muestra la cuenta\n(datos, atributos, dinámica contable y entidades del estado) junto con la solicitud que la creó (documento,\nsustento y `siaf-action-tracker`). Se cierra con la X o pulsando el fondo, que emiten `closed`.",
-    "usaSesion": true,
+    "usaSesion": false,
     "proyectaContenido": false,
     "entradas": [
       {
@@ -638,7 +667,8 @@ export const MANIFIESTO_UI_KIT: readonly FichaComponente[] = [
         "tipo": "boolean",
         "porDefecto": "false",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "booleano"
       },
       {
         "nombre": "record",
@@ -659,6 +689,10 @@ export const MANIFIESTO_UI_KIT: readonly FichaComponente[] = [
     "evitar": "- Para registros que no son cuentas contables: sus secciones son las del plan de cuentas; los asientos de ajuste\n  usan `siaf-asiento-history-panel` (`recordHistoryKind: 'asiento'`).\n- Para el historial de estados de un documento (pestaña Documentos): usar `siaf-document-history-panel`.\n- Dentro de la solicitud abierta: usar `siaf-detail-history-tabs` y `siaf-action-tracker` en la página.\n- Para modificar la cuenta: el panel es de solo lectura; el cambio va por una solicitud de modificación.",
     "teclado": "- **Tab**: al abrir, el foco entra en la X; recorre los controles de la tabla de entidades y da la vuelta sin salir\n  del panel (`siaf-table-controls` y `siaf-pagination` siguen su propio teclado).\n- **Enter / Espacio** en la X: cierran el panel (emite `closed`).\n- **Escape**: cierra el panel (emite `closed`) y el foco vuelve al botón de historial.",
     "accesibilidad": "- **4.1.2 Nombre, función y valor (A)**: es `role=\"dialog\"` con `aria-modal=\"true\"` y nombre desde su título\n  (`aria-labelledby`); la X se llama «Cerrar historial de cuenta contable».\n- **1.3.1 Información y relaciones (A)**: títulos `h2` y `h3` por sección, cuentas anteriores y entidades en una\n  `table` con `thead` y `th`, y «¿Está visible?» como checkbox nativo deshabilitado dentro de su `label`.\n- **1.4.1 Uso del color (A)**: el estado del registro va en `siaf-record-status-tag`, con ícono y texto.\n- **1.4.3 Contraste mínimo (AA)**: títulos y valores `text-neutral-high` 16.29:1 (oscuro 16.53:1), etiquetas\n  `text-neutral-low` 5.01:1 (8.86:1) y textos `text-neutral-medium` 14.53:1 (12.87:1) sobre la superficie.\n- **2.4.3 Orden del foco (A)**: con `siafFoco`, al abrir lleva el foco a la X y lo retiene en el panel; al cerrar (X,\n  Escape o clic en el fondo) lo devuelve al botón de historial.\n- **2.4.7 Foco visible (AA)**: la X no define estilo de foco: muestra el contorno por defecto del navegador.\n- **Pendiente · 4.1.3 Mensajes de estado (AA)**: la señal `loading` no se pinta: mientras responde la API los\n  campos muestran «--» sin aviso visual ni `aria-live`.\n- **1.4.13 Contenido en hover o foco (AA)**: desde `sm` los valores truncados se completan con `siafTooltip`, que\n  se cierra con Escape y se puede recorrer con el puntero.\n- **Pendiente · 2.1.1 Teclado (A)**: esos valores no reciben foco, así que con teclado el globo no aparece (el lector\n  de pantalla sí lee el valor entero).",
+    "limitaciones": null,
+    "incorrecto": null,
+    "correcto": null,
+    "waiAria": null,
     "figma": [],
     "aria": {
       "roles": [
@@ -833,21 +867,36 @@ export const MANIFIESTO_UI_KIT: readonly FichaComponente[] = [
         "tipo": "'detail' | 'history'",
         "porDefecto": "'detail'",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "opciones",
+        "opciones": [
+          "detail",
+          "history"
+        ]
       },
       {
         "nombre": "description",
         "tipo": "string",
         "porDefecto": "'Lorem ipsum dolor sit amet, consectetur adipiscing elit, s…",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "texto"
       },
       {
         "nombre": "detailType",
         "tipo": "'default' | 'rejection-explanation' | 'rejection-reason' | 'evaluation-comment' | 'acceptance-comment' | 'observation-comment'",
         "porDefecto": "'default'",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "opciones",
+        "opciones": [
+          "default",
+          "rejection-explanation",
+          "rejection-reason",
+          "evaluation-comment",
+          "acceptance-comment",
+          "observation-comment"
+        ]
       },
       {
         "nombre": "historyRows",
@@ -861,14 +910,16 @@ export const MANIFIESTO_UI_KIT: readonly FichaComponente[] = [
         "tipo": "boolean",
         "porDefecto": "true",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "booleano"
       },
       {
         "nombre": "showTabs",
         "tipo": "boolean",
         "porDefecto": "false",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "booleano"
       },
       {
         "nombre": "summaryItems",
@@ -882,7 +933,12 @@ export const MANIFIESTO_UI_KIT: readonly FichaComponente[] = [
         "tipo": "'default' | 'detail'",
         "porDefecto": "'default'",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "opciones",
+        "opciones": [
+          "default",
+          "detail"
+        ]
       }
     ],
     "eventos": [],
@@ -890,6 +946,10 @@ export const MANIFIESTO_UI_KIT: readonly FichaComponente[] = [
     "evitar": "- Para comentarios e iteraciones con pestañas Detalle / Historial: usar `siaf-detail-history-tabs`; las pestañas de\n  este componente no cambian al pulsarlas y sus valores por defecto son de muestra.\n- Para pasos numerados de un flujo: usar `siaf-steps`; para hitos con fecha, `siaf-timeline`.\n- Para el historial de estados de un documento desde la bandeja: usar `siaf-document-history-panel`.",
     "teclado": "- Tal como lo usa la app (solo tarjetas de responsables) no recibe foco: no es interactivo.\n- **Tab** (con `showTabs` o `variant=\"detail\"`): enfoca los botones Detalle e Historial.\n- **Enter / Espacio**: no cambian de pestaña; la activa la fija el padre con `activeTab`.",
     "accesibilidad": "- **1.3.1 Información y relaciones (A)**: el historial es una `table` con `thead` y `th` bajo un `h3`; en las\n  tarjetas cada etiqueta precede a su valor en el orden de lectura.\n- **1.4.1 Uso del color (A)**: responsables, fechas y procesos van en texto; la pestaña activa además va en negrita\n  y subrayada.\n- **Pendiente · 1.4.3 Contraste mínimo (AA)**: en las tarjetas, etiquetas `text-neutral-low` 5.01:1 (oscuro 8.86:1)\n  y valores `text-neutral-high` 16.29:1 (16.53:1) cumplen; la pestaña activa usa la clase `text-brand-primary`\n  (color de fondo de marca), que en oscuro no llega a 4.5:1: da 2.66:1 sobre la superficie y la franja es\n  `surface-low`, más clara.\n- **Pendiente · 4.1.2 Nombre, función y valor (A)**: las pestañas Detalle / Historial son `button` sin acción, sin\n  `role=\"tab\"` ni `aria-selected`: la activa solo se distingue a la vista.",
+    "limitaciones": null,
+    "incorrecto": null,
+    "correcto": null,
+    "waiAria": null,
     "figma": [],
     "aria": {
       "roles": [],
@@ -1028,35 +1088,47 @@ export const MANIFIESTO_UI_KIT: readonly FichaComponente[] = [
         "tipo": "string",
         "porDefecto": "''",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "texto"
       },
       {
         "nombre": "leadingIcon",
         "tipo": "boolean",
         "porDefecto": "true",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "booleano"
       },
       {
         "nombre": "showClose",
         "tipo": "boolean",
         "porDefecto": "false",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "booleano"
       },
       {
         "nombre": "title",
         "tipo": "string",
         "porDefecto": "''",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "texto"
       },
       {
         "nombre": "tone",
         "tipo": "'info' | 'success' | 'warning' | 'neutral' | 'error'",
         "porDefecto": "'neutral'",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "opciones",
+        "opciones": [
+          "neutral",
+          "info",
+          "success",
+          "warning",
+          "error"
+        ]
       }
     ],
     "eventos": [
@@ -1070,6 +1142,13 @@ export const MANIFIESTO_UI_KIT: readonly FichaComponente[] = [
     "evitar": "- Para confirmar que una acción terminó (grabar, verificar, aprobar): usar `siaf-snackbar`, que en las\n  solicitudes ya emite `siaf-request-approval-modals`.\n- Para notas grises sin tono: usar `message-box`.\n- Para pedir una decisión antes de seguir: usar `siaf-modal`.\n- Para el estado de un documento o registro: usar `siaf-flow-status-tag` o `siaf-record-status-tag`.",
     "teclado": "- **Tab**: con `showClose`, enfoca la × del aviso; sin ella, el aviso no recibe foco.\n- **Enter / Espacio**: la × emite `closed` (botón nativo); quien retira el aviso es el padre.",
     "accesibilidad": "- **4.1.3 Mensajes de estado (AA)**: el contenedor es `role=\"alert\"` en todos los tonos: al insertarse se\n  anuncia de inmediato, también los neutrales, informativos y de éxito.\n- **1.1.1 Contenido no textual (A)**: el ícono del tono va con `aria-hidden`; el tipo de aviso tiene que quedar\n  dicho en `title` o `description`.\n- **1.4.1 Uso del color (A)**: cada tono cambia de color y de ícono, salvo neutral y éxito, que comparten\n  `check_circle`: entre esos dos solo el texto los distingue.\n- **Pendiente · 1.4.3 Contraste mínimo (AA)**: `warning` en claro pone `text-feedback-warning` sobre\n  `bg-feedback-light-warning` con 4.43:1. Los demás cumplen (info 5.81:1, éxito 5.31:1, error 6.21:1,\n  neutral 11.46:1) y en oscuro todos superan 8:1.\n- **4.1.2 Nombre, función y valor (A)**: la × es un `<button>` con `aria-label=\"Cerrar alerta\"`.\n- **2.4.7 Foco visible (AA)**: la × muestra un contorno de 2 px del color del texto del tono (4.43:1 o más\n  sobre el fondo del aviso).\n- **2.5.8 Tamaño del objetivo (AA)**: la × mide 40 × 40 px.\n- **2.4.3 Orden del foco (A)**: al cerrar, el padre retira el aviso y el foco queda en el documento; conviene\n  llevarlo a un control cercano.",
+    "limitaciones": null,
+    "incorrecto": null,
+    "correcto": null,
+    "waiAria": {
+      "nombre": "Alerta",
+      "url": "https://www.w3.org/WAI/ARIA/apg/patterns/alert/"
+    },
     "figma": [
       {
         "nodo": "6989:873",
@@ -1233,21 +1312,24 @@ export const MANIFIESTO_UI_KIT: readonly FichaComponente[] = [
         "tipo": "boolean",
         "porDefecto": "false",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "booleano"
       },
       {
         "nombre": "uploadDescription",
         "tipo": "string",
         "porDefecto": "'Adjunte el documento que respalda la solicitud.'",
         "requerida": false,
-        "descripcion": "Explicación bajo el título: qué documento se adjunta."
+        "descripcion": "Explicación bajo el título: qué documento se adjunta.",
+        "control": "texto"
       },
       {
         "nombre": "uploadTitle",
         "tipo": "string",
         "porDefecto": "'Sustento de la anulación'",
         "requerida": false,
-        "descripcion": "Título de la sección del sustento."
+        "descripcion": "Título de la sección del sustento.",
+        "control": "texto"
       }
     ],
     "eventos": [
@@ -1266,6 +1348,10 @@ export const MANIFIESTO_UI_KIT: readonly FichaComponente[] = [
     "evitar": "- Como confirmación genérica: usar `siaf-modal` (presets o `custom`).\n- Para observar o rechazar con motivo: usar `siaf-request-approval-modals` o `siaf-modal` con `observe` / `reject`.\n- Para adjuntar el sustento de una solicitud que no es de anulación: usar `siaf-upload-side-nav`.",
     "teclado": "- **Tab / Shift + Tab**: al abrir, el foco entra en la X; recorren el detalle, «Elegir archivo», los botones de la\n  tarjeta del archivo y Cancelar / Aceptar, y dan la vuelta sin salir del diálogo.\n- **Escape**: cierra como la X (emite `closed`) y el foco vuelve al control que abrió el diálogo.\n- **Enter / Espacio**: en «Elegir archivo» abren el diálogo de archivos del sistema; la X y Cancelar emiten `closed`,\n  y Aceptar emite `accepted` cuando hay detalle y archivo.",
     "accesibilidad": "- **4.1.2 Nombre, función y valor (A)**: `role=\"dialog\"` con `aria-modal=\"true\"`, `aria-labelledby` al título y\n  `aria-describedby` a la advertencia; la X se llama «Cerrar» (ícono con `label`).\n- **2.4.3 Orden del foco (A)**: con `siafFoco`, al abrir lleva el foco a la X y al cerrar lo devuelve al control que\n  lo abrió; Tab no sale hacia la página de atrás.\n- **2.1.2 Sin trampas de teclado (A)**: Tab queda dentro mientras está abierto, pero Escape siempre lo cierra.\n- **3.3.2 Etiquetas o instrucciones (A)**: el detalle se ve siempre nombrado (dentro del campo o flotante) con\n  asterisco y `aria-required`, y el sustento tiene su título, su explicación y los formatos que admite. Aceptar\n  sigue deshabilitado hasta completar los dos.\n- **Pendiente · 1.3.1 Información y relaciones (A)**: de `text-area-control`: el contador «0/1000» va dentro del\n  `<label>` del detalle y se suma a su nombre.\n- **Pendiente · 4.1.3 Mensajes de estado (AA)**: de `siaf-uploader`: ni el avance ni el rechazo de un archivo se\n  anuncian.\n- **2.4.7 Foco visible (AA)**: la X muestra el anillo `border-states-focus` de 2 px; el detalle pasa al borde azul\n  de 2 px y «Elegir archivo» pinta el contorno del kit.\n- **Pendiente · 1.4.11 Contraste no textual (AA)**: el borde del detalle vacío es `border-states-enabled` (2.44:1 en\n  claro, 2.59:1 en oscuro).\n- **1.4.3 Contraste mínimo (AA)**: título `text-neutral-high` y textos `text-neutral-medium` sobre\n  `surface-highest`, que en claro es el blanco de la superficie (16.29:1 y 14.53:1).",
+    "limitaciones": null,
+    "incorrecto": null,
+    "correcto": null,
+    "waiAria": null,
     "figma": [],
     "aria": {
       "roles": [
@@ -1376,6 +1462,10 @@ export const MANIFIESTO_UI_KIT: readonly FichaComponente[] = [
     "evitar": null,
     "teclado": null,
     "accesibilidad": null,
+    "limitaciones": null,
+    "incorrecto": null,
+    "correcto": null,
+    "waiAria": null,
     "figma": [],
     "aria": {
       "roles": [],
@@ -1415,7 +1505,7 @@ export const MANIFIESTO_UI_KIT: readonly FichaComponente[] = [
     "importacion": "@kennedy122112/siaf-rp-ui-angular",
     "archivo": "node_modules/@kennedy122112/siaf-rp-ui-angular/types/kennedy122112-siaf-rp-ui-angular.d.ts",
     "descripcion": "Historial del registro para asientos de ajuste (SRAA) — pestaña Registros.\n\nMisma cáscara que `siaf-account-history-panel` (overlay + stepper +\ndocumento + secciones + sustento + tracker) pero con la estructura del\nasiento: ámbito, período, fecha de contabilización, clase/detalle, glosa\ny la grilla de cuentas contables con totales Debe/Haber. Todo sale del\ndocumento ya grabado y las fechas del período, que pide a `FuenteHistorialAsiento` (la provee el proyecto: el kit\nno llama a ninguna API).",
-    "usaSesion": true,
+    "usaSesion": false,
     "proyectaContenido": false,
     "entradas": [
       {
@@ -1423,7 +1513,8 @@ export const MANIFIESTO_UI_KIT: readonly FichaComponente[] = [
         "tipo": "boolean",
         "porDefecto": "false",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "booleano"
       },
       {
         "nombre": "record",
@@ -1444,6 +1535,10 @@ export const MANIFIESTO_UI_KIT: readonly FichaComponente[] = [
     "evitar": "- Para registros del plan de cuentas: usar `siaf-account-history-panel`; para el historial de estados de un\n  documento, `siaf-document-history-panel`.\n- Dentro de la solicitud abierta: usar la pantalla del asiento con `siaf-detail-history-tabs` y\n  `siaf-action-tracker`.\n- Para revertir o modificar el asiento: el panel es de solo lectura; el cambio va por una solicitud.",
     "teclado": "- **Tab**: al abrir, el foco entra en la X; recorre «Código de asiento», el buscador y la paginación, y da la vuelta\n  sin salir del panel.\n- **Enter / Espacio** en la X: cierran el panel (emite `closed`).\n- **Escape**: cierra el panel (emite `closed`) y el foco vuelve al botón de historial.\n- **Enter / Espacio** en «Código de asiento»: pliegan o despliegan las cuentas contables.\n- **Enter** en el buscador: aplica el filtro. El buscador sigue `siaf-input` y la paginación `siaf-pagination`.",
     "accesibilidad": "- **Pendiente · 4.1.2 Nombre, función y valor (A)**: el panel es `role=\"dialog\"` con `aria-modal` y nombre desde su\n  título, y la X se llama «Cerrar historial del asiento de ajuste»; pero «Código de asiento» no publica\n  `aria-expanded` ni `aria-controls`: su estado solo se ve en la flecha.\n- **1.3.1 Información y relaciones (A)**: títulos `h2` y `h3` por sección y cuentas en una `table` con `thead` y\n  `th`; los totales Debe y Haber van en filas con su rótulo.\n- **1.4.1 Uso del color (A)**: el tipo de movimiento va en texto, el estado del registro en\n  `siaf-record-status-tag` con ícono, y los obligatorios llevan asterisco.\n- **1.4.3 Contraste mínimo (AA)**: valores `text-neutral-high` 16.29:1 (oscuro 16.53:1), etiquetas\n  `text-neutral-low` 5.01:1 (8.86:1) y asterisco `text-feedback-danger` 9.84:1 (10.59:1) sobre la superficie.\n- **2.4.3 Orden del foco (A)**: con `siafFoco`, al abrir lleva el foco a la X y lo retiene en el panel; al cerrar (X,\n  Escape o clic en el fondo) lo devuelve al botón de historial.\n- **2.4.7 Foco visible (AA)**: la X y «Código de asiento» no definen estilo de foco: muestran el contorno por\n  defecto del navegador.\n- **Pendiente · 4.1.3 Mensajes de estado (AA)**: ni la carga del detalle ni el resultado del buscador se anuncian;\n  mientras responde la API los campos muestran «--».\n- **1.4.13 Contenido en hover o foco (AA)**: desde `sm` los valores truncados se completan con `siafTooltip`, que\n  se cierra con Escape y se puede recorrer con el puntero.\n- **Pendiente · 2.1.1 Teclado (A)**: esos valores no reciben foco, así que con teclado el globo no aparece (el lector\n  de pantalla sí lee el valor entero).",
+    "limitaciones": null,
+    "incorrecto": null,
+    "correcto": null,
+    "waiAria": null,
     "figma": [],
     "aria": {
       "roles": [
@@ -1616,14 +1711,20 @@ export const MANIFIESTO_UI_KIT: readonly FichaComponente[] = [
         "tipo": "string",
         "porDefecto": "''",
         "requerida": false,
-        "descripcion": "Nombre accesible: qué indica el badge."
+        "descripcion": "Nombre accesible: qué indica el badge.",
+        "control": "texto"
       },
       {
         "nombre": "color",
         "tipo": "'primary' | 'accent'",
         "porDefecto": "'accent'",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "opciones",
+        "opciones": [
+          "accent",
+          "primary"
+        ]
       },
       {
         "nombre": "label",
@@ -1637,21 +1738,28 @@ export const MANIFIESTO_UI_KIT: readonly FichaComponente[] = [
         "tipo": "number | null | undefined",
         "porDefecto": "null",
         "requerida": false,
-        "descripcion": "Tope para contadores numéricos: por encima se muestra `max+`."
+        "descripcion": "Tope para contadores numéricos: por encima se muestra `max+`.",
+        "control": "numero"
       },
       {
         "nombre": "minWidth",
         "tipo": "number | null",
         "porDefecto": "null",
         "requerida": false,
-        "descripcion": "Ancho mínimo del contador en px (ej. 32 al final de un ítem de lista, como en el Figma)."
+        "descripcion": "Ancho mínimo del contador en px (ej. 32 al final de un ítem de lista, como en el Figma).",
+        "control": "numero"
       },
       {
         "nombre": "size",
         "tipo": "'standard' | 'small'",
         "porDefecto": "'standard'",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "opciones",
+        "opciones": [
+          "standard",
+          "small"
+        ]
       }
     ],
     "eventos": [],
@@ -1659,6 +1767,10 @@ export const MANIFIESTO_UI_KIT: readonly FichaComponente[] = [
     "evitar": "- Para el estado de un documento o registro: usar `siaf-flow-status-tag` o `siaf-record-status-tag`; para otro estado,\n  `siaf-status-tag`.\n- Para etiquetas con texto o categorías con color: usar `siaf-status-tag`; para filtros aplicados u opciones que se\n  eligen: `siaf-tag`.\n- Para distinguir tipos de aviso solo por el color (`accent` rojo frente a `primary` azul).\n- Suelto y sin `ariaLabel`: si el número ya está en el nombre del control, ocultarlo con `aria-hidden` (como\n  en el navbar); si no, darle `ariaLabel`.",
     "teclado": "- No recibe foco: no es interactivo.",
     "accesibilidad": "- **1.1.1 Contenido no textual (A)**: sin `ariaLabel`, el punto lleva `aria-hidden` y el contador se lee como un\n  número suelto; con `ariaLabel`, recibe ese nombre. El padre debe darlo cuando el número no está ya en el\n  control que lo contiene.\n- **4.1.3 Mensajes de estado (AA)**: con `ariaLabel` es `role=\"status\"`, así que los cambios del contador se\n  anuncian de forma educada; sin él, no se anuncian.\n- **1.4.1 Uso del color (A)**: `accent` y `primary` solo cambian el color; el punto informa por su presencia y\n  el contador por su número.\n- **1.4.3 Contraste mínimo (AA)**: texto blanco sobre `bg-brand-accent` 4.89:1 (5.65:1 en oscuro) y sobre\n  `bg-brand-primary` 8.79:1 (6.67:1).\n- **Pendiente · 1.4.11 Contraste no textual (AA)**: en oscuro el punto `primary` (`bg-brand-primary`) queda en\n  2.66:1 sobre la superficie; el `accent` cumple (4.89:1 en claro, 3.14:1 en oscuro).",
+    "limitaciones": null,
+    "incorrecto": null,
+    "correcto": null,
+    "waiAria": null,
     "figma": [
       {
         "nodo": "7262:6493",
@@ -1719,7 +1831,8 @@ export const MANIFIESTO_UI_KIT: readonly FichaComponente[] = [
         "tipo": "string",
         "porDefecto": "'Gráfico de barras'",
         "requerida": false,
-        "descripcion": "Nombre accesible del gráfico y título de su tabla de datos."
+        "descripcion": "Nombre accesible del gráfico y título de su tabla de datos.",
+        "control": "texto"
       },
       {
         "nombre": "categories",
@@ -1733,28 +1846,36 @@ export const MANIFIESTO_UI_KIT: readonly FichaComponente[] = [
         "tipo": "string",
         "porDefecto": "'Categoría'",
         "requerida": false,
-        "descripcion": "Encabezado de la columna de categorías en la tabla de datos."
+        "descripcion": "Encabezado de la columna de categorías en la tabla de datos.",
+        "control": "texto"
       },
       {
         "nombre": "height",
         "tipo": "number",
         "porDefecto": "252",
         "requerida": false,
-        "descripcion": "Alto del área del gráfico en px (sin la leyenda)."
+        "descripcion": "Alto del área del gráfico en px (sin la leyenda).",
+        "control": "numero"
       },
       {
         "nombre": "max",
         "tipo": "number | null",
         "porDefecto": "null",
         "requerida": false,
-        "descripcion": "Máximo del eje de valores; sin él, Chart.js elige uno redondo por encima del mayor valor."
+        "descripcion": "Máximo del eje de valores; sin él, Chart.js elige uno redondo por encima del mayor valor.",
+        "control": "numero"
       },
       {
         "nombre": "orientation",
         "tipo": "'horizontal' | 'vertical'",
         "porDefecto": "'vertical'",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "opciones",
+        "opciones": [
+          "vertical",
+          "horizontal"
+        ]
       },
       {
         "nombre": "series",
@@ -1768,14 +1889,16 @@ export const MANIFIESTO_UI_KIT: readonly FichaComponente[] = [
         "tipo": "boolean",
         "porDefecto": "false",
         "requerida": false,
-        "descripcion": "Apila las series de cada categoría. Con una sola categoría es la barra 100 % del Figma («Stacked bar»): horizontal, sin ejes, con el porcentaje de cada tramo adentro y su nombre debajo."
+        "descripcion": "Apila las series de cada categoría. Con una sola categoría es la barra 100 % del Figma («Stacked bar»): horizontal, sin ejes, con el porcentaje de cada tramo adentro y su nombre debajo.",
+        "control": "booleano"
       },
       {
         "nombre": "valueSuffix",
         "tipo": "string",
         "porDefecto": "''",
         "requerida": false,
-        "descripcion": "Sufijo de los valores en el eje, el tooltip y la tabla (por ejemplo `%`)."
+        "descripcion": "Sufijo de los valores en el eje, el tooltip y la tabla (por ejemplo `%`).",
+        "control": "texto"
       }
     ],
     "eventos": [],
@@ -1783,6 +1906,10 @@ export const MANIFIESTO_UI_KIT: readonly FichaComponente[] = [
     "evitar": "- Para la evolución de un valor a lo largo del tiempo: usar `siaf-line-chart`.\n- Para variaciones que suben y bajan respecto de cero: usar `siaf-diverging-chart`.\n- Para las partes de un total en un anillo, con el porcentaje de cada parte al centro: usar `siaf-donut-chart`.\n- Con más de cuatro series: la paleta da la vuelta y los colores se repiten.\n- Para un solo número destacado: usar `siaf-kpi-card`.",
     "teclado": "- **Tab**: enfoca el gráfico (una sola parada).\n- **Flecha derecha / izquierda** (vertical) o **abajo / arriba** (horizontal): recorren las categorías y muestran el\n  tooltip con el valor de cada serie; dan la vuelta.\n- En el comparativo, las flechas pasan de una barra a la siguiente y el tooltip muestra solo su valor.\n- **Inicio / Fin**: van a la primera o a la última categoría.\n- **Escape**: oculta el tooltip; salir del gráfico también lo oculta.",
     "accesibilidad": "- **1.1.1 Contenido no textual (A)**: el lienzo es `role=\"img\"` con `ariaLabel` y, además, hay una tabla de datos\n  oculta (`sr-only`) con una fila por categoría y una columna por serie.\n- **1.3.1 Información y relaciones (A)**: la tabla usa `caption`, `th scope=\"col\"` para las series y\n  `th scope=\"row\"` para las categorías.\n- **2.1.1 Teclado (A)**: los valores se recorren con las flechas; al moverse, una región `aria-live` anuncia la\n  categoría y los valores.\n- **2.4.7 Foco visible (AA)**: el lienzo enfocado muestra el contorno de 2 px `border-states-focus`.\n- **1.4.1 Uso del color (A)**: las series se distinguen por color, pero sus nombres están en la leyenda, en el\n  tooltip y en la tabla de datos.\n- **1.4.3 Contraste mínimo (AA)**: el porcentaje dentro de un tramo apilado toma, entre blanco, `text-neutral-high` y la\n  superficie, el de más contraste con su color (4.71:1 como mínimo, en claro y en oscuro); lo dibujado en el lienzo\n  está también en la tabla de datos.\n- **1.4.13 Contenido en hover o foco (AA)**: Escape oculta el tooltip sin mover el puntero ni el foco.\n- **Pendiente · 1.4.11 Contraste no textual (AA)**: en oscuro las barras de las series 1 y 2 (`bg-brand-primary`,\n  2.66:1, y `bg-brand-secondary`, 2.99:1) no llegan a 3:1 sobre la superficie y la 2 y la 3 quedan del mismo tono;\n  la paleta oscura de los gráficos está por definir con diseño.",
+    "limitaciones": "Sin animación (`animation: false`): con animación, en una pestaña que no pinta cuadros las barras quedaban a medio camino. El canvas no entiende `var()`: los colores se leen de los tokens al pintar y se repintan al cambiar el tema. En tema oscuro, la paleta del Figma no llega a 3:1 de contraste entre series (pendiente con diseño).",
+    "incorrecto": null,
+    "correcto": null,
+    "waiAria": null,
     "figma": [
       {
         "nodo": "22743:375",
@@ -1859,7 +1986,8 @@ export const MANIFIESTO_UI_KIT: readonly FichaComponente[] = [
         "tipo": "string",
         "porDefecto": "'#'",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "texto"
       },
       {
         "nombre": "items",
@@ -1874,6 +2002,13 @@ export const MANIFIESTO_UI_KIT: readonly FichaComponente[] = [
     "evitar": "- En páginas que ya usan `siaf-documents-records-page`, `siaf-solicitude-page-layout` o `siaf-page-shell`: no agregar\n  otro.\n- Escribir los niveles a mano repitiendo el árbol del menú: usar `buildProcessBreadcrumbs`.\n- Para alternar vistas de la misma pantalla: usar `siaf-tabs` o `siaf-records-tabs`; para las etapas de un flujo,\n  `siaf-steps` o `siaf-action-tracker`.",
     "teclado": "- **Tab**: recorre el enlace de inicio, el botón «…» (si hay niveles ocultos) y los niveles con enlace; el nivel\n  actual es texto y no recibe foco.\n- **Enter**: sigue el enlace enfocado.\n- **Enter / Espacio** en «…»: abre o cierra la lista de niveles intermedios; al abrirla, el foco pasa al primer\n  nivel con enlace.\n- **Escape**: con la lista abierta, la cierra y el foco vuelve a «…». Salir de la lista con Tab o pulsar fuera\n  también la cierra.",
     "accesibilidad": "- **1.3.1 Información y relaciones (A)**: `<nav aria-label=\"Ruta de navegación\">` con lista ordenada (`<ol>` y\n  `<li>`); las flechas separadoras son íconos decorativos y el enlace de inicio lleva `aria-label=\"Inicio\"`.\n- **Pendiente · 4.1.2 Nombre, función y valor (A)**: «…» es un `<button>` con `aria-label=\"Niveles intermedios\"`,\n  `aria-expanded` y `aria-controls` hacia una lista (`<ul>`) de enlaces, el patrón de revelación de una navegación;\n  falta que el nivel actual marque `aria-current=\"page\"`.\n- **2.4.3 Orden del foco (A)**: con `siafFoco`, al abrir la lista el foco entra en el primer nivel con enlace y al\n  cerrarla con Escape vuelve a «…»; salir de la lista con Tab la cierra.\n- **Pendiente · 2.1.1 Teclado (A)**: enlaces y «…» se alcanzan con Tab, pero el nivel actual y los niveles sin enlace\n  no reciben foco: si su texto se corta, el completo (`siafTooltip`) solo aparece con el mouse.\n- **2.4.7 Foco visible (AA)**: inicio y «…» tienen contorno de 2 px con separación (`border-states-focus`); los\n  enlaces de texto usan el anillo del navegador.\n- **1.4.11 Contraste no textual (AA)**: el contorno de foco de inicio y «…» es el azul del kit\n  (`border-states-focus`, 5.35:1 claro / 10.15:1 oscuro sobre la superficie).\n- **1.4.3 Contraste mínimo (AA)**: niveles con enlace `text-text` (16.29:1 claro / 16.53:1 oscuro) y nivel actual\n  `text-text-muted` (5.01:1 / 8.86:1) sobre `bg-surface`.\n- **2.5.8 Tamaño del objetivo (AA)**: inicio y «…» miden 32×32 px; los enlaces de texto son bajos (texto de 12 px),\n  pero la flecha y los espacios los separan unos 20 px (excepción por espaciado).",
+    "limitaciones": null,
+    "incorrecto": null,
+    "correcto": null,
+    "waiAria": {
+      "nombre": "Migas de pan",
+      "url": "https://www.w3.org/WAI/ARIA/apg/patterns/breadcrumb/"
+    },
     "figma": [],
     "aria": {
       "roles": [],
@@ -1975,70 +2110,103 @@ export const MANIFIESTO_UI_KIT: readonly FichaComponente[] = [
         "tipo": "boolean",
         "porDefecto": "false",
         "requerida": false,
-        "descripcion": "Botón de ícono presionado (interruptor): estado «Activated» del Figma."
+        "descripcion": "Botón de ícono presionado (interruptor): estado «Activated» del Figma.",
+        "control": "booleano"
       },
       {
         "nombre": "ariaLabel",
         "tipo": "string",
         "porDefecto": "''",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "texto"
       },
       {
         "nombre": "disabled",
         "tipo": "boolean",
         "porDefecto": "false",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "booleano"
       },
       {
         "nombre": "icon",
         "tipo": "string",
         "porDefecto": "''",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "texto"
       },
       {
         "nombre": "iconOnly",
         "tipo": "boolean",
         "porDefecto": "false",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "booleano"
       },
       {
         "nombre": "iconPosition",
         "tipo": "'start' | 'end'",
         "porDefecto": "'start'",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "opciones",
+        "opciones": [
+          "start",
+          "end"
+        ]
       },
       {
         "nombre": "loading",
         "tipo": "boolean",
         "porDefecto": "false",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "booleano"
       },
       {
         "nombre": "size",
         "tipo": "'sm' | 'md'",
         "porDefecto": "'md'",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "opciones",
+        "opciones": [
+          "sm",
+          "md"
+        ]
       },
       {
         "nombre": "type",
         "tipo": "'button' | 'reset' | 'submit'",
         "porDefecto": "'button'",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "opciones",
+        "opciones": [
+          "button",
+          "reset",
+          "submit"
+        ]
       },
       {
         "nombre": "variant",
         "tipo": "'filled' | 'outline' | 'standard' | 'text' | 'primary' | 'accent' | 'secondary' | 'ghost'",
         "porDefecto": "'filled'",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "opciones",
+        "opciones": [
+          "filled",
+          "outline",
+          "text",
+          "standard",
+          "primary",
+          "accent",
+          "secondary",
+          "ghost"
+        ]
       }
     ],
     "eventos": [],
@@ -2046,6 +2214,13 @@ export const MANIFIESTO_UI_KIT: readonly FichaComponente[] = [
     "evitar": "- Para navegar a otra pantalla: usar un enlace (`routerLink`); el botón ejecuta acciones.\n- Varios `filled` en el mismo bloque: compiten entre sí; dejar uno y bajar el resto a `outline` o `text`.\n- Para acciones destructivas no hay variante `danger`: usar `filled` y confirmar con un modal.\n- Para abrir un menú de opciones: usar `siaf-icon-dropdown-menu`.",
     "teclado": "- **Tab**: enfoca el botón; el foco con teclado muestra el borde azul y la capa de estado.\n- **Enter / Espacio**: ejecutan la acción. Deshabilitado o en `loading`, no recibe el foco.",
     "accesibilidad": "- **1.1.1 Contenido no textual (A)**: el ícono (`siaf-icon`) y el indicador de `loading` llevan `aria-hidden`; el\n  nombre sale del texto proyectado o de `ariaLabel`.\n- **Pendiente · 4.1.2 Nombre, función y valor (A)**: es un `<button>` nativo con `type=\"button\"` por defecto (en\n  formularios, `type=\"submit\"` explícito) y `disabled` nativo; `iconOnly` necesita `ariaLabel` en español (sin él,\n  el lector leería el nombre del ícono, p. ej. «file_upload») y `loading` publica `aria-busy`. Falta el estado\n  apagado del interruptor: `activated` pone `aria-pressed=\"true\"`, pero al desactivarse quita el atributo en vez de\n  dejar `false`.\n- **2.4.7 Foco visible (AA)**: `outline-none` se reemplaza en `:focus-visible` por el borde `border-states-focus`\n  (5.35:1 claro / 10.15:1 oscuro), la capa de foco y la elevación 2.\n- **1.4.3 Contraste mínimo (AA)**: `filled` pinta `text-brand-white` sobre `bg-brand-accent` (4.89:1 claro / 5.65:1\n  oscuro); `outline` y `text`, `text-neutral-medium` sobre la superficie (14.53:1 / 12.87:1). El deshabilitado está\n  exento.\n- **1.4.11 Contraste no textual (AA)**: relleno de `filled` (`bg-brand-accent`, 4.89:1 / 3.14:1) e ícono gris de\n  `iconOnly` en outline y standard (`icon-states-enabled`, 8.70:1 / 12.87:1) sobre la superficie. El borde gris de\n  `outline` (`border-states-enabled`, 2.44:1 / 2.59:1) no llega a 3:1, pero al botón lo identifican su texto o su\n  ícono.\n- **Pendiente · 1.4.1 Uso del color (A)**: en `outline` y `standard`, `activated` solo cambia colores (capa, ícono\n  y, en outline, borde azules; en oscuro ese borde, `border-states-active`, queda en 2.02:1). En `filled` lo\n  distingue además la elevación 1.\n- **2.5.8 Tamaño del objetivo (AA)**: `md` mide 40 px de alto y `sm` 32 px; el botón de ícono, 40×40 o 32×32.\n- **4.1.3 Mensajes de estado (AA)**: `loading` solo deshabilita el botón y publica `aria-busy`; el resultado lo debe\n  anunciar el padre (por ejemplo, con `siaf-snackbar`).",
+    "limitaciones": "No hay tamaño `lg` ni variante `danger`: una acción destructiva usa `filled`. Los nombres viejos de las variantes (`accent`, `primary`, `secondary`, `ghost`) siguen valiendo, pero el código nuevo usa `filled`, `outline` y `text`.",
+    "incorrecto": "<siaf-button variant=\"danger\" size=\"lg\">Eliminar</siaf-button>",
+    "correcto": "<siaf-button variant=\"filled\" icon=\"delete\">Eliminar</siaf-button>",
+    "waiAria": {
+      "nombre": "Botón",
+      "url": "https://www.w3.org/WAI/ARIA/apg/patterns/button/"
+    },
     "figma": [
       {
         "nodo": "8305:2071",
@@ -2265,14 +2440,16 @@ export const MANIFIESTO_UI_KIT: readonly FichaComponente[] = [
         "tipo": "string",
         "porDefecto": "''",
         "requerida": false,
-        "descripcion": "Nombre del grupo para el lector de pantalla («Vista del resultado»)."
+        "descripcion": "Nombre del grupo para el lector de pantalla («Vista del resultado»).",
+        "control": "texto"
       },
       {
         "nombre": "iconOnly",
         "tipo": "boolean",
         "porDefecto": "false",
         "requerida": false,
-        "descripcion": "Las opciones con `icon` muestran solo el ícono; su etiqueta nombra el botón y aparece en el tooltip."
+        "descripcion": "Las opciones con `icon` muestran solo el ícono; su etiqueta nombra el botón y aparece en el tooltip.",
+        "control": "booleano"
       },
       {
         "nombre": "items",
@@ -2286,7 +2463,8 @@ export const MANIFIESTO_UI_KIT: readonly FichaComponente[] = [
         "tipo": "string | null",
         "porDefecto": "null",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "texto"
       }
     ],
     "eventos": [
@@ -2300,6 +2478,10 @@ export const MANIFIESTO_UI_KIT: readonly FichaComponente[] = [
     "evitar": "- Para elegir un valor dentro de un formulario: usar `siaf-radio-group` (con `[inline]` para Si/No) o\n  `siaf-select-options`.\n- Para las vistas principales de una pantalla (Documentos / Registros, Detalle / Historial): usar `siaf-records-tabs`\n  o `siaf-tabs`.\n- Para acciones independientes (Grabar, Cancelar): usar `siaf-button` sueltos.\n- Con muchas opciones o textos largos: usar `siaf-filter-pill` o `siaf-select-options`.",
     "teclado": "- **Tab**: pasa por cada opción del grupo (todas entran en el orden de tabulación; no hay navegación con flechas).\n- **Enter / Espacio**: eligen la opción enfocada y emiten `valueChange`.",
     "accesibilidad": "- **4.1.2 Nombre, función y valor (A)**: cada opción es un `<button>` nativo con `aria-pressed` según esté elegida,\n  dentro de un `role=\"group\"` nombrado con `ariaLabel`; con `iconOnly`, el botón se llama como su etiqueta.\n- **1.1.1 Contenido no textual (A)**: con `iconOnly` el ícono es decorativo y la etiqueta va en `aria-label` y en el\n  tooltip.\n- **2.1.1 Teclado (A)**: Tab llega a cada opción y Enter o Espacio la eligen.\n- **2.4.7 Foco visible (AA)**: contorno de 2 px con separación de 2 px (`focus-visible:outline`).\n- **1.4.3 Contraste mínimo (AA)**: inactivas `text-neutral-medium` (en claro su fondo `bg-states-light-enabled` es\n  transparente: 14.53:1 sobre la superficie); activa `text-neutral-activated` sobre la capa azul\n  `bg-states-light-activated`.\n- **1.4.1 Uso del color (A)**: la activa además va en negrita (`font-bold`); con `iconOnly` no hay texto que marcar y\n  la distinguen el borde y la capa azul, además de `aria-pressed`.\n- **Pendiente · 1.4.11 Contraste no textual (AA)**: el contorno de foco usa `border-states-active`: 8.79:1 en claro,\n  pero 2.02:1 en oscuro.\n- **2.5.8 Tamaño del objetivo (AA)**: cada opción mide al menos 40 px de alto.",
+    "limitaciones": null,
+    "incorrecto": null,
+    "correcto": null,
+    "waiAria": null,
     "figma": [],
     "aria": {
       "roles": [
@@ -2391,14 +2573,16 @@ export const MANIFIESTO_UI_KIT: readonly FichaComponente[] = [
         "tipo": "string",
         "porDefecto": "''",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "texto"
       },
       {
         "nombre": "title",
         "tipo": "string",
         "porDefecto": "''",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "texto"
       }
     ],
     "eventos": [],
@@ -2406,6 +2590,10 @@ export const MANIFIESTO_UI_KIT: readonly FichaComponente[] = [
     "evitar": "- En las pantallas de solicitud: usar `siaf-solicitude-form-card` (título en mayúsculas, `card-actions` y `loading`).\n- Para el ítem elegido desde un panel lateral: usar `siaf-summary-card`; para el estado vacío, `empty-section`.\n- Para el N° y el estado del documento abierto: usar `siaf-document-summary-card`.\n- Anidar una `siaf-card` dentro de otra: se duplican borde y sombra; separar con encabezados.",
     "teclado": "- No recibe foco: no es interactivo; lo que se proyecta en el cuerpo sigue el teclado de su componente.",
     "accesibilidad": "- **1.3.1 Información y relaciones (A)**: el título es un `h2` y la descripción un párrafo dentro de un `section`;\n  el padre debe ubicar la tarjeta donde un `h2` respete la jerarquía de encabezados.\n- **1.4.3 Contraste mínimo (AA)**: título `text-neutral-high` 16.29:1 (oscuro 16.53:1) y descripción\n  `text-neutral-low` 5.01:1 (8.86:1) sobre la superficie.",
+    "limitaciones": null,
+    "incorrecto": null,
+    "correcto": null,
+    "waiAria": null,
     "figma": [],
     "aria": {
       "roles": [],
@@ -2468,7 +2656,8 @@ export const MANIFIESTO_UI_KIT: readonly FichaComponente[] = [
         "tipo": "string",
         "porDefecto": "''",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "texto"
       },
       {
         "nombre": "groups",
@@ -2482,7 +2671,8 @@ export const MANIFIESTO_UI_KIT: readonly FichaComponente[] = [
         "tipo": "boolean",
         "porDefecto": "false",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "booleano"
       }
     ],
     "eventos": [
@@ -2501,6 +2691,10 @@ export const MANIFIESTO_UI_KIT: readonly FichaComponente[] = [
     "evitar": "- Con un solo nivel de opciones: usar `siaf-icon-dropdown-menu`, que además lleva el foco al menú y marca\n  `aria-expanded` en su botón.\n- Para catálogos largos o con más de dos niveles: usar un panel lateral de selección (`siaf-selection-side-nav`) o\n  `siaf-tree-view`.\n- Para elegir un valor de formulario: usar `siaf-select-options`.\n- Rehacer a mano el submenú o su teclado: salen de `siaf-menu`.",
     "teclado": "- **Escape**: cierra todo el menú, también desde el submenú (se escucha en `document`), y emite `closed`.\n- **Flecha arriba / abajo** e **Inicio / Fin**: recorren las categorías o las opciones del submenú.\n- **Flecha derecha**, **Enter** o **Espacio** sobre una categoría: abren sus opciones al costado y enfocan la\n  primera.\n- **Flecha izquierda**: cierra el submenú y devuelve el foco a la categoría.\n- **Enter / Espacio** sobre una opción: la eligen, emiten `selected` y cierran el menú.\n- **Tab**: al abrir, el foco entra en la primera categoría; salir del menú con Tab lo cierra.\n- El disparador proyectado sigue el teclado de su propio componente (normalmente `siaf-button`).",
     "accesibilidad": "- **Pendiente · 4.1.2 Nombre, función y valor (A)**: el panel es `siaf-menu` (`role=\"menu\"`; las categorías con\n  `aria-haspopup` y `aria-expanded`), pero el disparador proyectado no recibe `aria-haspopup` ni `aria-expanded`\n  (`siaf-button` no los expone). Además el padre debe dar `ariaLabel` al menú: por defecto va vacío y la solicitud\n  del catálogo de eventos no lo pasa.\n- **2.1.1 Teclado (A)**: abrir categorías, elegir y cerrar se hace con teclado; Escape se escucha en `document` y Tab\n  sale del menú sin trampa.\n- **2.4.3 Orden del foco (A)**: con `siafFoco`, al abrir el foco entra en la primera categoría y al cerrar (Escape,\n  elegir o salir con Tab) vuelve al disparador. La capa que cierra al pulsar fuera no es parada de Tab.\n- **2.4.7 Foco visible (AA)**: heredado de `siaf-menu`: la opción enfocada lleva un contorno interior azul de 2 px\n  (`border-states-focus`, 5.35:1 claro / 10.15:1 oscuro).\n- **2.5.8 Tamaño del objetivo (AA)**: categorías y opciones de 48 px de alto (`siaf-menu` en densidad `standard`).",
+    "limitaciones": null,
+    "incorrecto": null,
+    "correcto": null,
+    "waiAria": null,
     "figma": [],
     "aria": {
       "roles": [],
@@ -2539,6 +2733,10 @@ export const MANIFIESTO_UI_KIT: readonly FichaComponente[] = [
     "evitar": "- Como única forma de leer los datos: el gráfico debe traer además su tooltip y su tabla de datos.\n- Para filtros o selección de series: no es interactiva.",
     "teclado": "- No recibe foco: no es interactiva.",
     "accesibilidad": "- **1.3.1 Información y relaciones (A)**: es una lista (`ul` y `li`); el punto de color va con `aria-hidden` y el\n  nombre de la serie queda en texto.\n- **1.4.1 Uso del color (A)**: el color solo relaciona la leyenda con las barras; los valores de cada serie también\n  están en el tooltip y en la tabla de datos del gráfico.\n- **1.4.3 Contraste mínimo (AA)**: nombres en `text-neutral-medium` sobre la superficie (14.53:1 claro / 12.87:1\n  oscuro).\n- **Pendiente · 1.4.11 Contraste no textual (AA)**: en oscuro los puntos de las series 1 y 2 (`bg-brand-primary`,\n  2.66:1, y `bg-brand-secondary`, 2.99:1) no llegan a 3:1 sobre la superficie y la 2 y la 3 quedan del mismo tono;\n  la paleta oscura de los gráficos está por definir con diseño.",
+    "limitaciones": null,
+    "incorrecto": null,
+    "correcto": null,
+    "waiAria": null,
     "figma": [
       {
         "nodo": "22743:508",
@@ -2591,14 +2789,16 @@ export const MANIFIESTO_UI_KIT: readonly FichaComponente[] = [
         "tipo": "string",
         "porDefecto": "''",
         "requerida": false,
-        "descripcion": "Línea bajo el título que explica qué mide el gráfico; vacía, no se muestra."
+        "descripcion": "Línea bajo el título que explica qué mide el gráfico; vacía, no se muestra.",
+        "control": "texto"
       },
       {
         "nombre": "title",
         "tipo": "string",
         "porDefecto": "''",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "texto"
       }
     ],
     "eventos": [],
@@ -2606,6 +2806,10 @@ export const MANIFIESTO_UI_KIT: readonly FichaComponente[] = [
     "evitar": "- Para un número destacado sin gráfico: usar `siaf-kpi-card`.\n- Para tarjetas de datos o formularios: usar `siaf-card` o `siaf-solicitude-form-card`.",
     "teclado": "- No recibe foco: el gráfico proyectado sigue su propio teclado.",
     "accesibilidad": "- **1.3.1 Información y relaciones (A)**: es un `section` con el título como `h3` y `aria-labelledby`, así la\n  sección y su gráfico quedan nombrados.\n- **1.4.3 Contraste mínimo (AA)**: título `text-neutral-medium` (14.53:1 claro / 12.87:1 oscuro) y descripción\n  `text-neutral-low` (5.01:1 / 8.86:1) sobre la superficie.",
+    "limitaciones": null,
+    "incorrecto": null,
+    "correcto": null,
+    "waiAria": null,
     "figma": [
       {
         "nodo": "22743:668",
@@ -2694,7 +2898,8 @@ export const MANIFIESTO_UI_KIT: readonly FichaComponente[] = [
         "tipo": "string",
         "porDefecto": "''",
         "requerida": false,
-        "descripcion": "Título: la categoría del punto (por ejemplo «Mar»)."
+        "descripcion": "Título: la categoría del punto (por ejemplo «Mar»).",
+        "control": "texto"
       }
     ],
     "eventos": [],
@@ -2702,6 +2907,10 @@ export const MANIFIESTO_UI_KIT: readonly FichaComponente[] = [
     "evitar": "- Como tooltip de texto de un botón o de algo truncado: usar `siafTooltip`.\n- Con contenido interactivo: el tooltip no recibe el puntero ni el foco.",
     "teclado": "- No recibe foco: la abre y la cierra el gráfico (flechas para recorrer, Escape para cerrarla).",
     "accesibilidad": "- **1.3.1 Información y relaciones (A)**: cada serie es un párrafo con su nombre y su valor en texto; el cuadrado de\n  color va con `aria-hidden`.\n- **1.4.3 Contraste mínimo (AA)**: texto `text-brand-white` sobre `bg-on-surfaces-high` (12.85:1) en claro; en\n  oscuro, sobre `bg-snackbar` (15.71:1), porque el fondo del Figma se funde con la superficie oscura.\n- **4.1.3 Mensajes de estado (AA)**: la caja no es región viva: el gráfico anuncia los valores en su propia región\n  `aria-live` cuando se recorren con el teclado.",
+    "limitaciones": null,
+    "incorrecto": null,
+    "correcto": null,
+    "waiAria": null,
     "figma": [
       {
         "nodo": "22758:6756",
@@ -2789,35 +2998,40 @@ export const MANIFIESTO_UI_KIT: readonly FichaComponente[] = [
         "tipo": "boolean",
         "porDefecto": "false",
         "requerida": false,
-        "descripcion": "Marcado; con `[(checked)]` avisa cada cambio por `checkedChange`."
+        "descripcion": "Marcado; con `[(checked)]` avisa cada cambio por `checkedChange`.",
+        "control": "booleano"
       },
       {
         "nombre": "description",
         "tipo": "string",
         "porDefecto": "''",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "texto"
       },
       {
         "nombre": "disabled",
         "tipo": "boolean",
         "porDefecto": "false",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "booleano"
       },
       {
         "nombre": "label",
         "tipo": "string",
         "porDefecto": "''",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "texto"
       },
       {
         "nombre": "required",
         "tipo": "boolean",
         "porDefecto": "false",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "booleano"
       }
     ],
     "eventos": [
@@ -2831,6 +3045,13 @@ export const MANIFIESTO_UI_KIT: readonly FichaComponente[] = [
     "evitar": "- Para la selección de filas en grillas y paneles: checkbox nativo, como en `siaf-table-controls` y\n  `siaf-selection-side-nav`.\n- Para encender o apagar algo con efecto inmediato: usar `siaf-switch`.\n- Para una sola opción entre varias o un Sí/No: usar `siaf-radio-group` con `[inline]`.",
     "teclado": "- **Tab**: enfoca la casilla.\n- **Espacio**: la marca o la desmarca (checkbox nativo).",
     "accesibilidad": "- **1.3.1 Información y relaciones (A)**: el `<input type=\"checkbox\">` va dentro de su `<label>`; la descripción\n  también, así que se suma al nombre en vez de ir por `aria-describedby`.\n- **4.1.2 Nombre, función y valor (A)**: checkbox nativo: el navegador publica el rol, el marcado y `disabled`.\n- **3.3.2 Etiquetas o instrucciones (A)**: etiqueta visible; el obligatorio lleva asterisco y `aria-required`.\n- **Pendiente · 3.3.1 Identificación de errores (A)**: no tiene entrada de error ni `aria-invalid`; si falta marcar\n  una casilla obligatoria, el aviso lo tiene que pintar y asociar el padre.\n- **2.4.7 Foco visible (AA)**: no define estilo propio (`focus:ring-brand-primary` fija el color del anillo, no su\n  ancho); queda el anillo de foco nativo del navegador.\n- **1.4.11 Contraste no textual (AA)**: la casilla la dibuja el estilo global de `styles.css`: borde de 2 px\n  `icon-states-enabled` (8.70:1 claro, 12.87:1 oscuro) y, marcada, relleno `icon-states-active` (8.79:1 / 10.15:1).\n- **1.4.3 Contraste mínimo (AA)**: etiqueta `text-neutral-high` 16.29:1, descripción `text-neutral-low` 5.01:1 y\n  asterisco `text-feedback-danger` 9.84:1.\n- **2.5.8 Tamaño del objetivo (AA)**: la casilla mide 16 px, pero toda la `label` es clicable; sin descripción mide\n  20 px de alto, así que el padre debe separar las casillas.",
+    "limitaciones": null,
+    "incorrecto": null,
+    "correcto": null,
+    "waiAria": {
+      "nombre": "Casilla",
+      "url": "https://www.w3.org/WAI/ARIA/apg/patterns/checkbox/"
+    },
     "figma": [],
     "aria": {
       "roles": [],
@@ -2890,21 +3111,24 @@ export const MANIFIESTO_UI_KIT: readonly FichaComponente[] = [
         "tipo": "boolean",
         "porDefecto": "true",
         "requerida": false,
-        "descripcion": "Muestra la X que emite `closed`."
+        "descripcion": "Muestra la X que emite `closed`.",
+        "control": "booleano"
       },
       {
         "nombre": "closeLabel",
         "tipo": "string",
         "porDefecto": "'Quitar'",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "texto"
       },
       {
         "nombre": "expanded",
         "tipo": "boolean",
         "porDefecto": "false",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "booleano"
       }
     ],
     "eventos": [
@@ -2923,6 +3147,10 @@ export const MANIFIESTO_UI_KIT: readonly FichaComponente[] = [
     "evitar": "- Para 2 o más registros comparables en una solicitud: usar la grilla estándar (`siaf-table-controls` + tabla +\n  `siaf-pagination`).\n- Para el único ítem elegido desde un panel lateral, sin detalle que desplegar: usar `siaf-summary-card`.\n- Para secciones con título y menú ⋮, sin X: usar `siaf-expansion-panel`; para preguntas de solo texto,\n  `siaf-accordion`.\n- Con la X visible en modo consulta: ocultarla con `[closable]=\"false\"`.",
     "teclado": "- **Tab**: pasa por la flecha, lo que el padre proyecte en la cabecera y la X.\n- **Enter / Espacio** en la flecha: abren o cierran el detalle y emiten `expandedChange`.\n- **Enter / Espacio** en la X: emiten `closed`; si el padre quita la tarjeta, el foco no se mueve solo.",
     "accesibilidad": "- **4.1.2 Nombre, función y valor (A)**: la flecha es un `button` con `aria-expanded`, `aria-controls` hacia el\n  detalle y nombre «Expandir detalle» / «Contraer detalle»; la X toma su nombre de `closeLabel`, que el padre debe\n  completar con el ítem (por ejemplo «Quitar documento PAA-…») cuando hay varias tarjetas.\n- **1.3.1 Información y relaciones (A)**: el detalle abierto es `role=\"region\"` rotulado por la cabecera\n  (`aria-labelledby`).\n- **1.1.1 Contenido no textual (A)**: la marca azul y los íconos de los botones son decorativos (`aria-hidden`).\n- **1.4.1 Uso del color (A)**: abierta o cerrada se distingue por la flecha y por el detalle visible; la marca azul\n  no indica estado.\n- **2.4.3 Orden del foco (A)**: al quitar la tarjeta, el padre debe llevar el foco al ítem siguiente o a la acción\n  de agregar: el componente no lo mueve.\n- **2.4.7 Foco visible (AA)**: los dos botones muestran un contorno de 2 px `border-states-focus` separado 2 px.\n- **1.4.11 Contraste no textual (AA)**: ese contorno es el azul del kit (`border-states-focus`, 5.35:1 claro /\n  10.15:1 oscuro sobre la superficie).\n- **2.5.8 Tamaño del objetivo (AA)**: flecha y X miden 32 × 32 px.",
+    "limitaciones": null,
+    "incorrecto": null,
+    "correcto": null,
+    "waiAria": null,
     "figma": [
       {
         "nodo": "19632:66",
@@ -3042,7 +3270,8 @@ export const MANIFIESTO_UI_KIT: readonly FichaComponente[] = [
         "tipo": "boolean",
         "porDefecto": "false",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "booleano"
       },
       {
         "nombre": "defaultColumns",
@@ -3056,7 +3285,8 @@ export const MANIFIESTO_UI_KIT: readonly FichaComponente[] = [
         "tipo": "boolean",
         "porDefecto": "false",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "booleano"
       },
       {
         "nombre": "internalColumns",
@@ -3084,7 +3314,8 @@ export const MANIFIESTO_UI_KIT: readonly FichaComponente[] = [
         "tipo": "boolean",
         "porDefecto": "false",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "booleano"
       }
     ],
     "eventos": [
@@ -3113,6 +3344,10 @@ export const MANIFIESTO_UI_KIT: readonly FichaComponente[] = [
     "evitar": "- Para filtrar filas: usar `siaf-custom-filter`, `siaf-filter-pill` o el buscador de la grilla.\n- Para elegir registros de un catálogo: usar `siaf-selection-side-nav`.\n- Para un menú corto de opciones sobre la grilla: usar `siaf-icon-dropdown-menu`.",
     "teclado": "- **Tab**: al abrir, el foco entra en la X; recorre «Seleccionar todo», las casillas de cada columna y Cancelar /\n  Aplicar, y da la vuelta sin salir del panel; las de Interno están deshabilitadas y no reciben foco.\n- **Escape**: cierra el panel (emite `closed`) y el foco vuelve al control que lo abrió.\n- **Espacio**: marca o desmarca la casilla enfocada (emite `toggleAll` o `toggleColumn`).\n- **Enter / Espacio**: activan la X y Cancelar (emiten `closed`) y Aplicar (emite `applied`; habilitado solo con\n  cambios).",
     "accesibilidad": "- **4.1.2 Nombre, función y valor (A)**: `role=\"dialog\"` con `aria-modal=\"true\"` y `aria-labelledby` al título; la X\n  se llama «Cerrar» y cada casilla toma su nombre del texto de la columna (`<label>`).\n- **2.4.3 Orden del foco (A)**: con `siafFoco`, al abrir lleva el foco a la X aunque en la bandeja el panel se pinte\n  al final de la página, y al cerrar lo devuelve al botón que lo abrió.\n- **2.1.2 Sin trampas de teclado (A)**: Tab queda dentro mientras está abierto, pero Escape siempre lo cierra.\n- **1.3.1 Información y relaciones (A)**: título `h2` y los grupos Predeterminado / Más columnas / Interno con `h3`.\n- **2.4.7 Foco visible (AA)**: sin estilo propio pero sin `outline-none`: la X, Cancelar y las casillas muestran el\n  anillo nativo del navegador; Aplicar sigue `siaf-button`.\n- **2.5.8 Tamaño del objetivo (AA)**: cada fila mide 48 px y toda la fila marca la casilla; la X y Cancelar, 40 px.\n- **1.4.11 Contraste no textual (AA)**: las casillas llevan borde `icon-states-enabled` de 2 px (8.70:1 sobre la\n  superficie en claro).\n- **1.4.3 Contraste mínimo (AA)**: título `text-text` sobre `bg-surface` (16.29:1 / 16.53:1); las etiquetas\n  `text-neutral-medium` van sobre `surface-highest`, que en claro es el blanco de la superficie (14.53:1).",
+    "limitaciones": null,
+    "incorrecto": null,
+    "correcto": null,
+    "waiAria": null,
     "figma": [],
     "aria": {
       "roles": [
@@ -3255,14 +3490,16 @@ export const MANIFIESTO_UI_KIT: readonly FichaComponente[] = [
         "tipo": "boolean",
         "porDefecto": "false",
         "requerida": false,
-        "descripcion": "Cada etiqueta lleva su × y emite `removed`."
+        "descripcion": "Cada etiqueta lleva su × y emite `removed`.",
+        "control": "booleano"
       },
       {
         "nombre": "title",
         "tipo": "string",
         "porDefecto": "'Filtros aplicados de búsqueda'",
         "requerida": false,
-        "descripcion": "Título de la tarjeta; vacío, solo la fila de etiquetas."
+        "descripcion": "Título de la tarjeta; vacío, solo la fila de etiquetas.",
+        "control": "texto"
       }
     ],
     "eventos": [
@@ -3281,6 +3518,10 @@ export const MANIFIESTO_UI_KIT: readonly FichaComponente[] = [
     "evitar": "- Para elegir o cambiar un filtro: las etiquetas no se editan; usar `siaf-filter-pill` (opciones cerradas) o\n  `siaf-custom-filter` (condiciones).\n- `removable` si la pantalla no escucha `removed`: la × se pintaría y no haría nada.\n- Rehacer la sección con `siaf-tag` sueltos en cada módulo: ya estuvo clonada en tres.\n- Para el bloque «Parámetros aplicados» de la Guía de Estructura de Pantallas (tarjetas con ícono, nombre y valor):\n  es otro componente, `siaf-parametros-aplicados`. Las consultas de hoy siguen con estas etiquetas.",
     "teclado": "- **Tab**: con `removable` recorre la × de cada etiqueta; después, «Borrar filtros». Sin `removable`, las etiquetas no\n  reciben foco.\n- **Enter / Espacio**: en una ×, quitan ese filtro (emite `removed`) y el foco pasa a «Borrar filtros»; en «Borrar\n  filtros», quitan todos (emite `cleared`).",
     "accesibilidad": "- **1.3.1 Información y relaciones (A)**: con título, `<section>` con `<h3>`; cada etiqueta se lee como texto\n  «Etiqueta: valores».\n- **4.1.2 Nombre, función y valor (A)**: la × es un `<button>` «Quitar el filtro …» con el nombre de la etiqueta, y\n  «Borrar filtros» es un `<button>` nombrado por su texto (`siaf-tag` `action`).\n- **2.4.3 Orden del foco (A)**: al quitar una etiqueta, su × desaparece y el foco pasa a «Borrar filtros».\n- **Pendiente · 2.4.3 Orden del foco (A)**: con `cleared` el bloque suele desaparecer con el foco adentro; el padre\n  debe llevarlo (el panel de cuentas lo deja en el embudo; en las cuatro Consultas, todavía no).\n- **1.4.3 Contraste mínimo (AA)**: el título y las etiquetas van en `text-neutral-medium` (14.53:1 / 12.87:1).\n- **Pendiente · 2.1.1 Teclado (A)**: el carril se desplaza sin barra; sin `removable`, las etiquetas que no caben\n  quedan cortadas y, con teclado, dependen de que el navegador enfoque el contenedor (el lector las lee todas).\n- **Pendiente · 2.5.8 Tamaño del objetivo (AA)**: la × mide 20 × 20 px (sigue `siaf-tag`).",
+    "limitaciones": null,
+    "incorrecto": null,
+    "correcto": null,
+    "waiAria": null,
     "figma": [
       {
         "nodo": "12232:5050",
@@ -3351,7 +3592,8 @@ export const MANIFIESTO_UI_KIT: readonly FichaComponente[] = [
         "tipo": "boolean",
         "porDefecto": "false",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "booleano"
       },
       {
         "nombre": "fields",
@@ -3372,14 +3614,20 @@ export const MANIFIESTO_UI_KIT: readonly FichaComponente[] = [
         "tipo": "string",
         "porDefecto": "'Crear documento'",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "texto"
       },
       {
         "nombre": "variant",
         "tipo": "'sidepanel' | 'dropdown'",
         "porDefecto": "'sidepanel'",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "opciones",
+        "opciones": [
+          "sidepanel",
+          "dropdown"
+        ]
       }
     ],
     "eventos": [
@@ -3408,6 +3656,10 @@ export const MANIFIESTO_UI_KIT: readonly FichaComponente[] = [
     "evitar": "- Pintar otro `sidepanel` en una página: pedir el del shell con `ShellNavigationService.openCreateDocument()`.\n- Para los campos de la solicitud misma: usar `siaf-input` dentro de `siaf-solicitude-page-layout`.\n- Para elegir un registro de un catálogo con columnas: usar `siaf-selection-side-nav`.\n- Copiar a mano la lista de procesos: sale de `DEFAULT_PROCESS_TREE` o de `processOptions`.",
     "teclado": "- **Tab**: recorre el buscador de procesos (en `sidepanel`), Documento, Tipo de acción y Cancelar / Aceptar;\n  Documento y Tipo de acción siguen deshabilitados hasta elegir el campo anterior.\n- **Enter / Espacio** en Documento o Tipo de acción: abre o cierra sus opciones; al abrir, el foco entra en la\n  opción elegida, que sigue `siaf-select-options` (flechas, Inicio, Fin, Enter o Espacio). Escape o salir con Tab\n  las cierra y el foco vuelve al campo.\n- **Flecha abajo** en el buscador de procesos: entra a la lista (si estaba cerrada, primero la abre);\n  **flechas arriba / abajo** la recorren y **Enter** elige el proceso (el foco vuelve al buscador).\n- **Escape**: en el buscador cierra la lista; en un proceso, cierra la lista y vuelve al buscador.\n- **Enter / Espacio** en Cancelar y Aceptar: emiten `canceled` y `accepted`.",
     "accesibilidad": "- **2.1.1 Teclado (A)**: el buscador es un `combobox` con `aria-expanded`: flecha abajo entra a la lista de procesos,\n  las flechas la recorren y Enter elige; la lista ya no se cierra al pasar del buscador a ella.\n- **2.4.7 Foco visible (AA)**: Documento, Tipo de acción y el buscador muestran el borde azul de 2 px\n  (`border-states-focus`, 5.35:1 claro / 10.15:1 oscuro) al recibir el foco, también si ya tienen valor.\n- **2.4.3 Orden del foco (A)**: con `siafFoco`, las opciones de Documento y Tipo de acción reciben el foco al abrir y\n  al elegir, cerrar con Escape o salir con Tab vuelve al campo; al elegir un proceso el foco vuelve al buscador.\n- **4.1.2 Nombre, función y valor (A)**: el buscador es un `combobox` con `aria-expanded` y `aria-controls` hacia\n  la lista `role=\"listbox\"` «Procesos», y el proceso elegido lleva `aria-selected`. Documento y Tipo de acción\n  publican `aria-expanded` y `aria-haspopup=\"listbox\"`.\n- **Pendiente · 1.4.11 Contraste no textual (AA)**: el borde de los campos en reposo es `border-states-enabled`\n  (2.44:1 / 2.59:1); el de foco, `border-states-focus` (5.35:1 / 10.15:1), sí cumple.\n- **3.3.2 Etiquetas o instrucciones (A)**: cada campo muestra su nombre (en el placeholder o como etiqueta flotante)\n  con asterisco en los obligatorios; no llevan `aria-required`.\n- **1.3.1 Información y relaciones (A)**: sección con `aria-label=\"Crear documento\"` (fijo aunque cambie `title`) y\n  título `h2`; cada campo va dentro de su `<label>`.\n- **1.4.3 Contraste mínimo (AA)**: texto `text-neutral-medium` (14.53:1 / 12.87:1) y placeholder `text-neutral-low`\n  (5.01:1 / 8.86:1) sobre el `bg-surface` de los campos.",
+    "limitaciones": null,
+    "incorrecto": null,
+    "correcto": null,
+    "waiAria": null,
     "figma": [],
     "aria": {
       "roles": [
@@ -3617,7 +3869,8 @@ export const MANIFIESTO_UI_KIT: readonly FichaComponente[] = [
         "tipo": "boolean",
         "porDefecto": "false",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "booleano"
       },
       {
         "nombre": "initialRows",
@@ -3655,6 +3908,10 @@ export const MANIFIESTO_UI_KIT: readonly FichaComponente[] = [
     "evitar": "- Para filtrar por un solo campo con pocas opciones (Estado, Tipo de acción): `siaf-filter-pill`.\n- Para buscar texto libre: `siaf-form-table-search` (en Documentos y registros y la bandeja, su variante\n  `siaf-records-search-toolbar`).\n- Para mostrar los criterios ya aplicados en Consultas y reportes: `siaf-consultas-filtros-chips`.",
     "teclado": "- **Tab**: al abrirse, el foco entra en el primer campo; recorre fila por fila los selects Campo, Condición y Valor y\n  la papelera; después «Agregar condición», Aplicar (habilitado solo con una fila completa) y Cancelar.\n- **Enter / Espacio**: en «Agregar condición» suman una fila; en la papelera la quitan (con `deleteEnabled` y una\n  sola fila, emiten `eliminar`).\n- Los selects siguen `siaf-input` y Aplicar / Cancelar, `siaf-button`.\n- **Escape**: emite `cancelar` para que el padre cierre el panel; el foco vuelve al botón que lo abrió. Con la lista\n  de un select abierta, Escape cierra solo la lista.",
     "accesibilidad": "- **Pendiente · 1.3.1 Información y relaciones (A)**: el título «Agregar filtros personalizados» es un `<span>`, no\n  un encabezado, y las filas no se agrupan (`fieldset` o `role=\"group\"`): con varias condiciones se repiten «Campo»,\n  «Condición», «Valor» y «Eliminar condicion» sin decir de qué fila son.\n- **4.1.2 Nombre, función y valor (A)**: los selects de `siaf-input` publican `aria-haspopup=\"listbox\"` y\n  `aria-expanded`; la papelera es un `<button>` con `aria-label` («Eliminar condicion», sin tilde) y Aplicar usa\n  `disabled`.\n- **Pendiente · 2.4.3 Orden del foco (A)**: con `siafFoco` (sin atrapar Tab) el foco entra al abrirse y vuelve al\n  botón que lo abrió al cerrarse, pero al agregar una condición el foco no pasa a la fila nueva y, al quitar la fila\n  final, su papelera desaparece sin mover el foco.\n- **3.3.2 Etiquetas o instrucciones (A)**: cada select muestra su etiqueta (Campo, Condición, Valor); no hay texto\n  que diga que Aplicar necesita una fila completa.\n- **1.4.3 Contraste mínimo (AA)**: título `text-neutral-medium` (14.53:1 / 12.87:1), «Agregar condición»\n  `text-neutral-high` (16.29:1 / 16.53:1) y papelera `text-neutral-low` (5.01:1 / 8.86:1) sobre la superficie.\n- **Pendiente · 1.4.11 Contraste no textual (AA)**: los selects heredan de `siaf-input` el borde\n  `border-states-enabled` (2.44:1 / 2.59:1) mientras no tienen foco ni valor.\n- **2.4.7 Foco visible (AA)**: «Agregar condición» y la papelera muestran un contorno de 2 px del color de su texto\n  (`focus-visible:outline-2`); los selects y los botones, el de su componente.\n- **2.5.8 Tamaño del objetivo (AA)**: papelera de 32 px, «Agregar condición» de unos 28 px de alto y Aplicar /\n  Cancelar de 32 px (`siaf-button` en `sm`).",
+    "limitaciones": null,
+    "incorrecto": null,
+    "correcto": null,
+    "waiAria": null,
     "figma": [],
     "aria": {
       "roles": [],
@@ -3764,21 +4021,24 @@ export const MANIFIESTO_UI_KIT: readonly FichaComponente[] = [
         "tipo": "string",
         "porDefecto": "'id'",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "texto"
       },
       {
         "nombre": "padreKey",
         "tipo": "string",
         "porDefecto": "''",
         "requerida": false,
-        "descripcion": "El campo de cada fila con el id de su fila padre: las hijas se pintan debajo, con la línea de nivel, y el padre lleva el chevron que las muestra u oculta. Vacío (por defecto), la tabla es plana."
+        "descripcion": "El campo de cada fila con el id de su fila padre: las hijas se pintan debajo, con la línea de nivel, y el padre lleva el chevron que las muestra u oculta. Vacío (por defecto), la tabla es plana.",
+        "control": "texto"
       },
       {
         "nombre": "reordenable",
         "tipo": "boolean",
         "porDefecto": "false",
         "requerida": false,
-        "descripcion": "Suma la columna de la manija: las filas se reordenan arrastrándolas o con el teclado. No va con `padreKey`."
+        "descripcion": "Suma la columna de la manija: las filas se reordenan arrastrándolas o con el teclado. No va con `padreKey`.",
+        "control": "booleano"
       },
       {
         "nombre": "rows",
@@ -3799,6 +4059,10 @@ export const MANIFIESTO_UI_KIT: readonly FichaComponente[] = [
     "evitar": "- Para celdas con enlace al documento, tag de estado, checkbox o historial: `siaf-documents-records-table`.\n- Para seleccionar o paginar: no lo hace sola; va dentro de la grilla estándar (`siaf-table-controls` arriba y\n  `siaf-pagination` con `position=\"Bottom\"` y `rowPage` abajo).\n- Para ítems sin columnas (título, descripción, ícono): `siaf-list`; para un árbol sin columnas, `siaf-tree-view`.\n- `reordenable` en una tabla paginada: el arrastre solo ve la página actual.\n- `padreKey` con filas paginadas: una página podría mostrar hijas sin su padre.",
     "teclado": "- Sin `reordenable` ni padres no recibe foco: no es interactiva. Con `reordenable`, Tab llega a la manija de cada\n  fila y Espacio, las flechas ↑ ↓ y Escape la mueven (ver `siafReordenable`).\n- Con `padreKey`, Tab llega al chevron de cada fila padre y Enter o Espacio abre o cierra sus hijas.\n- Si las filas pasan el alto máximo, el contenedor con scroll no lleva `tabindex`: desplazarlo con el teclado\n  depende del navegador.",
     "accesibilidad": "- **1.3.1 Información y relaciones (A)**: `<table>` con `<thead>`, `<tbody>` y un `<th>` por columna (sin `scope`,\n  que con una sola fila de cabecera no hace falta). No admite `<caption>` ni `ariaLabel`: el padre debe titularla\n  con un encabezado cercano. No ordena columnas, así que no aplica `aria-sort`.\n- **1.3.1 Información y relaciones (A)**: con `padreKey`, cada hija lleva en texto oculto a qué fila pertenece\n  («, de 1.1 Efectivo»), porque la línea de nivel solo se ve.\n- **4.1.2 Nombre, función y valor (A)**: el chevron es un `<button>` con `aria-expanded` y un nombre que dice qué\n  muestra u oculta («Ocultar las filas de 1.1 Efectivo»).\n- **1.4.11 Contraste no textual (AA)**: el chevron, en `icon-states-enabled` (8.70:1 / 12.87:1).\n- **1.4.3 Contraste mínimo (AA)**: celdas en `text-neutral-high` sobre la superficie (16.29:1 / 16.53:1); la\n  cabecera, en `text-neutral-high` sobre `bg-surfaces-surface-high` (más que `text-neutral-medium` en ese fondo,\n  11.46:1 / 11.39:1).",
+    "limitaciones": "- `padreKey` y `reordenable` no van juntos: con jerarquía, la tabla no pinta la manija (mover una fila entre padres\n  no tiene un sentido único).\n- La jerarquía no es un `treegrid`: la tabla sigue siendo una tabla, y cada hija dice de quién es en texto oculto\n  para el lector de pantalla.\n- Una fila cuyo padre no está en `rows` se pinta como de primer nivel.",
+    "incorrecto": "<siaf-data-table [columns]=\"columnas\" [rows]=\"cuentas\" padreKey=\"padre\" [reordenable]=\"true\" />",
+    "correcto": "<siaf-data-table [columns]=\"columnas\" [rows]=\"cuentas\" padreKey=\"padre\" />",
+    "waiAria": null,
     "figma": [
       {
         "nodo": "3962:52381",
@@ -3875,91 +4139,113 @@ export const MANIFIESTO_UI_KIT: readonly FichaComponente[] = [
         "tipo": "boolean",
         "porDefecto": "true",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "booleano"
       },
       {
         "nombre": "disabled",
         "tipo": "boolean",
         "porDefecto": "false",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "booleano"
       },
       {
         "nombre": "error",
         "tipo": "string",
         "porDefecto": "''",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "texto"
       },
       {
         "nombre": "fullWidth",
         "tipo": "boolean",
         "porDefecto": "false",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "booleano"
       },
       {
         "nombre": "hint",
         "tipo": "string",
         "porDefecto": "''",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "texto"
       },
       {
         "nombre": "label",
         "tipo": "string",
         "porDefecto": "''",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "texto"
       },
       {
         "nombre": "maxDate",
         "tipo": "string",
         "porDefecto": "''",
         "requerida": false,
-        "descripcion": "Fecha máxima seleccionable en formato ISO (YYYY-MM-DD). Los días posteriores quedan deshabilitados."
+        "descripcion": "Fecha máxima seleccionable en formato ISO (YYYY-MM-DD). Los días posteriores quedan deshabilitados.",
+        "control": "texto"
       },
       {
         "nombre": "minDate",
         "tipo": "string",
         "porDefecto": "''",
         "requerida": false,
-        "descripcion": "Fecha mínima seleccionable en formato ISO (YYYY-MM-DD). Los días anteriores quedan deshabilitados."
+        "descripcion": "Fecha mínima seleccionable en formato ISO (YYYY-MM-DD). Los días anteriores quedan deshabilitados.",
+        "control": "texto"
       },
       {
         "nombre": "placeholder",
         "tipo": "string",
         "porDefecto": "''",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "texto"
       },
       {
         "nombre": "required",
         "tipo": "boolean",
         "porDefecto": "false",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "booleano"
       },
       {
         "nombre": "state",
         "tipo": "'success' | 'error' | 'enabled'",
         "porDefecto": "'enabled'",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "opciones",
+        "opciones": [
+          "enabled",
+          "error",
+          "success"
+        ]
       },
       {
         "nombre": "value",
         "tipo": "string",
         "porDefecto": "''",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "texto"
       },
       {
         "nombre": "variant",
         "tipo": "'date' | 'datetime'",
         "porDefecto": "'date'",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "opciones",
+        "opciones": [
+          "date",
+          "datetime"
+        ]
       }
     ],
     "eventos": [
@@ -3973,6 +4259,10 @@ export const MANIFIESTO_UI_KIT: readonly FichaComponente[] = [
     "evitar": "- Un `input type=\"date\"` nativo o un `siaf-input` con `trailingIcon=\"calendar_today\"` (como la vigencia del\n  formulario de cuenta contable): usar este componente.\n- Dejar `defaultToToday` en `true` en filtros o fechas opcionales: pinta la fecha de hoy sin emitirla, así que el\n  padre sigue vacío. Pasar `[defaultToToday]=\"false\"`.\n- `variant=\"datetime\"` para capturar una hora: los campos de hora no están conectados; emite solo la fecha y la\n  muestra con 00:00:00.\n- Para mostrar una fecha que no se edita: en modo lectura va `readonly-field`, no el selector `[disabled]`.",
     "teclado": "- **Tab**: enfoca el campo. Al abrir el calendario el foco entra en el día elegido (o en hoy); desde ahí recorre\n  las flechas de la cabecera, el mes, el año y cada día habilitado, y salir con Tab cierra el calendario.\n- **Enter / Espacio**: en el campo abren o cierran el calendario; dentro, activan la flecha o eligen el día, mes o\n  año enfocado (botones nativos). Cancelar y Aceptar de `datetime` siguen `siaf-button`.\n- **Escape**: cierra el calendario y el foco vuelve al campo.\n- **Flechas**: no están implementadas entre los días; el calendario también se cierra al elegir un día (variante\n  `date`) o con Cancelar o Aceptar.",
     "accesibilidad": "- **Pendiente · 1.3.1 Información y relaciones (A)**: la etiqueta no se une al botón del campo con `aria-labelledby`\n  ni `aria-label`: un único `<label>` envuelve etiqueta flotante, botón, ayuda, error y calendario, y con fecha\n  elegida el botón muestra solo la fecha. En `datetime`, los tres campos de hora no tienen etiqueta.\n- **Pendiente · 3.3.1 Identificación de errores (A)**: el texto de `error` se ve bajo el campo, pero no se asocia con\n  `aria-describedby` ni se anuncia al aparecer; con `state=\"error\"` y sin `error`, el aviso es solo el borde rojo.\n- **Pendiente · 3.3.2 Etiquetas o instrucciones (A)**: el obligatorio es solo el asterisco rojo: `aria-required` va\n  en un `<button>`, rol que no admite ese atributo en ARIA 1.2.\n- **4.1.2 Nombre, función y valor (A)**: el campo publica `aria-haspopup=\"dialog\"` y `aria-expanded`; el calendario\n  es `role=\"dialog\"` con `aria-label`, y las grillas de meses y años, `role=\"listbox\"` con `aria-selected`.\n- **Pendiente · 4.1.2 Nombre, función y valor (A)**: cada día se lee solo como número («05») y el día elegido no\n  publica estado (`aria-selected` o `aria-pressed`); las grillas `listbox` no responden a flechas.\n- **2.4.3 Orden del foco (A)**: con `siafFoco`, al abrir el foco entra en el día elegido (o en hoy) y al cerrarse\n  (un día, Cancelar, Aceptar, Escape o salir con Tab) vuelve al campo.\n- **2.4.7 Foco visible (AA)**: el botón del campo pasa al borde azul de 2 px (`border-states-focus`, 5.35:1 claro /\n  10.15:1 oscuro) al recibir el foco, también con valor (éxito); con error, el borde sigue rojo y el foco se ve en un\n  contorno azul por fuera. Los botones del calendario conservan el anillo nativo.\n- **Pendiente · 1.4.11 Contraste no textual (AA)**: el borde del campo vacío es `border-states-enabled` (2.44:1\n  claro, 2.59:1 oscuro).\n- **1.4.3 Contraste mínimo (AA)**: valor `text-neutral-high` 16.29:1, etiqueta `text-neutral-low` 5.01:1, días\n  `text-neutral-medium` 14.53:1 y día elegido en blanco sobre `bg-brand-primary` 8.79:1 (6.67:1 oscuro). Con valor,\n  la ayuda pasa a `text-feedback-success`, par que la tabla no mide.\n- **Pendiente · 2.5.8 Tamaño del objetivo (AA)**: las flechas de la cabecera miden 20 px (`size-5`) con 4 px entre\n  ellas; los días miden 36 px y el campo, 40 px.",
+    "limitaciones": null,
+    "incorrecto": null,
+    "correcto": null,
+    "waiAria": null,
     "figma": [],
     "aria": {
       "roles": [
@@ -4174,42 +4464,60 @@ export const MANIFIESTO_UI_KIT: readonly FichaComponente[] = [
         "tipo": "string",
         "porDefecto": null,
         "requerida": true,
-        "descripcion": "Ícono de Material Icons."
+        "descripcion": "Ícono de Material Icons.",
+        "control": "texto"
       },
       {
         "nombre": "interactive",
         "tipo": "boolean",
         "porDefecto": "false",
         "requerida": false,
-        "descripcion": "Toda la tarjeta pasa a ser un `button` que emite `activated`."
+        "descripcion": "Toda la tarjeta pasa a ser un `button` que emite `activated`.",
+        "control": "booleano"
       },
       {
         "nombre": "title",
         "tipo": "string",
         "porDefecto": null,
         "requerida": true,
-        "descripcion": "Qué es la tarjeta («Bandeja de Documentos»); también nombra el `article`."
+        "descripcion": "Qué es la tarjeta («Bandeja de Documentos»); también nombra el `article`.",
+        "control": "texto"
       },
       {
         "nombre": "tone",
         "tipo": "'success' | 'warning' | 'neutral' | 'primary' | 'accent'",
         "porDefecto": "'neutral'",
         "requerida": false,
-        "descripcion": "Color del ícono."
+        "descripcion": "Color del ícono.",
+        "control": "opciones",
+        "opciones": [
+          "accent",
+          "primary",
+          "success",
+          "warning",
+          "neutral"
+        ]
       },
       {
         "nombre": "value",
         "tipo": "number | null",
         "porDefecto": "null",
         "requerida": false,
-        "descripcion": "Número de `featured` y `counter`; con `null` no se muestra. `shortcut` nunca lo muestra."
+        "descripcion": "Número de `featured` y `counter`; con `null` no se muestra. `shortcut` nunca lo muestra.",
+        "control": "numero"
       },
       {
         "nombre": "variant",
         "tipo": "'featured' | 'counter' | 'shortcut'",
         "porDefecto": "'shortcut'",
         "requerida": false,
-        "descripcion": "`featured` (grande, número opcional), `counter` (contador) o `shortcut` (acceso, sin número)."
+        "descripcion": "`featured` (grande, número opcional), `counter` (contador) o `shortcut` (acceso, sin número).",
+        "control": "opciones",
+        "opciones": [
+          "featured",
+          "counter",
+          "shortcut"
+        ]
       }
     ],
     "eventos": [
@@ -4223,6 +4531,10 @@ export const MANIFIESTO_UI_KIT: readonly FichaComponente[] = [
     "evitar": "- Para un monto con su avance respecto de una meta, en un tablero: usar `siaf-kpi-card`.\n- Para agrupar contenido de una pantalla: usar `siaf-card`.\n- `interactive` en una tarjeta que no hace nada al pulsarla: parece un acceso roto.\n- Con enlaces o botones adentro: la tarjeta interactiva ya es un `button` y no admite otros controles.\n- Para decir algo solo con el color del ícono: el título tiene que decirlo.",
     "teclado": "- **Tab**: enfoca la tarjeta si es `interactive`; si no, no recibe foco.\n- **Enter / Espacio**: en la interactiva, emiten `activated`.",
     "accesibilidad": "- **4.1.2 Nombre, función y valor (A)**: la interactiva es un `button` nativo nombrado con su texto; la otra es un\n  `article` nombrado con el título.\n- **1.1.1 Contenido no textual (A)**: el ícono es decorativo (`aria-hidden`): el título dice qué es.\n- **1.3.1 Información y relaciones (A)**: el número visible, con ceros a la izquierda, se oculta al lector de\n  pantalla, que lee el valor sin relleno («4» y no «cero cuatro»).\n- **1.4.1 Uso del color (A)**: el tono del ícono no dice nada por sí solo.\n- **1.4.3 Contraste mínimo (AA)**: título y número `text-brand-secondary` sobre la superficie (8.70:1 claro /\n  12.87:1 oscuro), y 8.06:1 / 8.66:1 sobre el fondo de hover de la interactiva.\n- **1.4.11 Contraste no textual (AA)**: los íconos quedan sobre 3:1 aunque son decorativos (`accent` 4.14:1 /\n  4.29:1 es el más bajo).\n- **2.4.7 Foco visible (AA)**: contorno de 2 px `border-states-focus` separado 2 px (5.35:1 claro / 10.15:1 oscuro).\n- **2.5.8 Tamaño del objetivo (AA)**: toda la tarjeta es el objetivo, de al menos 120 px de alto.",
+    "limitaciones": null,
+    "incorrecto": null,
+    "correcto": null,
+    "waiAria": null,
     "figma": [],
     "aria": {
       "roles": [],
@@ -4352,28 +4664,32 @@ export const MANIFIESTO_UI_KIT: readonly FichaComponente[] = [
         "tipo": "string",
         "porDefecto": "'Detalle'",
         "requerida": false,
-        "descripcion": "Etiquetas configurables."
+        "descripcion": "Etiquetas configurables.",
+        "control": "texto"
       },
       {
         "nombre": "emptyDetalle",
         "tipo": "string",
         "porDefecto": "'Sin comentarios para mostrar.'",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "texto"
       },
       {
         "nombre": "emptyHistorial",
         "tipo": "string",
         "porDefecto": "'Sin registros en el historial.'",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "texto"
       },
       {
         "nombre": "emptyText",
         "tipo": "string",
         "porDefecto": "'—'",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "texto"
       },
       {
         "nombre": "entries",
@@ -4387,14 +4703,16 @@ export const MANIFIESTO_UI_KIT: readonly FichaComponente[] = [
         "tipo": "string",
         "porDefecto": "'Historial'",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "texto"
       },
       {
         "nombre": "historialTitle",
         "tipo": "string",
         "porDefecto": "'Historial de comentarios y detalles'",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "texto"
       }
     ],
     "eventos": [],
@@ -4402,6 +4720,10 @@ export const MANIFIESTO_UI_KIT: readonly FichaComponente[] = [
     "evitar": "- Para ver el historial desde la bandeja sin abrir la solicitud: usar `siaf-document-history-panel`.\n- Para quién elaboró, verificó y aprobó: usar `siaf-action-tracker`.\n- Para otras pestañas: usar `siaf-tabs` directamente; este componente fija Detalle / Historial y sus columnas.\n- Rehacer a mano la tabla de iteraciones en otra solicitud: reusar este componente.",
     "teclado": "- **Tab**: entra a la fila de pestañas en la activa y sale al contenido.\n- **Flecha izquierda / derecha**: pasan de Detalle a Historial y viceversa, como en `siaf-tabs`.\n- **Inicio / Fin**: van a Detalle o a Historial.",
     "accesibilidad": "- **Pendiente · 4.1.2 Nombre, función y valor (A)**: las pestañas son `siaf-tabs` (`role=\"tab\"` con\n  `aria-selected`), pero la fila no recibe `ariaLabel` y el contenido no es `role=\"tabpanel\"` con `aria-labelledby`.\n- **1.3.1 Información y relaciones (A)**: el historial es una `table` con `thead` y `th` bajo un `h3`; el comentario\n  va como rótulo y párrafo.\n- **1.4.1 Uso del color (A)**: la pestaña activa va en negrita con subrayado; proceso, comentario y fecha de cada\n  iteración están en texto.\n- **1.4.3 Contraste mínimo (AA)**: pestañas inactivas `text-neutral-low` 4.64:1 (oscuro 8.32:1) sobre\n  `surface-low`; rótulo `text-neutral-low` 5.01:1 (8.86:1), celdas `text-neutral-medium` 14.53:1 (12.87:1) y título\n  `text-neutral-high` 16.29:1 (16.53:1) sobre la superficie.\n- **2.1.1 Teclado (A)**: se cambia de pestaña con flechas, Inicio y Fin; solo la activa entra en el orden de\n  tabulación.\n- **2.4.7 Foco visible (AA)**: sigue `siaf-tabs`: borde interior de 2 px `border-states-focus` y capa de foco.",
+    "limitaciones": null,
+    "incorrecto": null,
+    "correcto": null,
+    "waiAria": null,
     "figma": [],
     "aria": {
       "roles": [],
@@ -4562,7 +4884,8 @@ export const MANIFIESTO_UI_KIT: readonly FichaComponente[] = [
         "tipo": "string",
         "porDefecto": "'Gráfico divergente'",
         "requerida": false,
-        "descripcion": "Nombre accesible del gráfico y título de su tabla de datos."
+        "descripcion": "Nombre accesible del gráfico y título de su tabla de datos.",
+        "control": "texto"
       },
       {
         "nombre": "categories",
@@ -4576,35 +4899,40 @@ export const MANIFIESTO_UI_KIT: readonly FichaComponente[] = [
         "tipo": "string",
         "porDefecto": "'Categoría'",
         "requerida": false,
-        "descripcion": "Encabezado de la columna de categorías en la tabla de datos."
+        "descripcion": "Encabezado de la columna de categorías en la tabla de datos.",
+        "control": "texto"
       },
       {
         "nombre": "height",
         "tipo": "number",
         "porDefecto": "252",
         "requerida": false,
-        "descripcion": "Alto del área del gráfico en px (sin la leyenda)."
+        "descripcion": "Alto del área del gráfico en px (sin la leyenda).",
+        "control": "numero"
       },
       {
         "nombre": "max",
         "tipo": "number | null",
         "porDefecto": "null",
         "requerida": false,
-        "descripcion": "Límite del eje a cada lado del cero; sin él, el doble de un paso redondo que cubre al mayor valor absoluto."
+        "descripcion": "Límite del eje a cada lado del cero; sin él, el doble de un paso redondo que cubre al mayor valor absoluto.",
+        "control": "numero"
       },
       {
         "nombre": "negativeLabel",
         "tipo": "string",
         "porDefecto": "'Negativo'",
         "requerida": false,
-        "descripcion": "Qué significa el lado negativo, en color primario: nombre en la leyenda, el tooltip y la tabla."
+        "descripcion": "Qué significa el lado negativo, en color primario: nombre en la leyenda, el tooltip y la tabla.",
+        "control": "texto"
       },
       {
         "nombre": "positiveLabel",
         "tipo": "string",
         "porDefecto": "'Positivo'",
         "requerida": false,
-        "descripcion": "Qué significa el lado positivo, en color secundario: nombre en la leyenda, el tooltip y la tabla."
+        "descripcion": "Qué significa el lado positivo, en color secundario: nombre en la leyenda, el tooltip y la tabla.",
+        "control": "texto"
       },
       {
         "nombre": "values",
@@ -4618,7 +4946,8 @@ export const MANIFIESTO_UI_KIT: readonly FichaComponente[] = [
         "tipo": "string",
         "porDefecto": "''",
         "requerida": false,
-        "descripcion": "Sufijo de los valores en el eje, el tooltip y la tabla (por ejemplo `%`)."
+        "descripcion": "Sufijo de los valores en el eje, el tooltip y la tabla (por ejemplo `%`).",
+        "control": "texto"
       }
     ],
     "eventos": [],
@@ -4626,6 +4955,10 @@ export const MANIFIESTO_UI_KIT: readonly FichaComponente[] = [
     "evitar": "- Para valores que no cambian de signo: usar `siaf-bar-chart`, horizontal si las etiquetas son largas.\n- Para varias series por categoría: usar `siaf-bar-chart` agrupado.\n- Para la evolución de un valor en el tiempo: usar `siaf-line-chart`.",
     "teclado": "- **Tab**: enfoca el gráfico (una sola parada).\n- **Flecha abajo / arriba**: recorren las categorías y muestran el tooltip con su valor; dan la vuelta.\n- **Inicio / Fin**: van a la primera o a la última categoría.\n- **Escape**: oculta el tooltip; salir del gráfico también lo oculta.",
     "accesibilidad": "- **1.1.1 Contenido no textual (A)**: el lienzo es `role=\"img\"` con `ariaLabel` y, además, hay una tabla de datos\n  oculta (`sr-only`) con una fila por categoría y el valor en la columna de su lado.\n- **1.3.1 Información y relaciones (A)**: la tabla usa `caption`, `th scope=\"col\"` para los dos lados y\n  `th scope=\"row\"` para las categorías.\n- **2.1.1 Teclado (A)**: los valores se recorren con las flechas; al moverse, una región `aria-live` anuncia la\n  categoría, el lado y el valor.\n- **2.4.7 Foco visible (AA)**: el lienzo enfocado muestra el contorno de 2 px `border-states-focus`.\n- **1.4.1 Uso del color (A)**: el lado no depende solo del color: la barra queda a la izquierda o a la derecha del\n  cero, el valor lleva su signo y el nombre del lado está en la leyenda, en el tooltip y en la tabla.\n- **1.4.13 Contenido en hover o foco (AA)**: Escape oculta el tooltip sin mover el puntero ni el foco.\n- **Pendiente · 1.4.11 Contraste no textual (AA)**: en oscuro las barras de los dos lados (`bg-brand-primary`,\n  2.66:1, y `bg-brand-secondary`, 2.99:1) no llegan a 3:1 sobre la superficie; la paleta oscura de los gráficos está\n  por definir con diseño.",
+    "limitaciones": "Sin animación (`animation: false`): con animación, en una pestaña que no pinta cuadros las barras quedaban a medio camino. El canvas no entiende `var()`: los colores se leen de los tokens al pintar y se repintan al cambiar el tema. En tema oscuro, la paleta del Figma no llega a 3:1 de contraste entre series (pendiente con diseño).",
+    "incorrecto": null,
+    "correcto": null,
+    "waiAria": null,
     "figma": [
       {
         "nodo": "22743:260",
@@ -4690,14 +5023,25 @@ export const MANIFIESTO_UI_KIT: readonly FichaComponente[] = [
         "tipo": "'horizontal' | 'vertical'",
         "porDefecto": "'horizontal'",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "opciones",
+        "opciones": [
+          "horizontal",
+          "vertical"
+        ]
       },
       {
         "nombre": "variant",
         "tipo": "'full-width' | 'inset' | 'middle-inset'",
         "porDefecto": "'full-width'",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "opciones",
+        "opciones": [
+          "full-width",
+          "inset",
+          "middle-inset"
+        ]
       }
     ],
     "eventos": [],
@@ -4705,6 +5049,10 @@ export const MANIFIESTO_UI_KIT: readonly FichaComponente[] = [
     "evitar": "- En paneles laterales (`siaf-side-nav`, `siaf-side-panel`, `siaf-selection-side-nav`): van sin líneas entre título,\n  contenido y botones, por regla de diseño. La excepción es el panel de filtros de `siaf-side-panel`, que el Figma\n  separa del contenido con líneas.\n- Para separar filas de una grilla: `siaf-data-table` y `siaf-documents-records-table` ya dibujan el borde de cada\n  fila.\n- Un `<hr>` o un `div` con `border-b` hecho a mano: usar `siaf-divider`, que toma el color del token y publica\n  `role=\"separator\"`.\n- Como única señal de agrupación: la línea es tenue; acompañarla de espacio o de un título.",
     "teclado": "- No recibe foco: no es interactivo.",
     "accesibilidad": "- **1.3.1 Información y relaciones (A)**: la línea es `role=\"separator\"` con `aria-orientation` (`horizontal` o\n  `vertical`).\n- **1.4.11 Contraste no textual (AA)**: no se exige: la línea (`divider-default`, 1.27:1 claro / 1.50:1 oscuro) es\n  decorativa y no identifica un control ni un estado; por eso la agrupación no debe depender solo de ella.",
+    "limitaciones": null,
+    "incorrecto": null,
+    "correcto": null,
+    "waiAria": null,
     "figma": [
       {
         "nodo": "8184:10561",
@@ -4738,7 +5086,7 @@ export const MANIFIESTO_UI_KIT: readonly FichaComponente[] = [
     "importacion": "@kennedy122112/siaf-rp-ui-angular",
     "archivo": "node_modules/@kennedy122112/siaf-rp-ui-angular/types/kennedy122112-siaf-rp-ui-angular.d.ts",
     "descripcion": "Panel lateral a pantalla completa «Historial del documento», que abre la bandeja `siaf-documents-records-page`\ndesde la pestaña Documentos.\n\nMuestra el documento, su N° y el tipo de acción, una sección plegable opcional de atributos y la tabla «Historial\nde estados» (usuario, unidad organizacional, fecha y estado con `siaf-flow-status-tag`), que pide a\n`FuenteHistorialDocumento` con `solicitudId` (la provee el proyecto: el kit no llama a ninguna API) o toma de\n`staticRows` sin consultar. Se cierra con la X o pulsando el fondo, que emiten `closed`.",
-    "usaSesion": true,
+    "usaSesion": false,
     "proyectaContenido": false,
     "entradas": [
       {
@@ -4746,7 +5094,8 @@ export const MANIFIESTO_UI_KIT: readonly FichaComponente[] = [
         "tipo": "boolean",
         "porDefecto": "false",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "booleano"
       },
       {
         "nombre": "summary",
@@ -4767,6 +5116,10 @@ export const MANIFIESTO_UI_KIT: readonly FichaComponente[] = [
     "evitar": "- Para registros (pestaña Registros): usar `siaf-account-history-panel` o `siaf-asiento-history-panel`.\n- Dentro de la solicitud abierta: usar `siaf-detail-history-tabs` y `siaf-action-tracker` en la página.\n- Para mostrar comentarios u observaciones: la tabla no pinta el `comentario` aunque viaje en cada fila; usar\n  `siaf-detail-history-tabs`.",
     "teclado": "- **Tab**: al abrir, el foco entra en la X; recorre el botón de atributos y da la vuelta sin salir del panel.\n- **Enter / Espacio** en la X: cierran el panel (emite `closed`).\n- **Escape**: cierra el panel (emite `closed`) y el foco vuelve al botón de historial.\n- **Enter / Espacio** en el botón de atributos: pliegan o despliegan la sección.",
     "accesibilidad": "- **Pendiente · 4.1.2 Nombre, función y valor (A)**: es `role=\"dialog\"` con `aria-modal`, nombre desde su título y\n  la X «Cerrar historial»; pero el botón de atributos no publica `aria-expanded` ni `aria-controls`: su estado solo\n  se ve en la flecha.\n- **1.3.1 Información y relaciones (A)**: título `h2`, subtítulo `h3` y estados en una `table` con `thead` y `th`.\n- **1.4.1 Uso del color (A)**: cada estado va escrito en `siaf-flow-status-tag`.\n- **Pendiente · 1.4.3 Contraste mínimo (AA)**: etiquetas `text-neutral-low` 5.01:1 (oscuro 8.86:1), valores\n  `text-neutral-high` 16.29:1 (16.53:1) y celdas `text-neutral-medium` 14.53:1 (12.87:1) cumplen, pero el estado\n  Observado da 3.39:1 en claro.\n- **2.4.3 Orden del foco (A)**: con `siafFoco`, al abrir lleva el foco a la X y lo retiene en el panel; al cerrar (X,\n  Escape o clic en el fondo) lo devuelve al botón de historial.\n- **2.4.7 Foco visible (AA)**: la X y el botón de atributos no definen estilo de foco: muestran el contorno por\n  defecto del navegador.\n- **Pendiente · 4.1.3 Mensajes de estado (AA)**: la carga pinta filas grises animadas sin texto ni `aria-busy`, así\n  que no se anuncia.",
+    "limitaciones": null,
+    "incorrecto": null,
+    "correcto": null,
+    "waiAria": null,
     "figma": [],
     "aria": {
       "roles": [
@@ -4914,42 +5267,69 @@ export const MANIFIESTO_UI_KIT: readonly FichaComponente[] = [
         "tipo": "string | null",
         "porDefecto": "null",
         "requerida": false,
-        "descripcion": "Número de documento contable (ej: AA-1-2026-01) — opcional, se muestra como tercera fila"
+        "descripcion": "Número de documento contable (ej: AA-1-2026-01) — opcional, se muestra como tercera fila",
+        "control": "texto"
       },
       {
         "nombre": "contableNumberLabel",
         "tipo": "string",
         "porDefecto": "'N° Doc. Contable'",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "texto"
       },
       {
         "nombre": "documentNumber",
         "tipo": "string",
         "porDefecto": "''",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "texto"
       },
       {
         "nombre": "documentNumberLabel",
         "tipo": "string",
         "porDefecto": "'N° documento'",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "texto"
       },
       {
         "nombre": "status",
         "tipo": "FlowStatus",
         "porDefecto": "'Elaborado'",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "opciones",
+        "opciones": [
+          "Elaborado",
+          "Registrado",
+          "Verificado",
+          "Validado",
+          "Revisado",
+          "Generado",
+          "En proceso",
+          "Autorizado",
+          "Firmado",
+          "Aprobado",
+          "Aceptado",
+          "Publicado",
+          "Procesado",
+          "Observado",
+          "Pendiente",
+          "Fallido",
+          "Eliminado",
+          "Rechazado",
+          "Anulado"
+        ]
       },
       {
         "nombre": "statusLabel",
         "tipo": "string",
         "porDefecto": "'Estado'",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "texto"
       }
     ],
     "eventos": [],
@@ -4957,6 +5337,10 @@ export const MANIFIESTO_UI_KIT: readonly FichaComponente[] = [
     "evitar": "- Para el ítem elegido desde un panel lateral: usar `siaf-summary-card`.\n- Para datos generales como fecha, ente rector o entidad: usar `siaf-solicitude-info-card`.\n- Para el estado de un registro (Activo, Anulado): usar `siaf-record-status-tag`; esta card muestra el estado del\n  flujo del documento.\n- Etiquetas largas: en escritorio la columna mide 140 px y la etiqueta se trunca.",
     "teclado": "- No recibe foco: no es interactivo.",
     "accesibilidad": "- **1.3.1 Información y relaciones (A)**: cada etiqueta precede a su valor en el orden de lectura; las versiones\n  móvil y escritorio se ocultan con `display: none`, así que el lector de pantalla lee una sola.\n- **1.4.1 Uso del color (A)**: el estado va escrito en `siaf-flow-status-tag`, no solo en el color.\n- **Pendiente · 1.4.3 Contraste mínimo (AA)**: etiquetas `text-neutral-low` 5.01:1 (oscuro 8.86:1) y N° de\n  documento `text-neutral-high` 16.29:1 (16.53:1) cumplen, pero el N° contable usa la clase `text-brand-primary`\n  (color de fondo de marca), 2.66:1 en oscuro, y el estado Observado / Pendiente / Fallido da 3.39:1 en claro.\n- **1.4.13 Contenido en hover o foco (AA)**: en escritorio el N° truncado se completa con `siafTooltip`, que se\n  cierra con Escape y se puede recorrer con el puntero.\n- **Pendiente · 2.1.1 Teclado (A)**: ese texto no recibe foco, así que con teclado el globo no aparece (el lector de\n  pantalla sí lee el valor entero).",
+    "limitaciones": null,
+    "incorrecto": null,
+    "correcto": null,
+    "waiAria": null,
     "figma": [],
     "aria": {
       "roles": [],
@@ -5032,7 +5416,7 @@ export const MANIFIESTO_UI_KIT: readonly FichaComponente[] = [
     "importacion": "@kennedy122112/siaf-rp-ui-angular",
     "archivo": "node_modules/@kennedy122112/siaf-rp-ui-angular/types/kennedy122112-siaf-rp-ui-angular.d.ts",
     "descripcion": "Pantalla «Documentos y registros» de un proceso, armada desde un `DocumentsRecordsConfig`: breadcrumb, título,\n«Crear documento», pestañas Documentos / Registros, buscador con menús y filtros, grilla estándar con paginación y\nlos paneles de historial y de columnas.\nAplica las reglas de rol (el creador verifica elaborados, el aprobador aprueba verificados y el resto solo consulta;\n`modoConsulta` quita crear y las acciones) y ejecuta verificar o aprobar en lote. El rol, el cambio de estado y la\nrecarga de la bandeja salen de `FuenteDocumentosRegistros`, que provee el proyecto: el kit no llama a ninguna API.\nCon `serverQuery` / `serverRecordsQuery` la búsqueda y la paginación las resuelve el padre en el servidor, y la\nselección sobrevive al refresco por polling.",
-    "usaSesion": true,
+    "usaSesion": false,
     "proyectaContenido": true,
     "entradas": [
       {
@@ -5047,7 +5431,8 @@ export const MANIFIESTO_UI_KIT: readonly FichaComponente[] = [
         "tipo": "boolean",
         "porDefecto": "false",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "booleano"
       }
     ],
     "eventos": [
@@ -5071,16 +5456,49 @@ export const MANIFIESTO_UI_KIT: readonly FichaComponente[] = [
     "evitar": "- Para «Consultas y reportes» con búsqueda por criterios: usar `siaf-page-shell` con `siaf-page-header`.\n- Para ver o editar una solicitud: usar `siaf-solicitude-page-layout`.\n- Rearmar una bandeja con `siaf-table-controls`, `siaf-documents-records-table` y `siaf-pagination` sueltos, o\n  duplicar las reglas de rol: declarar otro `DocumentsRecordsConfig`.\n- Para la Bandeja de Documentos del shell (Recibidos, Enviados, Borradores, Papelera): es `siaf-tray-documents-view`.",
     "teclado": "- **Tab**: recorre el breadcrumb, «Crear documento», las pestañas, el buscador y sus menús, los filtros, «Agregar\n  filtro», la barra de la grilla, la tabla y la paginación; cada control sigue su componente.\n- **Flechas izquierda / derecha, Inicio y Fin**: cambian entre Documentos y Registros (`siaf-tabs`).\n- **Enter** en el buscador: aplica la búsqueda (con búsqueda en el servidor, recién ahí consulta).\n- **Enter / Espacio** en un chip de filtro personalizado: lo abre para editarlo; en su X, lo quita.\n- **Escape**: cierra el popover «Crear documento» o el filtro personalizado y el foco vuelve a su botón; salir del\n  popover con Tab también lo cierra. Las capas transparentes que cierran al pulsar fuera no son paradas de Tab.",
     "accesibilidad": "- **1.3.1 Información y relaciones (A)**: el título del proceso es el `h1` y «Documentos existentes» / «Registros\n  existentes», el `h2` de la grilla; el breadcrumb es un `nav` y la página vive dentro del `main` del shell.\n- **Pendiente · 4.1.2 Nombre, función y valor (A)**: las pestañas no apuntan a un `role=\"tabpanel\"` (la grilla no lo\n  declara), y la X que quita un filtro personalizado es un `span` `role=\"button\"` dentro de otro `<button>`: un\n  control anidado en un botón puede no anunciarse.\n- **Pendiente · 2.5.3 Etiqueta en el nombre (A)**: cada chip de filtro personalizado se llama «Filtro personalizado\n  aplicado» y su texto visible («Campo: valor») no forma parte del nombre.\n- **2.4.3 Orden del foco (A)**: el popover «Crear documento» y el filtro personalizado reciben el foco al abrirse,\n  cierran con Escape y lo devuelven a su botón (`siafFoco`).\n- **Pendiente · 2.4.11 Foco no oculto (AA)**: en escritorio la cabecera (breadcrumb, título y pestañas) queda fija\n  bajo el navbar y no hay `scroll-padding`: al volver con Shift + Tab, un control de la grilla puede quedar tapado.\n- **4.1.3 Mensajes de estado (AA)**: la carga de la grilla se anuncia con `siaf-table-skeleton` (`role=\"status\"`) y\n  el resultado de verificar o aprobar en lote con `siaf-snackbar` (`role=\"status\"`; `role=\"alert\"` si falla).\n- **2.4.7 Foco visible (AA)**: los chips de filtro personalizado y «Agregar filtro» no tienen estilo propio ni\n  `outline-none`: queda el anillo nativo; el resto sigue su componente.\n- **1.4.3 Contraste mínimo (AA)**: `h1` y `h2` en `text-text` (16.29:1 / 16.53:1) y el subtítulo en\n  `text-text-muted` (5.01:1 / 8.86:1) sobre `bg-surface`.",
+    "limitaciones": null,
+    "incorrecto": null,
+    "correcto": null,
+    "waiAria": null,
     "figma": [],
     "aria": {
-      "roles": [],
-      "atributos": []
+      "roles": [
+        "button"
+      ],
+      "atributos": [
+        "aria-hidden",
+        "aria-label"
+      ]
     },
     "tokens": [
+      {
+        "token": "--sys-color-bg-states-dark-pressed",
+        "via": [
+          "bg-bg-states-dark-pressed"
+        ]
+      },
+      {
+        "token": "--sys-color-bg-states-light-hover",
+        "via": [
+          "bg-bg-states-light-hover"
+        ]
+      },
+      {
+        "token": "--sys-color-bg-states-light-selected",
+        "via": [
+          "bg-bg-states-light-selected"
+        ]
+      },
       {
         "token": "--sys-color-bg-surfaces-surface",
         "via": [
           "bg-surface"
+        ]
+      },
+      {
+        "token": "--sys-color-bg-surfaces-surface-high",
+        "via": [
+          "bg-surface-muted"
         ]
       },
       {
@@ -5090,14 +5508,33 @@ export const MANIFIESTO_UI_KIT: readonly FichaComponente[] = [
         ]
       },
       {
+        "token": "--sys-color-border-states-active",
+        "via": [
+          "border-border-states-active"
+        ]
+      },
+      {
+        "token": "--sys-color-text-neutral-activated",
+        "via": [
+          "text-text-neutral-activated"
+        ]
+      },
+      {
         "token": "--sys-color-text-neutral-high",
         "via": [
           "text-text"
         ]
       },
       {
+        "token": "--sys-color-text-neutral-low",
+        "via": [
+          "text-text-muted"
+        ]
+      },
+      {
         "token": "--sys-gap-base-lg",
         "via": [
+          "bottom-siaf-lg",
           "p-siaf-lg"
         ]
       },
@@ -5105,7 +5542,30 @@ export const MANIFIESTO_UI_KIT: readonly FichaComponente[] = [
         "token": "--sys-gap-base-md",
         "via": [
           "gap-siaf-md",
-          "p-siaf-md"
+          "inset-x-siaf-md",
+          "p-siaf-md",
+          "px-siaf-md"
+        ]
+      },
+      {
+        "token": "--sys-gap-base-sm",
+        "via": [
+          "gap-siaf-sm",
+          "pt-siaf-sm"
+        ]
+      },
+      {
+        "token": "--sys-gap-base-xs",
+        "via": [
+          "gap-siaf-xs",
+          "pb-siaf-xs",
+          "px-siaf-xs"
+        ]
+      },
+      {
+        "token": "--sys-gap-base-xxs",
+        "via": [
+          "py-siaf-xxs"
         ]
       },
       {
@@ -5113,21 +5573,39 @@ export const MANIFIESTO_UI_KIT: readonly FichaComponente[] = [
         "via": [
           "rounded-siaf-md"
         ]
+      },
+      {
+        "token": "--sys-radius-sm",
+        "via": [
+          "rounded-siaf-sm"
+        ]
+      },
+      {
+        "token": "--sys-shadow-elevation-1",
+        "via": [
+          "shadow-siaf-elevation-1"
+        ]
       }
     ],
     "usa": [
-      "siaf-acciones-en-lote-section",
+      "[siafFoco]",
       "siaf-account-history-panel",
       "siaf-asiento-history-panel",
+      "siaf-breadcrumb",
       "siaf-button",
       "siaf-column-visibility-panel",
+      "siaf-create-document",
+      "siaf-custom-filter",
       "siaf-document-history-panel",
       "siaf-documents-records-table",
-      "siaf-encabezado-section",
-      "siaf-filtros-section",
+      "siaf-filter-pill",
+      "siaf-icon",
       "siaf-icon-dropdown-menu",
+      "siaf-modal",
       "siaf-pagination",
       "siaf-records-search-toolbar",
+      "siaf-records-tabs",
+      "siaf-snackbar",
       "siaf-table-controls",
       "siaf-table-skeleton"
     ],
@@ -5149,7 +5627,12 @@ export const MANIFIESTO_UI_KIT: readonly FichaComponente[] = [
         "tipo": "'documents' | 'records'",
         "porDefecto": "'documents'",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "opciones",
+        "opciones": [
+          "documents",
+          "records"
+        ]
       },
       {
         "nombre": "columns",
@@ -5170,21 +5653,24 @@ export const MANIFIESTO_UI_KIT: readonly FichaComponente[] = [
         "tipo": "string",
         "porDefecto": "''",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "texto"
       },
       {
         "nombre": "recordHistoryLabel",
         "tipo": "string",
         "porDefecto": "'Ver historial de cuenta contable'",
         "requerida": false,
-        "descripcion": "Nombre y tooltip del botón de historial en la pestaña Registros."
+        "descripcion": "Nombre y tooltip del botón de historial en la pestaña Registros.",
+        "control": "texto"
       },
       {
         "nombre": "recordTrackKey",
         "tipo": "string",
         "porDefecto": "''",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "texto"
       },
       {
         "nombre": "rows",
@@ -5222,6 +5708,10 @@ export const MANIFIESTO_UI_KIT: readonly FichaComponente[] = [
     "evitar": "- Para un listado de solo lectura con texto plano: `siaf-table`.\n- Usarla sola, sin barra ni paginado: va dentro de la grilla estándar (`siaf-table-controls` arriba, con el\n  seleccionar todo, y `siaf-pagination` con `position=\"Bottom\"` y `rowPage` abajo).\n- Mientras llegan las filas: `siaf-table-skeleton` con las mismas columnas y `minWidthClass`, no la tabla vacía.\n- Copiar su marcado en otra pantalla: `siaf-tray-documents-view` todavía tiene una tabla parecida hecha a mano.",
     "teclado": "- **Tab**: recorre, fila por fila, el checkbox (solo en Documentos), el enlace al documento y el botón de historial;\n  un checkbox deshabilitado queda fuera.\n- **Espacio**: marca o desmarca el checkbox de la fila (emite `selectionChanged`).\n- **Enter**: en el enlace, abre el documento (`routerLink`).\n- **Enter / Espacio**: en el botón de historial, emiten `historyOpened`.",
     "accesibilidad": "- **1.3.1 Información y relaciones (A)**: `<table>` con `<thead>` y un `<th>` por columna (sin `scope`, que con una\n  sola fila de cabecera no hace falta); las columnas del checkbox y del historial tienen el `<th>` vacío. No ordena\n  columnas, así que no aplica `aria-sort`.\n- **Pendiente · 4.1.2 Nombre, función y valor (A)**: el checkbox de cada fila no tiene nombre (ni `aria-label` ni\n  `<label>`). El botón de historial sí lleva `aria-label`; en Registros es `recordHistoryLabel`, que por defecto dice\n  «Ver historial de cuenta contable», también en los asientos de ajuste.\n- **Pendiente · 2.1.1 Teclado (A)**: la fila no es clicable y sus acciones son nativas, pero el texto completo de\n  las cabeceras y celdas cortadas solo sale con `siafTooltip` al pasar el mouse: esas celdas no reciben foco (el\n  enlace sí lo muestra al enfocarlo).\n- **1.4.13 Contenido en hover o foco (AA)**: ese tooltip se cierra con Escape y se puede recorrer con el puntero.\n- **Pendiente · 1.4.3 Contraste mínimo (AA)**: el enlace va en `text-neutral-high` (16.29:1 / 16.53:1) y «Nuevo» en\n  blanco sobre `bg-brand-primary` (8.79:1 / 6.67:1), pero la etiqueta Observado de `siaf-flow-status-tag` (también\n  Pendiente y Fallido) da 3.39:1 en claro, y el enlace en hover (`text-brand-primary`) pinta en oscuro con\n  `bg-brand-primary` (2.66:1 sobre la superficie).\n- **1.4.1 Uso del color (A)**: los estados llevan su nombre en la etiqueta y «Nuevo» es texto.\n- **2.4.7 Foco visible (AA)**: sin estilo propio: enlace, checkbox y botón muestran el anillo nativo del navegador.\n- **2.5.8 Tamaño del objetivo (AA)**: botón de historial de 32 px; el checkbox mide 16 px, pero cumple por\n  espaciado (celda de 40 × 58 px).",
+    "limitaciones": null,
+    "incorrecto": null,
+    "correcto": null,
+    "waiAria": null,
     "figma": [],
     "aria": {
       "roles": [],
@@ -5338,7 +5828,8 @@ export const MANIFIESTO_UI_KIT: readonly FichaComponente[] = [
         "tipo": "string",
         "porDefecto": "'Gráfico de dona'",
         "requerida": false,
-        "descripcion": "Nombre accesible del gráfico y título de su tabla de datos."
+        "descripcion": "Nombre accesible del gráfico y título de su tabla de datos.",
+        "control": "texto"
       },
       {
         "nombre": "categories",
@@ -5352,21 +5843,24 @@ export const MANIFIESTO_UI_KIT: readonly FichaComponente[] = [
         "tipo": "string",
         "porDefecto": "'Categoría'",
         "requerida": false,
-        "descripcion": "Encabezado de la columna de las partes en la tabla de datos."
+        "descripcion": "Encabezado de la columna de las partes en la tabla de datos.",
+        "control": "texto"
       },
       {
         "nombre": "height",
         "tipo": "number",
         "porDefecto": "252",
         "requerida": false,
-        "descripcion": "Alto del área del gráfico en px (sin la leyenda)."
+        "descripcion": "Alto del área del gráfico en px (sin la leyenda).",
+        "control": "numero"
       },
       {
         "nombre": "valueLabel",
         "tipo": "string",
         "porDefecto": "'Valor'",
         "requerida": false,
-        "descripcion": "Encabezado de la columna de los valores en la tabla de datos."
+        "descripcion": "Encabezado de la columna de los valores en la tabla de datos.",
+        "control": "texto"
       },
       {
         "nombre": "values",
@@ -5380,7 +5874,8 @@ export const MANIFIESTO_UI_KIT: readonly FichaComponente[] = [
         "tipo": "string",
         "porDefecto": "''",
         "requerida": false,
-        "descripcion": "Sufijo de los valores en la tabla de datos y el anuncio (por ejemplo `%`)."
+        "descripcion": "Sufijo de los valores en la tabla de datos y el anuncio (por ejemplo `%`).",
+        "control": "texto"
       }
     ],
     "eventos": [],
@@ -5388,6 +5883,10 @@ export const MANIFIESTO_UI_KIT: readonly FichaComponente[] = [
     "evitar": "- Para un avance de 0 a 100 %: usar `siaf-progress-circular`.\n- Para comparar cantidades entre categorías: usar `siaf-bar-chart`.\n- Para la composición de un total en una barra, con el porcentaje de cada parte a la vista: usar `siaf-bar-chart` con\n  `stacked` y una sola categoría.\n- Con más de cuatro partes: la paleta da la vuelta y los colores se repiten.",
     "teclado": "- **Tab**: enfoca el gráfico (una sola parada).\n- **Flecha derecha / izquierda**: recorren los tramos y muestran al centro el nombre y el porcentaje de cada uno; dan la\n  vuelta.\n- **Inicio / Fin**: van al primer o al último tramo.\n- **Escape**: oculta el centro; salir del gráfico también lo oculta.",
     "accesibilidad": "- **1.1.1 Contenido no textual (A)**: el lienzo es `role=\"img\"` con `ariaLabel` y, además, hay una tabla de datos\n  oculta (`sr-only`) con el valor y el porcentaje de cada parte.\n- **1.3.1 Información y relaciones (A)**: la tabla usa `caption`, `th scope=\"col\"` y `th scope=\"row\"` para cada parte.\n- **2.1.1 Teclado (A)**: los tramos se recorren con las flechas; al moverse, una región `aria-live` anuncia la parte, su\n  porcentaje y su valor.\n- **2.4.7 Foco visible (AA)**: el lienzo enfocado muestra el contorno de 2 px `border-states-focus`.\n- **1.4.1 Uso del color (A)**: las partes se distinguen por color, pero sus nombres están en la leyenda, en el centro y\n  en la tabla de datos.\n- **1.4.3 Contraste mínimo (AA)**: el centro va en `text-neutral-medium` sobre la superficie.\n- **1.4.13 Contenido en hover o foco (AA)**: Escape oculta el centro sin mover el puntero ni el foco.\n- **Pendiente · 1.4.11 Contraste no textual (AA)**: en oscuro los tramos primario (`bg-brand-primary`, 2.66:1) y\n  secundario (`bg-brand-secondary`, 2.99:1) no llegan a 3:1 sobre la superficie; la paleta oscura de los gráficos está\n  por definir con diseño.",
+    "limitaciones": "Sin animación (`animation: false`): con animación, en una pestaña que no pinta cuadros las barras quedaban a medio camino. El canvas no entiende `var()`: los colores se leen de los tokens al pintar y se repintan al cambiar el tema. En tema oscuro, la paleta del Figma no llega a 3:1 de contraste entre series (pendiente con diseño).",
+    "incorrecto": null,
+    "correcto": null,
+    "waiAria": null,
     "figma": [
       {
         "nodo": "22743:343",
@@ -5462,21 +5961,33 @@ export const MANIFIESTO_UI_KIT: readonly FichaComponente[] = [
         "tipo": "string",
         "porDefecto": "'Mover'",
         "requerida": false,
-        "descripcion": "El nombre que lee el lector de pantalla: qué se mueve."
+        "descripcion": "El nombre que lee el lector de pantalla: qué se mueve.",
+        "control": "texto"
       },
       {
         "nombre": "orientacion",
         "tipo": "'horizontal' | 'vertical'",
         "porDefecto": "'vertical'",
         "requerida": false,
-        "descripcion": "`vertical`: dos columnas de tres puntos (lista de arriba abajo); `horizontal`: tres columnas de dos."
+        "descripcion": "`vertical`: dos columnas de tres puntos (lista de arriba abajo); `horizontal`: tres columnas de dos.",
+        "control": "opciones",
+        "opciones": [
+          "vertical",
+          "horizontal"
+        ]
       },
       {
         "nombre": "size",
         "tipo": "'sm' | 'md' | 'xs'",
         "porDefecto": "'md'",
         "requerida": false,
-        "descripcion": "`md` 40 px (listas y paneles), `sm` 32 px o `xs` 24 px (la celda de las tablas)."
+        "descripcion": "`md` 40 px (listas y paneles), `sm` 32 px o `xs` 24 px (la celda de las tablas).",
+        "control": "opciones",
+        "opciones": [
+          "sm",
+          "md",
+          "xs"
+        ]
       }
     ],
     "eventos": [],
@@ -5484,6 +5995,10 @@ export const MANIFIESTO_UI_KIT: readonly FichaComponente[] = [
     "evitar": "- Como decoración en algo que no se arrastra: promete una acción que no existe.\n- Fuera de un `siafReordenableItem`: no tendría qué mover.",
     "teclado": "- **Tab**: llega a la manija.\n- **Espacio / Enter**: toma o suelta el elemento; con él tomado, las flechas lo mueven y **Escape** lo devuelve (ver\n  `siafReordenable`).",
     "accesibilidad": "- **4.1.2 Nombre, función y valor (A)**: es un `<button>` con `aria-label` (`etiqueta`) y `aria-pressed`, que la\n  lista pone en `true` mientras el elemento está tomado.\n- **1.4.11 Contraste no textual (AA)**: los puntos en reposo van en `text-neutral-low` (5.01:1 / 8.86:1) y, al pasar o\n  tomarlo, en `text-neutral-high` (16.29:1 / 16.53:1).\n- **2.4.7 Foco visible (AA)**: anillo de 2 px `border-states-focus` por dentro, como los demás botones de ícono.\n- **2.5.8 Tamaño del objetivo (AA)**: 40 × 40 px (32 × 32 con `sm` y 24 × 24 con `xs`, el mínimo del criterio).",
+    "limitaciones": "- Sin `siafReordenable` alrededor, Espacio y las flechas no hacen nada: el teclado lo maneja la lista.",
+    "incorrecto": "<siaf-drag-handle />",
+    "correcto": "<siaf-drag-handle [etiqueta]=\"'Mover ' + campo.nombre\" />",
+    "waiAria": null,
     "figma": [
       {
         "nodo": "22402:16163",
@@ -5556,42 +6071,54 @@ export const MANIFIESTO_UI_KIT: readonly FichaComponente[] = [
         "tipo": "boolean",
         "porDefecto": "false",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "booleano"
       },
       {
         "nombre": "actionIcon",
         "tipo": "string",
         "porDefecto": "''",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "texto"
       },
       {
         "nombre": "actionLabel",
         "tipo": "string",
         "porDefecto": "''",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "texto"
       },
       {
         "nombre": "description",
         "tipo": "string",
         "porDefecto": "''",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "texto"
       },
       {
         "nombre": "illustration",
         "tipo": "'no-results' | 'no-data' | 'no-selection' | 'no-records'",
         "porDefecto": "'no-results'",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "opciones",
+        "opciones": [
+          "no-results",
+          "no-data",
+          "no-selection",
+          "no-records"
+        ]
       },
       {
         "nombre": "title",
         "tipo": "string",
         "porDefecto": "''",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "texto"
       }
     ],
     "eventos": [
@@ -5605,6 +6132,10 @@ export const MANIFIESTO_UI_KIT: readonly FichaComponente[] = [
     "evitar": "- Para una sección de formulario sin valor elegido: usar `empty-section`.\n- Para una nota breve dentro de una tarjeta: usar `message-box`.\n- Mientras los datos cargan: usar `siaf-table-skeleton` o `siaf-loader`.\n- Para un error al cargar: usar `siaf-alert` con `tone=\"error\"`.",
     "teclado": "- **Tab**: con `actionLabel`, enfoca el botón de acción (deshabilitado no recibe el foco); sin él, no hay nada\n  que enfocar.\n- **Enter / Espacio**: el botón emite `actionClicked` (sigue `siaf-button`).",
     "accesibilidad": "- **1.1.1 Contenido no textual (A)**: la ilustración SVG va con `aria-hidden`; el mensaje está en el título y la\n  descripción.\n- **1.3.1 Información y relaciones (A)**: el título es un `<h2>` de nivel fijo, que encaja bajo el `<h1>` de\n  `siaf-page-header` en las consultas; la descripción es un párrafo.\n- **4.1.3 Mensajes de estado (AA)**: el bloque es `aria-live=\"polite\"` y anuncia los cambios de título o\n  descripción; si el padre lo inserta ya lleno con un bloque if, no todos los lectores lo anuncian.\n- **1.4.3 Contraste mínimo (AA)**: título `text-neutral-high` 16.29:1 (16.53:1 en oscuro) y descripción\n  `text-neutral-medium` 14.53:1 (12.87:1) sobre la superficie.\n- **4.1.2 Nombre, función y valor (A)**: el botón de acción es un `siaf-button` con `ariaLabel` igual a su texto\n  visible (`actionLabel`).",
+    "limitaciones": null,
+    "incorrecto": null,
+    "correcto": null,
+    "waiAria": null,
     "figma": [],
     "aria": {
       "roles": [],
@@ -5671,120 +6202,6 @@ export const MANIFIESTO_UI_KIT: readonly FichaComponente[] = [
     "sinUso": false
   },
   {
-    "selector": "siaf-encabezado-section",
-    "clase": "EncabezadoSectionComponent",
-    "tipo": "componente",
-    "capa": "components",
-    "importacion": "@kennedy122112/siaf-rp-ui-angular",
-    "archivo": "node_modules/@kennedy122112/siaf-rp-ui-angular/types/kennedy122112-siaf-rp-ui-angular.d.ts",
-    "descripcion": "Cabecera de «Documentos y registros»: breadcrumb, título del proceso, «Crear documento» con su popover y las\npestañas Documentos / Registros. En escritorio queda fija bajo el navbar.\n\nExtraída de `siaf-documents-records-page` siguiendo docs/patron-componentes-solicitud.md («Regla de\nmantenimiento»): recibe la configuración con las reglas de rol ya aplicadas y la pestaña activa, que es de la\npágina. El popover y lo elegido en él viven aquí; al aceptar, avisa con `crear` y la página navega a la solicitud.\nAvisa con `menuAbierto` antes de abrir el popover, para que la página cierre los demás.",
-    "usaSesion": false,
-    "proyectaContenido": false,
-    "entradas": [
-      {
-        "nombre": "activeTab",
-        "tipo": "'documents' | 'records'",
-        "porDefecto": null,
-        "requerida": true,
-        "descripcion": null
-      },
-      {
-        "nombre": "config",
-        "tipo": "DocumentsRecordsConfig",
-        "porDefecto": null,
-        "requerida": true,
-        "descripcion": "Configuración del proceso con las reglas de rol aplicadas (`effectiveConfig` de la página)."
-      }
-    ],
-    "eventos": [
-      {
-        "nombre": "crear",
-        "tipo": "CreateDocumentAccepted",
-        "descripcion": "Se aceptó «Crear documento», con el documento elegido: la página navega a su solicitud (`destinoDeCrear`)."
-      },
-      {
-        "nombre": "menuAbierto",
-        "tipo": "void",
-        "descripcion": "Se va a abrir el popover «Crear documento»: la página cierra los demás."
-      },
-      {
-        "nombre": "tabSelected",
-        "tipo": "'documents' | 'records'",
-        "descripcion": "Pestaña pulsada: la página decide si se abre (Registros puede estar deshabilitada)."
-      }
-    ],
-    "usar": null,
-    "evitar": null,
-    "teclado": null,
-    "accesibilidad": null,
-    "figma": [],
-    "aria": {
-      "roles": [],
-      "atributos": [
-        "aria-hidden"
-      ]
-    },
-    "tokens": [
-      {
-        "token": "--sys-color-bg-surfaces-surface",
-        "via": [
-          "bg-surface"
-        ]
-      },
-      {
-        "token": "--sys-color-text-neutral-high",
-        "via": [
-          "text-text"
-        ]
-      },
-      {
-        "token": "--sys-color-text-neutral-low",
-        "via": [
-          "text-text-muted"
-        ]
-      },
-      {
-        "token": "--sys-gap-base-md",
-        "via": [
-          "px-siaf-md"
-        ]
-      },
-      {
-        "token": "--sys-gap-base-sm",
-        "via": [
-          "gap-siaf-sm",
-          "pt-siaf-sm"
-        ]
-      },
-      {
-        "token": "--sys-gap-base-xs",
-        "via": [
-          "pb-siaf-xs"
-        ]
-      },
-      {
-        "token": "--sys-radius-md",
-        "via": [
-          "rounded-siaf-md"
-        ]
-      },
-      {
-        "token": "--sys-shadow-elevation-1",
-        "via": [
-          "shadow-siaf-elevation-1"
-        ]
-      }
-    ],
-    "usa": [
-      "[siafFoco]",
-      "siaf-breadcrumb",
-      "siaf-button",
-      "siaf-create-document",
-      "siaf-records-tabs"
-    ],
-    "sinUso": false
-  },
-  {
     "selector": "siaf-expansion-panel",
     "clase": "ExpansionPanelComponent",
     "tipo": "componente",
@@ -5807,21 +6224,24 @@ export const MANIFIESTO_UI_KIT: readonly FichaComponente[] = [
         "tipo": "boolean",
         "porDefecto": "false",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "booleano"
       },
       {
         "nombre": "menuWidth",
         "tipo": "number",
         "porDefecto": "200",
         "requerida": false,
-        "descripcion": "Ancho del menú ⋮ en px."
+        "descripcion": "Ancho del menú ⋮ en px.",
+        "control": "numero"
       },
       {
         "nombre": "title",
         "tipo": "string",
         "porDefecto": "''",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "texto"
       }
     ],
     "eventos": [
@@ -5840,6 +6260,13 @@ export const MANIFIESTO_UI_KIT: readonly FichaComponente[] = [
     "evitar": "- Para preguntas frecuentes de solo texto: usar `siaf-accordion`.\n- Para ítems de una selección con marca lateral que se quitan con X: usar `siaf-collapsible-card`.\n- Para secciones obligatorias de la solicitud que siempre deben verse: usar `siaf-solicitude-form-card` sin plegar.\n- Para un menú de acciones sin contenido plegable: usar `siaf-icon-dropdown-menu` directamente.",
     "teclado": "- **Tab**: pasa por la flecha, el menú ⋮ (si hay `actions`) y después por el contenido abierto.\n- **Enter / Espacio** en la flecha: abren o cierran el panel y emiten `expandedChange`.\n- El título también abre y cierra con clic, pero no recibe foco: con teclado se usa la flecha. El menú ⋮ sigue\n  `siaf-icon-dropdown-menu`; si una acción quita el panel, el padre debe mover el foco.",
     "accesibilidad": "- **4.1.2 Nombre, función y valor (A)**: la flecha es un `button` con `aria-expanded`, `aria-controls` hacia el\n  contenido y nombre «Expandir …» / «Contraer …» con el `title`; el ⋮ se llama «Más opciones de …».\n- **1.3.1 Información y relaciones (A)**: el título es un `h3` y el contenido abierto un `role=\"region\"` rotulado\n  por él; el padre debe ubicar el panel donde un `h3` respete la jerarquía.\n- **2.1.1 Teclado (A)**: el clic en el título tiene su equivalente en la flecha, que es un botón nativo.\n- **1.4.1 Uso del color (A)**: abierto o cerrado se distingue por la flecha, no por color.\n- **1.4.3 Contraste mínimo (AA)**: título y contenido en `text-neutral-medium` sobre la superficie, 14.53:1 (oscuro\n  12.87:1).\n- **2.4.7 Foco visible (AA)**: la flecha muestra un contorno de 2 px `border-states-focus` separado 2 px.\n- **1.4.11 Contraste no textual (AA)**: ese contorno es el azul del kit (`border-states-focus`, 5.35:1 claro /\n  10.15:1 oscuro sobre la superficie).\n- **2.5.8 Tamaño del objetivo (AA)**: flecha y ⋮ miden 40 × 40 px.",
+    "limitaciones": null,
+    "incorrecto": null,
+    "correcto": null,
+    "waiAria": {
+      "nombre": "Panel desplegable",
+      "url": "https://www.w3.org/WAI/ARIA/apg/patterns/disclosure/"
+    },
     "figma": [
       {
         "nodo": "9214:5839",
@@ -5949,7 +6376,8 @@ export const MANIFIESTO_UI_KIT: readonly FichaComponente[] = [
         "tipo": "string",
         "porDefecto": "''",
         "requerida": false,
-        "descripcion": "Etiqueta visible en el chip (p.ej. \"Estado\")."
+        "descripcion": "Etiqueta visible en el chip (p.ej. \"Estado\").",
+        "control": "texto"
       },
       {
         "nombre": "options",
@@ -5963,7 +6391,8 @@ export const MANIFIESTO_UI_KIT: readonly FichaComponente[] = [
         "tipo": "string",
         "porDefecto": "''",
         "requerida": false,
-        "descripcion": "Valor actualmente seleccionado (string vacío = sin selección)."
+        "descripcion": "Valor actualmente seleccionado (string vacío = sin selección).",
+        "control": "texto"
       }
     ],
     "eventos": [
@@ -5977,6 +6406,10 @@ export const MANIFIESTO_UI_KIT: readonly FichaComponente[] = [
     "evitar": "- Para condiciones compuestas (campo, condición y valor): `siaf-custom-filter`.\n- Para elegir varias opciones a la vez: la píldora guarda un solo valor; usar `siaf-input` con\n  `type=\"select-multiple\"`.\n- Como campo de formulario con etiqueta y error: `siaf-input` con `type=\"select\"`.",
     "teclado": "- **Tab**: enfoca la píldora; con un valor elegido, también su × («Quitar filtro …»).\n- **Enter / Espacio**: abren o cierran el menú; al abrir, el foco pasa a la primera opción. Sobre la ×, limpian\n  el filtro y el foco queda en la píldora.\n- **Escape**: cierra el menú y el foco vuelve a la píldora; salir del menú con Tab también lo cierra. Dentro del\n  menú, flechas, Inicio, Fin, Enter y Espacio siguen `siaf-menu`.",
     "accesibilidad": "- **4.1.2 Nombre, función y valor (A)**: el tag es un `<button>` con `aria-haspopup=\"menu\"` y `aria-expanded`, con y\n  sin valor, y el menú toma `label` como nombre; con valor, la × es otro `<button>` a su lado, «Quitar filtro …».\n- **2.4.3 Orden del foco (A)**: con `siafFoco`, al abrir el foco entra en la primera opción (con o sin valor) y al\n  elegir, limpiar, cerrar con Escape o salir con Tab vuelve a la píldora.\n- **1.4.1 Uso del color (A)**: con valor no depende del color: suma el ícono check y el texto «Etiqueta: valor».\n- **1.4.3 Contraste mínimo (AA)**: sin valor, `text-neutral-medium` sobre la superficie (14.53:1 / 12.87:1); con\n  valor, `text-neutral-activated` sobre la capa `bg-states-light-selected` (7.69:1 / 17.15:1).\n- **Pendiente · 1.4.11 Contraste no textual (AA)**: el borde sin valor es `border-states-enabled` (2.44:1 / 2.59:1)\n  y el borde con valor, `border-states-active`, baja a 2.02:1 en oscuro.\n- **2.4.7 Foco visible (AA)**: el tag y la × muestran el anillo del kit de `siaf-tag` (2 px `border-states-focus`);\n  las opciones, el contorno interior azul de `siaf-menu`.\n- **Pendiente · 2.5.8 Tamaño del objetivo (AA)**: la píldora mide 32 px de alto, pero la × mide 20 × 20 px, pegada\n  al botón del tag, sin el espacio libre que pide la excepción.",
+    "limitaciones": null,
+    "incorrecto": null,
+    "correcto": null,
+    "waiAria": null,
     "figma": [],
     "aria": {
       "roles": [],
@@ -5989,141 +6422,6 @@ export const MANIFIESTO_UI_KIT: readonly FichaComponente[] = [
       "[siafFoco]",
       "siaf-menu",
       "siaf-tag"
-    ],
-    "sinUso": false
-  },
-  {
-    "selector": "siaf-filtros-section",
-    "clase": "FiltrosSectionComponent",
-    "tipo": "componente",
-    "capa": "components",
-    "importacion": "@kennedy122112/siaf-rp-ui-angular",
-    "archivo": "node_modules/@kennedy122112/siaf-rp-ui-angular/types/kennedy122112-siaf-rp-ui-angular.d.ts",
-    "descripcion": "Filtros de la grilla de «Documentos y registros»: Estado y Tipo de acción en Documentos, los dos filtros propios del\nproceso en Registros, los filtros personalizados aplicados (un chip por filtro, que se edita al pulsarlo y se quita\ncon su X) y «Agregar filtro», que abre el filtro personalizado.\n\nExtraída de `siaf-documents-records-page` siguiendo docs/patron-componentes-solicitud.md («Regla de\nmantenimiento»): los filtros son de la página, que filtra las filas con ellos; la sección los recibe y avisa cada\ncambio con `filtrosChange`. Si el filtro personalizado está abierto y qué filtro se edita viven aquí. Avisa con\n`menuAbierto` antes de abrirlo, para que la página cierre los demás.",
-    "usaSesion": false,
-    "proyectaContenido": false,
-    "entradas": [
-      {
-        "nombre": "activeTab",
-        "tipo": "'documents' | 'records'",
-        "porDefecto": null,
-        "requerida": true,
-        "descripcion": null
-      },
-      {
-        "nombre": "config",
-        "tipo": "DocumentsRecordsConfig",
-        "porDefecto": null,
-        "requerida": true,
-        "descripcion": "Configuración del proceso con las reglas de rol aplicadas (`effectiveConfig` de la página)."
-      },
-      {
-        "nombre": "filtros",
-        "tipo": "FiltrosBandeja",
-        "porDefecto": null,
-        "requerida": true,
-        "descripcion": "Los filtros aplicados: son de la página."
-      }
-    ],
-    "eventos": [
-      {
-        "nombre": "filtrosChange",
-        "tipo": "FiltrosBandeja",
-        "descripcion": "Los filtros con el cambio aplicado: la página filtra con ellos y vuelve a la primera página."
-      },
-      {
-        "nombre": "menuAbierto",
-        "tipo": "void",
-        "descripcion": "Se va a abrir el filtro personalizado: la página cierra los demás."
-      }
-    ],
-    "usar": null,
-    "evitar": null,
-    "teclado": null,
-    "accesibilidad": null,
-    "figma": [],
-    "aria": {
-      "roles": [
-        "button"
-      ],
-      "atributos": [
-        "aria-hidden",
-        "aria-label"
-      ]
-    },
-    "tokens": [
-      {
-        "token": "--sys-color-bg-states-dark-pressed",
-        "via": [
-          "bg-bg-states-dark-pressed"
-        ]
-      },
-      {
-        "token": "--sys-color-bg-states-light-hover",
-        "via": [
-          "bg-bg-states-light-hover"
-        ]
-      },
-      {
-        "token": "--sys-color-bg-states-light-selected",
-        "via": [
-          "bg-bg-states-light-selected"
-        ]
-      },
-      {
-        "token": "--sys-color-bg-surfaces-surface-high",
-        "via": [
-          "bg-surface-muted"
-        ]
-      },
-      {
-        "token": "--sys-color-border-states-active",
-        "via": [
-          "border-border-states-active"
-        ]
-      },
-      {
-        "token": "--sys-color-text-neutral-activated",
-        "via": [
-          "text-text-neutral-activated"
-        ]
-      },
-      {
-        "token": "--sys-gap-base-md",
-        "via": [
-          "inset-x-siaf-md"
-        ]
-      },
-      {
-        "token": "--sys-gap-base-xs",
-        "via": [
-          "gap-siaf-xs",
-          "px-siaf-xs"
-        ]
-      },
-      {
-        "token": "--sys-gap-base-xxs",
-        "via": [
-          "py-siaf-xxs"
-        ]
-      },
-      {
-        "token": "--sys-radius-md",
-        "via": [
-          "rounded-siaf-md"
-        ]
-      },
-      {
-        "token": "--sys-radius-sm",
-        "via": [
-          "rounded-siaf-sm"
-        ]
-      }
-    ],
-    "usa": [
-      "siaf-custom-filter",
-      "siaf-filter-pill",
-      "siaf-icon"
     ],
     "sinUso": false
   },
@@ -6143,14 +6441,41 @@ export const MANIFIESTO_UI_KIT: readonly FichaComponente[] = [
         "tipo": "'standard' | 'small'",
         "porDefecto": "'small'",
         "requerida": false,
-        "descripcion": "`small` (24 px) o `standard` (32 px)."
+        "descripcion": "`small` (24 px) o `standard` (32 px).",
+        "control": "opciones",
+        "opciones": [
+          "standard",
+          "small"
+        ]
       },
       {
         "nombre": "status",
         "tipo": "FlowStatus",
         "porDefecto": "'Elaborado'",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "opciones",
+        "opciones": [
+          "Elaborado",
+          "Registrado",
+          "Verificado",
+          "Validado",
+          "Revisado",
+          "Generado",
+          "En proceso",
+          "Autorizado",
+          "Firmado",
+          "Aprobado",
+          "Aceptado",
+          "Publicado",
+          "Procesado",
+          "Observado",
+          "Pendiente",
+          "Fallido",
+          "Eliminado",
+          "Rechazado",
+          "Anulado"
+        ]
       }
     ],
     "eventos": [],
@@ -6158,6 +6483,10 @@ export const MANIFIESTO_UI_KIT: readonly FichaComponente[] = [
     "evitar": "- Para el estado de un registro (Activo, Inactivo, Abierto, Cerrado): usar `siaf-record-status-tag`.\n- Para otros estados con los tonos del Figma: usar `siaf-status-tag` directo.\n- Para categorías, filtros o marcas libres: usar `siaf-tag`; para contadores, `siaf-badge`.\n- Pintar a mano un `<span>` con el color del estado: el mapa de estado a tono vive aquí.",
     "teclado": "- No recibe foco: no es interactivo.",
     "accesibilidad": "- **1.4.1 Uso del color (A)**: el estado va escrito; el color solo lo refuerza y varios estados comparten tono.\n- **1.4.3 Contraste mínimo (AA)**: texto blanco de 12 px sobre el fondo del tono, en claro: 12.24:1 en gris, 5.82:1\n  en azul, 4.71:1 en verde y 7.13:1 en rojo. En oscuro, con los tonos oscuros de `--sys-color-bg-status-solid-*`,\n  cumplen los cinco (de 5.31:1 en amarillo a 7.97:1 en gris).\n- **Pendiente · 1.4.3 Contraste mínimo (AA)**: en claro, en amarillo (Observado, Pendiente y Fallido) el blanco sobre\n  `bg-status-solid-warning` da 3.39:1; es el color del Figma, a revisar con diseño.\n- **1.3.1 Información y relaciones (A)**: es un `<span>` con el nombre del estado; el contexto lo da el padre\n  (cabecera de la columna o etiqueta del resumen).\n- **4.1.3 Mensajes de estado (AA)**: no es región viva: el cambio de estado tras verificar o aprobar no lo\n  anuncia la etiqueta, sino el `siaf-snackbar` de confirmación.",
+    "limitaciones": null,
+    "incorrecto": null,
+    "correcto": null,
+    "waiAria": null,
     "figma": [
       {
         "nodo": "2576:10069",
@@ -6190,63 +6519,76 @@ export const MANIFIESTO_UI_KIT: readonly FichaComponente[] = [
         "tipo": "string",
         "porDefecto": "'Buscar'",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "texto"
       },
       {
         "nombre": "columnsLabel",
         "tipo": "string",
         "porDefecto": "'Ocultar o mostrar columnas'",
         "requerida": false,
-        "descripcion": "Nombre accesible del botón Columnas de la variante `reports`."
+        "descripcion": "Nombre accesible del botón Columnas de la variante `reports`.",
+        "control": "texto"
       },
       {
         "nombre": "disabled",
         "tipo": "boolean",
         "porDefecto": "false",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "booleano"
       },
       {
         "nombre": "filterExpanded",
         "tipo": "boolean | null",
         "porDefecto": "null",
         "requerida": false,
-        "descripcion": "Si Filtrar abre un filtro de la pantalla: si está abierto. Sin valor, el botón no publica `aria-expanded`."
+        "descripcion": "Si Filtrar abre un filtro de la pantalla: si está abierto. Sin valor, el botón no publica `aria-expanded`.",
+        "control": "booleano"
       },
       {
         "nombre": "filterLabel",
         "tipo": "string",
         "porDefecto": "'Filtrar'",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "texto"
       },
       {
         "nombre": "moreLabel",
         "tipo": "string",
         "porDefecto": "'Mas opciones'",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "texto"
       },
       {
         "nombre": "placeholder",
         "tipo": "string",
         "porDefecto": "'Buscar'",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "texto"
       },
       {
         "nombre": "value",
         "tipo": "string",
         "porDefecto": "''",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "texto"
       },
       {
         "nombre": "variant",
         "tipo": "'default' | 'reports'",
         "porDefecto": "'default'",
         "requerida": false,
-        "descripcion": "`default`: Filtrar y Más opciones. `reports`: el de Consultas y reportes, con Filtrar y Columnas."
+        "descripcion": "`default`: Filtrar y Más opciones. `reports`: el de Consultas y reportes, con Filtrar y Columnas.",
+        "control": "opciones",
+        "opciones": [
+          "default",
+          "reports"
+        ]
       }
     ],
     "eventos": [
@@ -6275,6 +6617,10 @@ export const MANIFIESTO_UI_KIT: readonly FichaComponente[] = [
     "evitar": "- En las pestañas Documentos / Registros y en la Bandeja de Documentos, con menús a la derecha:\n  `siaf-records-search-toolbar`, que los proyecta.\n- Esperar que los botones hagan algo por sí solos: emiten `filter`, `more` y `columns`, y si la pantalla no los escucha\n  se pintan y no hacen nada (hoy ninguna consulta escucha Filtrar ni Columnas; Filtrar solo lo escucha el panel de\n  cuentas de la configuración de asiento de cierre anual, por `siaf-selection-side-nav`).\n- Para filtrar por opciones cerradas o por condiciones: `siaf-filter-pill` o `siaf-custom-filter` junto al buscador.",
     "teclado": "- **Tab**: recorre el campo, la lupa, Filtrar y Más opciones (o Columnas); con `disabled` quedan todos fuera.\n- **Enter**: en el campo, confirma la búsqueda y emite `valueChange` con lo escrito; escribir no busca.\n- **Enter / Espacio**: en la lupa confirman igual; en Filtrar, Más opciones y Columnas emiten `filter`, `more` y\n  `columns`.",
     "accesibilidad": "- **Pendiente · 4.1.2 Nombre, función y valor (A)**: el input `ariaLabel` no se usa en la plantilla; el nombre del\n  campo sale de `placeholder` («Buscar» por defecto), así que «Buscar cuentas contables» o «Buscar en pedidos» no\n  llegan al lector. Los botones sí llevan `filterLabel` («Filtrar»), `moreLabel` («Mas opciones», sin tilde) y\n  `columnsLabel` («Ocultar o mostrar columnas»); con `filterExpanded`, Filtrar publica además `aria-expanded`.\n- **Pendiente · 4.1.3 Mensajes de estado (AA)**: ni el buscador ni la grilla anuncian el resultado; la pantalla debe\n  anunciar el total (p. ej. con `role=\"status\"`).\n- **Pendiente · 1.4.11 Contraste no textual (AA)**: el borde del campo sin foco es `border-states-enabled` (2.44:1 /\n  2.59:1). El anillo de foco de la lupa y de los botones ya es el azul del kit (`border-states-focus`, 5.35:1 /\n  10.15:1) y los íconos cumplen (`text-neutral-high`; la lupa, `text-neutral-medium`).\n- **2.4.7 Foco visible (AA)**: el campo pasa a un borde de 2 px `border-states-focus` (5.35:1 / 10.15:1); la lupa y\n  los botones muestran un anillo de 2 px separado 2 px.\n- **2.5.8 Tamaño del objetivo (AA)**: Filtrar, Más opciones y Columnas miden 40 px; la lupa, 24 px.",
+    "limitaciones": null,
+    "incorrecto": null,
+    "correcto": null,
+    "waiAria": null,
     "figma": [
       {
         "nodo": "22402:16457",
@@ -6366,35 +6712,47 @@ export const MANIFIESTO_UI_KIT: readonly FichaComponente[] = [
         "tipo": "boolean",
         "porDefecto": "true",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "booleano"
       },
       {
         "nombre": "label",
         "tipo": "string",
         "porDefecto": "''",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "texto"
       },
       {
         "nombre": "name",
         "tipo": "string",
         "porDefecto": null,
         "requerida": true,
-        "descripcion": null
+        "descripcion": null,
+        "control": "texto"
       },
       {
         "nombre": "size",
         "tipo": "number",
         "porDefecto": "20",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "numero"
       },
       {
         "nombre": "variant",
         "tipo": "'filled' | 'outlined' | 'round' | 'sharp' | 'two-tone'",
         "porDefecto": "'outlined'",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "opciones",
+        "opciones": [
+          "filled",
+          "outlined",
+          "round",
+          "sharp",
+          "two-tone"
+        ]
       }
     ],
     "eventos": [],
@@ -6402,6 +6760,10 @@ export const MANIFIESTO_UI_KIT: readonly FichaComponente[] = [
     "evitar": "- Un `<span class=\"material-icons\">` escrito a mano o un SVG suelto: usar siempre `siaf-icon`.\n- Nombres que no existen en `material-icons` (inventados o solo de Material Symbols): se pintan como texto;\n  `npm run icons:check` los detecta en CI.\n- Como botón con clic propio: no recibe foco ni responde al teclado; usar `siaf-button` con `iconOnly` y `ariaLabel`.\n- Para checkbox o radio: van con el `<input>` nativo del kit, no con íconos.",
     "teclado": "- No recibe foco: no es interactivo.",
     "accesibilidad": "- **Pendiente · 1.1.1 Contenido no textual (A)**: es decorativo por defecto (`aria-hidden=\"true\"`), lo correcto\n  junto a un texto. Con `[decorative]=\"false\"` el `<span>` recibe `aria-label` con `label`, pero no `role=\"img\"`, y\n  ARIA no admite nombrar un elemento genérico: un lector puede ignorarlo y leer el nombre de la ligadura (p. ej.\n  «close»). Sin `label`, ese nombre es lo único que hay.\n- **1.4.1 Uso del color (A)**: toma el color del texto del padre; si marca un estado, el padre debe acompañarlo de\n  texto o de otra forma, no solo del color.\n- **1.4.11 Contraste no textual (AA)**: depende del color del padre; con `icon-states-enabled` (8.70:1 claro /\n  12.87:1 oscuro) o `icon-states-active` (8.79:1 / 10.15:1) sobre la superficie cumple 3:1.",
+    "limitaciones": "Un nombre que no existe no falla al compilar: se pinta como texto. `npm run icons:check` lo detecta en el CI.",
+    "incorrecto": "<svg viewBox=\"0 0 24 24\" width=\"20\" height=\"20\"><path d=\"M6 19c0 1.1…\" /></svg>",
+    "correcto": "<siaf-icon name=\"delete\" [size]=\"20\" />",
+    "waiAria": null,
     "figma": [],
     "aria": {
       "roles": [],
@@ -6430,49 +6792,64 @@ export const MANIFIESTO_UI_KIT: readonly FichaComponente[] = [
         "tipo": "'right' | 'left'",
         "porDefecto": "'right'",
         "requerida": false,
-        "descripcion": "Alineación del menú respecto al botón. Default: 'right'."
+        "descripcion": "Alineación del menú respecto al botón. Default: 'right'.",
+        "control": "opciones",
+        "opciones": [
+          "left",
+          "right"
+        ]
       },
       {
         "nombre": "ariaLabel",
         "tipo": "string",
         "porDefecto": "'Más opciones'",
         "requerida": false,
-        "descripcion": "aria-label del botón (también se usa en aria-labels secundarios)."
+        "descripcion": "aria-label del botón (también se usa en aria-labels secundarios).",
+        "control": "texto"
       },
       {
         "nombre": "closeOnSelect",
         "tipo": "boolean",
         "porDefecto": "true",
         "requerida": false,
-        "descripcion": "Si true, NO cierra el menú al seleccionar un item (útil para items `hasChildren` donde el padre va a abrir un submenú separado)."
+        "descripcion": "Si true, NO cierra el menú al seleccionar un item (útil para items `hasChildren` donde el padre va a abrir un submenú separado).",
+        "control": "booleano"
       },
       {
         "nombre": "density",
         "tipo": "'standard' | 'compact'",
         "porDefecto": "'compact'",
         "requerida": false,
-        "descripcion": "Densidad del menú: `compact` (32 px por opción, la de las barras de búsqueda) o `standard` (48 px)."
+        "descripcion": "Densidad del menú: `compact` (32 px por opción, la de las barras de búsqueda) o `standard` (48 px).",
+        "control": "opciones",
+        "opciones": [
+          "standard",
+          "compact"
+        ]
       },
       {
         "nombre": "disabled",
         "tipo": "boolean",
         "porDefecto": "false",
         "requerida": false,
-        "descripcion": "Deshabilita el botón disparador."
+        "descripcion": "Deshabilita el botón disparador.",
+        "control": "booleano"
       },
       {
         "nombre": "floatingMenu",
         "tipo": "boolean",
         "porDefecto": "false",
         "requerida": false,
-        "descripcion": "El menú se dibuja con posición fija junto al botón (hacia arriba si abajo no cabe) y lo sigue si la página se desplaza. Para un botón al pie de la página o dentro de un contenedor con scroll: el menú de posición absoluta agrandaba el scroll y había que desplazarse para verlo."
+        "descripcion": "El menú se dibuja con posición fija junto al botón (hacia arriba si abajo no cabe) y lo sigue si la página se desplaza. Para un botón al pie de la página o dentro de un contenedor con scroll: el menú de posición absoluta agrandaba el scroll y había que desplazarse para verlo.",
+        "control": "booleano"
       },
       {
         "nombre": "icon",
         "tipo": "string",
         "porDefecto": "''",
         "requerida": false,
-        "descripcion": "Nombre del icono Material Symbols."
+        "descripcion": "Nombre del icono Material Symbols.",
+        "control": "texto"
       },
       {
         "nombre": "items",
@@ -6486,21 +6863,28 @@ export const MANIFIESTO_UI_KIT: readonly FichaComponente[] = [
         "tipo": "string",
         "porDefecto": "''",
         "requerida": false,
-        "descripcion": "Texto del disparador: con él, el botón es de contorno (Figma «Buttons» outline, 40 px) con el ícono y el texto, y el texto lo nombra; sin él, es el botón de solo ícono."
+        "descripcion": "Texto del disparador: con él, el botón es de contorno (Figma «Buttons» outline, 40 px) con el ícono y el texto, y el texto lo nombra; sin él, es el botón de solo ícono.",
+        "control": "texto"
       },
       {
         "nombre": "menuWidth",
         "tipo": "number",
         "porDefecto": "248",
         "requerida": false,
-        "descripcion": "Ancho del menú flotante en px. Default 248."
+        "descripcion": "Ancho del menú flotante en px. Default 248.",
+        "control": "numero"
       },
       {
         "nombre": "variant",
         "tipo": "'accent' | 'ghost'",
         "porDefecto": "'ghost'",
         "requerida": false,
-        "descripcion": "Estilo del botón disparador: 'ghost' (default) o 'accent' (color de marca)."
+        "descripcion": "Estilo del botón disparador: 'ghost' (default) o 'accent' (color de marca).",
+        "control": "opciones",
+        "opciones": [
+          "ghost",
+          "accent"
+        ]
       }
     ],
     "eventos": [
@@ -6514,6 +6898,13 @@ export const MANIFIESTO_UI_KIT: readonly FichaComponente[] = [
     "evitar": "- Para una sola acción: usar `siaf-button` con `iconOnly` y `ariaLabel`, sin menú.\n- Con opciones en dos niveles: usar `siaf-cascading-menu`.\n- Para filtrar por un valor que debe quedar a la vista: usar `siaf-filter-pill`.\n- Un botón de ícono con una lista flotante hecha a mano: este componente ya da `aria-expanded`, Escape y el cierre al\n  pulsar fuera, y dibuja el panel con `siaf-menu`.",
     "teclado": "- **Tab**: enfoca el botón.\n- **Enter / Espacio**: abren o cierran el menú; al abrir, el foco entra en la primera opción habilitada.\n- **Flecha arriba / abajo** e **Inicio / Fin**: recorren las opciones (de `siaf-menu`).\n- **Enter / Espacio** sobre una opción: la eligen y cierran el menú, salvo con `closeOnSelect=false`.\n- **Escape**: cierra el menú y el foco vuelve al botón.\n- **Tab** desde el menú: lo cierra y el foco sigue al control siguiente.",
     "accesibilidad": "- **4.1.2 Nombre, función y valor (A)**: el disparador es un `<button>` con `aria-label` (por defecto «Más opciones»:\n  el padre debe dar uno propio, como «Exportar resultados»), `aria-haspopup=\"menu\"` y `aria-expanded`; el panel es\n  `siaf-menu` con el mismo nombre. Con `label`, el texto visible nombra el botón y el menú, sin `aria-label`.\n- **2.5.3 Etiqueta en el nombre (A)**: con `label`, el nombre es el mismo texto que se ve.\n- **1.1.1 Contenido no textual (A)**: el ícono del botón es decorativo (`siaf-icon`); el nombre lo da `aria-label`.\n- **2.4.3 Orden del foco (A)**: con `siafFoco`, al abrir el foco entra en la primera opción y al cerrar (Escape o\n  elegir) vuelve al botón; salir con Tab cierra el menú. La capa que cierra al pulsar fuera no es parada de Tab.\n- **2.4.7 Foco visible (AA)**: el botón tiene contorno de 2 px `bg-brand-accent` en `accent` (4.89:1 claro / 3.14:1\n  oscuro), el anillo del kit `border-states-focus` con `label` y el anillo del navegador en `ghost`; las opciones, el\n  contorno interior azul de `siaf-menu` (`border-states-focus`).\n- **1.4.11 Contraste no textual (AA)**: en `accent`, relleno 4.89:1 / 3.14:1 sobre la superficie e ícono blanco\n  (`text-brand-white` sobre `bg-brand-accent`) 4.89:1 / 5.65:1; en `ghost` el ícono hereda el color del texto del\n  padre.\n- **2.5.8 Tamaño del objetivo (AA)**: botón de 40 px de alto y opciones de 32 px (`compact`) o 48 px (`standard`).",
+    "limitaciones": "Dentro de una tabla con scroll o al pie de la página, el panel absoluto queda recortado o agranda el scroll: ahí va `[floatingMenu]=\"true\"`, que lo pinta fijo junto al disparador.",
+    "incorrecto": null,
+    "correcto": null,
+    "waiAria": {
+      "nombre": "Botón de menú",
+      "url": "https://www.w3.org/WAI/ARIA/apg/patterns/menu-button/"
+    },
     "figma": [],
     "aria": {
       "roles": [],
@@ -6611,70 +7002,80 @@ export const MANIFIESTO_UI_KIT: readonly FichaComponente[] = [
         "tipo": "string",
         "porDefecto": "''",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "texto"
       },
       {
         "nombre": "autoSuccess",
         "tipo": "boolean",
         "porDefecto": "true",
         "requerida": false,
-        "descripcion": "Mantiene el borde neutro después de escribir cuando el contexto no representa una validación."
+        "descripcion": "Mantiene el borde neutro después de escribir cuando el contexto no representa una validación.",
+        "control": "booleano"
       },
       {
         "nombre": "clearable",
         "tipo": "boolean",
         "porDefecto": "false",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "booleano"
       },
       {
         "nombre": "decimals",
         "tipo": "number",
         "porDefecto": "2",
         "requerida": false,
-        "descripcion": "Decimales admitidos cuando `type=\"decimal\"` (importes contables: 2)."
+        "descripcion": "Decimales admitidos cuando `type=\"decimal\"` (importes contables: 2).",
+        "control": "numero"
       },
       {
         "nombre": "disabled",
         "tipo": "boolean",
         "porDefecto": "false",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "booleano"
       },
       {
         "nombre": "error",
         "tipo": "string",
         "porDefecto": "''",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "texto"
       },
       {
         "nombre": "floatingList",
         "tipo": "boolean",
         "porDefecto": "false",
         "requerida": false,
-        "descripcion": "En `select` y `select-multiple`, la lista se dibuja con posición fija junto al campo (hacia arriba si abajo no cabe) y lo sigue si la página o la tabla se desplazan. Para un select dentro de una tabla con scroll, que recortaba la lista y se desplazaba por dentro."
+        "descripcion": "En `select` y `select-multiple`, la lista se dibuja con posición fija junto al campo (hacia arriba si abajo no cabe) y lo sigue si la página o la tabla se desplazan. Para un select dentro de una tabla con scroll, que recortaba la lista y se desplazaba por dentro.",
+        "control": "booleano"
       },
       {
         "nombre": "hint",
         "tipo": "string",
         "porDefecto": "''",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "texto"
       },
       {
         "nombre": "label",
         "tipo": "string",
         "porDefecto": "''",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "texto"
       },
       {
         "nombre": "leadingIcon",
         "tipo": "string",
         "porDefecto": "''",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "texto"
       },
       {
         "nombre": "options",
@@ -6688,49 +7089,71 @@ export const MANIFIESTO_UI_KIT: readonly FichaComponente[] = [
         "tipo": "string",
         "porDefecto": "''",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "texto"
       },
       {
         "nombre": "required",
         "tipo": "boolean",
         "porDefecto": "false",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "booleano"
       },
       {
         "nombre": "selectAllLabel",
         "tipo": "string",
         "porDefecto": "''",
         "requerida": false,
-        "descripcion": "En `select-multiple`, la lista del Figma «Parámetros de consulta»: una casilla por opción, arriba esta fila para marcar o desmarcar todas, y el valor en una sola línea en vez de chips."
+        "descripcion": "En `select-multiple`, la lista del Figma «Parámetros de consulta»: una casilla por opción, arriba esta fila para marcar o desmarcar todas, y el valor en una sola línea en vez de chips.",
+        "control": "texto"
       },
       {
         "nombre": "state",
         "tipo": "'success' | 'error' | 'enabled'",
         "porDefecto": "'enabled'",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "opciones",
+        "opciones": [
+          "enabled",
+          "error",
+          "success"
+        ]
       },
       {
         "nombre": "trailingButtonLabel",
         "tipo": "string",
         "porDefecto": "''",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "texto"
       },
       {
         "nombre": "trailingIcon",
         "tipo": "string",
         "porDefecto": "''",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "texto"
       },
       {
         "nombre": "type",
         "tipo": "'number' | 'text' | 'decimal' | 'email' | 'correo' | 'password' | 'select' | 'select-multiple'",
         "porDefecto": "'text'",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "opciones",
+        "opciones": [
+          "text",
+          "number",
+          "decimal",
+          "email",
+          "correo",
+          "password",
+          "select",
+          "select-multiple"
+        ]
       },
       {
         "nombre": "value",
@@ -6756,6 +7179,10 @@ export const MANIFIESTO_UI_KIT: readonly FichaComponente[] = [
     "evitar": "- Para fechas: usar `siaf-date-time-picker`, no `trailingIcon=\"calendar_today\"` (como la vigencia del formulario de\n  cuenta contable).\n- Para textos largos (justificación, glosa, descripción): usar `text-area-control`.\n- Para elegir de un catálogo largo que hay que buscar (los atributos del evento, por ejemplo): usar `empty-section`\n  con `siaf-selection-side-nav`; para un Sí/No, `siaf-radio-group` con `[inline]`.\n- `type=\"number\"` para importes: el campo se vacía al teclear el separador; usar `decimal`.",
     "teclado": "- **Tab**: enfoca el campo o el botón del select; el botón de `trailingIcon` es otra parada.\n- **Texto, número, decimal, correo y contraseña**: el teclado nativo del `<input>`; en `decimal` se descarta lo que\n  no sea dígito o separador (la coma se guarda como punto) y al salir se completan los decimales.\n- **Enter / Espacio** (select): abren o cierran la lista; al abrir, el foco entra en la opción elegida (o en la\n  primera), que siguen `siaf-select-options` (flechas, Inicio y Fin).\n- **Escape** (select): cierra la lista y el foco vuelve al botón del campo; salir de la lista con Tab también la\n  cierra. Con la lista abierta, Escape no cierra el panel que contiene al campo.",
     "accesibilidad": "- **Pendiente · 1.3.1 Información y relaciones (A)**: en los tipos de texto el `<label>` envuelve el `<input>`, pero\n  la etiqueta flotante solo existe con foco o valor, y la ayuda y el error, dentro del mismo `<label>`, se suman al\n  nombre en vez de ir por `aria-describedby`. Con `hint` y el campo vacío, la ayuda desplaza al `placeholder` como\n  nombre.\n- **Pendiente · 3.3.1 Identificación de errores (A)**: el error se ve (borde rojo de 2 px, ícono y texto), pero el\n  `<input>` no publica `aria-invalid` y el texto no se anuncia al aparecer; con `state=\"error\"` y sin `error`, el\n  aviso es solo el color del borde.\n- **Pendiente · 3.3.2 Etiquetas o instrucciones (A)**: el `<input>` de texto publica `aria-required`, pero en `select`\n  y `select-multiple` el obligatorio es solo el asterisco: el botón no lo publica.\n- **4.1.2 Nombre, función y valor (A)**: el select es un `<button>` con `aria-haspopup=\"listbox\"`, `aria-expanded` y\n  `aria-label` con la etiqueta. El botón de `trailingIcon` se nombra con `trailingButtonLabel`: el padre debe darlo\n  o queda sin nombre.\n- **Pendiente · 4.1.2 Nombre, función y valor (A)**: el `aria-label` del select tapa el valor elegido, que no se\n  anuncia; «Limpiar» y la X de cada chip son `span` con `role=\"button\"` anidados dentro del botón, cuyos hijos son\n  presentacionales.\n- **Pendiente · 2.1.1 Teclado (A)**: «Limpiar» (`clearable`) y «Quitar» de cada chip tienen `tabindex=\"-1\"`: solo\n  funcionan con el mouse (en `select-multiple` se puede desmarcar desde la lista).\n- **2.4.3 Orden del foco (A)**: con `siafFoco`, al abrir el select el foco entra en la opción elegida y al elegir en\n  `select`, cerrar con Escape o salir con Tab vuelve al botón del campo.\n- **2.4.7 Foco visible (AA)**: el foco pinta el borde de 2 px `border-states-focus` (5.35:1 claro / 10.15:1 oscuro),\n  también en éxito (el select con valor) y al llegar con Tab al botón del select. Con error, el borde sigue rojo y el\n  foco se ve en un contorno azul de 2 px por fuera.\n- **Pendiente · 1.4.11 Contraste no textual (AA)**: el borde del campo vacío es `border-states-enabled` (2.44:1\n  claro, 2.59:1 oscuro).\n- **1.4.3 Contraste mínimo (AA)**: texto `text-neutral-medium` 14.53:1, valor del select `text-neutral-high` 16.29:1,\n  etiqueta y `placeholder` `text-neutral-low` 5.01:1 y error `text-feedback-danger` 9.84:1.",
+    "limitaciones": "Lo que emite `valueChange` es `string | number | string[]`: se lee con `textoDeCampo`, `listaDeCampo` u `opcionDe`. Dentro de una tabla con scroll o al pie de la página, el panel absoluto queda recortado o agranda el scroll: ahí va `[floatingList]=\"true\"`, que lo pinta fijo junto al disparador.",
+    "incorrecto": "<!-- En un buscador, el verde de éxito no valida nada -->\n<siaf-input label=\"Buscar\" leadingIcon=\"search\" />",
+    "correcto": "<siaf-input label=\"Buscar\" leadingIcon=\"search\" [autoSuccess]=\"false\" />",
+    "waiAria": null,
     "figma": [],
     "aria": {
       "roles": [
@@ -6939,42 +7366,54 @@ export const MANIFIESTO_UI_KIT: readonly FichaComponente[] = [
         "tipo": "string",
         "porDefecto": "''",
         "requerida": false,
-        "descripcion": "Monto ya formateado («$1,245,800.00»)."
+        "descripcion": "Monto ya formateado («$1,245,800.00»).",
+        "control": "texto"
       },
       {
         "nombre": "icon",
         "tipo": "string",
         "porDefecto": "'arrow_outward'",
         "requerida": false,
-        "descripcion": "Ícono de Material Icons de la caja; por defecto la flecha del Figma."
+        "descripcion": "Ícono de Material Icons de la caja; por defecto la flecha del Figma.",
+        "control": "texto"
       },
       {
         "nombre": "progress",
         "tipo": "number",
         "porDefecto": "0",
         "requerida": false,
-        "descripcion": "Avance de 0 a 100 de la barra, que siempre se muestra; se recorta a ese rango."
+        "descripcion": "Avance de 0 a 100 de la barra, que siempre se muestra; se recorta a ese rango.",
+        "control": "numero"
       },
       {
         "nombre": "progressLabel",
         "tipo": "string",
         "porDefecto": "''",
         "requerida": false,
-        "descripcion": "Nombre de la barra para el lector de pantalla; por defecto, el título."
+        "descripcion": "Nombre de la barra para el lector de pantalla; por defecto, el título.",
+        "control": "texto"
       },
       {
         "nombre": "title",
         "tipo": "string",
         "porDefecto": "''",
         "requerida": false,
-        "descripcion": "Qué mide el indicador («Total Activos»); también nombra la tarjeta y la barra."
+        "descripcion": "Qué mide el indicador («Total Activos»); también nombra la tarjeta y la barra.",
+        "control": "texto"
       },
       {
         "nombre": "tone",
         "tipo": "'success' | 'warning' | 'danger' | 'informative'",
         "porDefecto": "'informative'",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "opciones",
+        "opciones": [
+          "informative",
+          "success",
+          "warning",
+          "danger"
+        ]
       }
     ],
     "eventos": [],
@@ -6982,6 +7421,10 @@ export const MANIFIESTO_UI_KIT: readonly FichaComponente[] = [
     "evitar": "- Para una serie de valores o una comparación: usar `siaf-bar-chart` o `siaf-line-chart` dentro de\n  `siaf-chart-section`.\n- Para el resumen de un documento o registro elegido: usar `siaf-summary-card`.\n- Para un número sin avance que medir: la barra siempre se muestra y quedaría en 0 %.\n- Como única señal de un estado: el tono es solo color.",
     "teclado": "- No recibe foco: no es interactiva.",
     "accesibilidad": "- **1.3.1 Información y relaciones (A)**: es un `article` nombrado con el título; el ícono es decorativo\n  (`aria-hidden`).\n- **4.1.2 Nombre, función y valor (A)**: la barra es `role=\"progressbar\"` con `aria-valuenow` y el título como\n  nombre; el porcentaje visible va con `aria-hidden` para no leerse dos veces.\n- **1.4.1 Uso del color (A)**: el tono del ícono no dice nada por sí solo; el sentido del dato debe estar en el\n  título o en el monto.\n- **1.4.3 Contraste mínimo (AA)**: monto `text-neutral-high` (16.29:1 claro / 16.53:1 oscuro), título\n  `text-neutral-low` (5.01:1 / 8.86:1) y porcentaje `text-neutral-medium` sobre la superficie.\n- **Pendiente · 1.4.11 Contraste no textual (AA)**: en oscuro el relleno de la barra (`bg-brand-primary`) no llega\n  a 3:1 sobre su riel; la paleta oscura de los gráficos está por definir con diseño.",
+    "limitaciones": null,
+    "incorrecto": null,
+    "correcto": null,
+    "waiAria": null,
     "figma": [
       {
         "nodo": "22743:662",
@@ -7103,14 +7546,16 @@ export const MANIFIESTO_UI_KIT: readonly FichaComponente[] = [
         "tipo": "string",
         "porDefecto": "'/landing/servicios'",
         "requerida": false,
-        "descripcion": "Ruta del detalle de cada tarjeta, sin el slug."
+        "descripcion": "Ruta del detalle de cada tarjeta, sin el slug.",
+        "control": "texto"
       },
       {
         "nombre": "titulo",
         "tipo": "string",
         "porDefecto": "'Servicios'",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "texto"
       }
     ],
     "eventos": [],
@@ -7118,6 +7563,10 @@ export const MANIFIESTO_UI_KIT: readonly FichaComponente[] = [
     "evitar": "- Para datos de la aplicación: ahí van las grillas y `siaf-report-table`.\n- Para una sola tarjeta: pintarla directamente, sin carrusel.",
     "teclado": "- **Tab**: enfoca las dos flechas y luego el enlace de cada tarjeta.\n- **Enter / Espacio**: en una flecha desplaza una página de tarjetas.",
     "accesibilidad": "- **4.1.2 Nombre, función y valor (A)**: las flechas se llaman «Anterior» y «Siguiente» y se\n  deshabilitan al llegar al extremo.\n- **2.1.1 Teclado (A)**: las tarjetas se alcanzan con Tab aunque no se usen las flechas; el\n  desplazamiento no depende del mouse.\n- **1.4.10 Reajuste del contenido (AA)**: la pista se desplaza en horizontal dentro de su zona.",
+    "limitaciones": null,
+    "incorrecto": null,
+    "correcto": null,
+    "waiAria": null,
     "figma": [],
     "aria": {
       "roles": [],
@@ -7217,6 +7666,10 @@ export const MANIFIESTO_UI_KIT: readonly FichaComponente[] = [
     "evitar": "- Dentro de la aplicación: el soporte del usuario autenticado va por otros canales.\n- Para cualquier otra acción flotante: este botón es solo el chat.",
     "teclado": "- **Tab**: lo enfoca como un enlace más, al final de la página.\n- **Enter**: abre la conversación en otra pestaña.",
     "accesibilidad": "- **2.4.4 Propósito del enlace (A)**: el enlace se llama «Chat» aunque el texto esté oculto en móvil.\n- **2.5.8 Tamaño del objetivo (AA)**: la burbuja mide 42 px más su relleno.\n- **Pendiente · 1.4.3 Contraste mínimo (AA)**: el verde de WhatsApp es de marca externa y no se\n  eligió por contraste; el ícono va en blanco sobre ese verde.",
+    "limitaciones": null,
+    "incorrecto": null,
+    "correcto": null,
+    "waiAria": null,
     "figma": [
       {
         "nodo": "40005100:93725",
@@ -7280,49 +7733,56 @@ export const MANIFIESTO_UI_KIT: readonly FichaComponente[] = [
         "tipo": "string",
         "porDefecto": "''",
         "requerida": false,
-        "descripcion": "Texto alternativo de la imagen; por defecto, el título."
+        "descripcion": "Texto alternativo de la imagen; por defecto, el título.",
+        "control": "texto"
       },
       {
         "nombre": "altoClase",
         "tipo": "string",
         "porDefecto": "'sm:h-[589px]'",
         "requerida": false,
-        "descripcion": "Alto fijo de la sección en escritorio: 535 px en noticia, 589 px en servicio y sistema."
+        "descripcion": "Alto fijo de la sección en escritorio: 535 px en noticia, 589 px en servicio y sistema.",
+        "control": "texto"
       },
       {
         "nombre": "anchoBajada",
         "tipo": "number",
         "porDefecto": "650",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "numero"
       },
       {
         "nombre": "anchoTitulo",
         "tipo": "number",
         "porDefecto": "470",
         "requerida": false,
-        "descripcion": "Ancho máximo del título y de la bajada, que cambian según la página (Figma)."
+        "descripcion": "Ancho máximo del título y de la bajada, que cambian según la página (Figma).",
+        "control": "numero"
       },
       {
         "nombre": "bajada",
         "tipo": "string",
         "porDefecto": null,
         "requerida": true,
-        "descripcion": null
+        "descripcion": null,
+        "control": "texto"
       },
       {
         "nombre": "imagen",
         "tipo": "string",
         "porDefecto": null,
         "requerida": true,
-        "descripcion": null
+        "descripcion": null,
+        "control": "texto"
       },
       {
         "nombre": "titulo",
         "tipo": "string",
         "porDefecto": null,
         "requerida": true,
-        "descripcion": null
+        "descripcion": null,
+        "control": "texto"
       }
     ],
     "eventos": [],
@@ -7330,6 +7790,10 @@ export const MANIFIESTO_UI_KIT: readonly FichaComponente[] = [
     "evitar": "- En la aplicación: ahí el encabezado de una pantalla es `siaf-page-header`.\n- Para un hero con fondo de color y llamada a la acción: ese es el del inicio, que vive en su página.",
     "teclado": "- No tiene controles: es contenido. El foco pasa de la cabecera al contenido siguiente.",
     "accesibilidad": "- **1.3.1 Información y relaciones (A)**: el título es el `h1` de la página.\n- **1.1.1 Contenido no textual (A)**: la imagen lleva `alt`; sin `alt` propio usa el título.\n- **1.4.10 Reajuste del contenido (AA)**: en móvil la imagen baja a 240 px de alto y el texto ocupa\n  todo el ancho.",
+    "limitaciones": null,
+    "incorrecto": null,
+    "correcto": null,
+    "waiAria": null,
     "figma": [
       {
         "nodo": "40005100:93729",
@@ -7373,7 +7837,8 @@ export const MANIFIESTO_UI_KIT: readonly FichaComponente[] = [
         "tipo": "boolean",
         "porDefecto": "false",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "booleano"
       }
     ],
     "eventos": [],
@@ -7381,6 +7846,10 @@ export const MANIFIESTO_UI_KIT: readonly FichaComponente[] = [
     "evitar": "- Dentro de la aplicación autenticada: las pantallas de trabajo no llevan pie institucional.",
     "teclado": "- **Tab**: recorre los enlaces de redes y los de ayuda, en el orden en que se leen.\n- **Enter**: abre el enlace enfocado.",
     "accesibilidad": "- **1.1.1 Contenido no textual (A)**: cada ícono de red lleva su nombre accesible.\n- **1.4.3 Contraste mínimo (AA)**: texto blanco sobre los azules del landing.\n- **2.4.4 Propósito del enlace (A)**: los enlaces de ayuda dicen su destino.",
+    "limitaciones": null,
+    "incorrecto": null,
+    "correcto": null,
+    "waiAria": null,
     "figma": [],
     "aria": {
       "roles": [],
@@ -7455,6 +7924,10 @@ export const MANIFIESTO_UI_KIT: readonly FichaComponente[] = [
     "evitar": "- Dentro de la aplicación autenticada: ahí la cabecera es `siaf-navbar`, con menús y perfil.\n- Para navegar entre secciones del landing: eso lo hace `siaf-landing-systems-bar`.",
     "teclado": "- **Tab**: enfoca el logo (vuelve al inicio del landing) y el botón de acceso.\n- **Enter**: activa el enlace enfocado.",
     "accesibilidad": "- **1.1.1 Contenido no textual (A)**: el logo lleva texto alternativo con el nombre del sistema.\n- **2.4.4 Propósito del enlace (A)**: «Entidades o proveedores» dice a dónde lleva.\n- **1.4.3 Contraste mínimo (AA)**: texto sobre blanco con los tokens de marca del producto.",
+    "limitaciones": null,
+    "incorrecto": null,
+    "correcto": null,
+    "waiAria": null,
     "figma": [],
     "aria": {
       "roles": [],
@@ -7527,14 +8000,16 @@ export const MANIFIESTO_UI_KIT: readonly FichaComponente[] = [
         "tipo": "string | null",
         "porDefecto": "null",
         "requerida": false,
-        "descripcion": "Slug del sistema activo (para resaltarlo)."
+        "descripcion": "Slug del sistema activo (para resaltarlo).",
+        "control": "texto"
       },
       {
         "nombre": "rutaBase",
         "tipo": "string",
         "porDefecto": "'/landing/sistemas'",
         "requerida": false,
-        "descripcion": "Ruta del detalle de cada sistema, sin el slug."
+        "descripcion": "Ruta del detalle de cada sistema, sin el slug.",
+        "control": "texto"
       },
       {
         "nombre": "sistemas",
@@ -7549,6 +8024,10 @@ export const MANIFIESTO_UI_KIT: readonly FichaComponente[] = [
     "evitar": "- Como navegación de la aplicación: el menú de procesos es `siaf-process-menu-tree`.",
     "teclado": "- **Tab**: recorre los sistemas en el orden de la fila.\n- **Enter**: abre el detalle del sistema enfocado.",
     "accesibilidad": "- **4.1.2 Nombre, función y valor (A)**: es un `nav` con nombre y cada acceso es un enlace con texto.\n- **1.4.10 Reajuste del contenido (AA)**: en pantallas angostas la fila se desplaza en horizontal\n  sin desplazar la página.",
+    "limitaciones": null,
+    "incorrecto": null,
+    "correcto": null,
+    "waiAria": null,
     "figma": [],
     "aria": {
       "roles": [],
@@ -7615,7 +8094,8 @@ export const MANIFIESTO_UI_KIT: readonly FichaComponente[] = [
         "tipo": "string",
         "porDefecto": "'Gráfico de línea'",
         "requerida": false,
-        "descripcion": "Nombre accesible del gráfico y título de su tabla de datos."
+        "descripcion": "Nombre accesible del gráfico y título de su tabla de datos.",
+        "control": "texto"
       },
       {
         "nombre": "categories",
@@ -7629,28 +8109,32 @@ export const MANIFIESTO_UI_KIT: readonly FichaComponente[] = [
         "tipo": "string",
         "porDefecto": "'Categoría'",
         "requerida": false,
-        "descripcion": "Encabezado de la columna de categorías en la tabla de datos."
+        "descripcion": "Encabezado de la columna de categorías en la tabla de datos.",
+        "control": "texto"
       },
       {
         "nombre": "height",
         "tipo": "number",
         "porDefecto": "252",
         "requerida": false,
-        "descripcion": "Alto del área del gráfico en px (sin la leyenda)."
+        "descripcion": "Alto del área del gráfico en px (sin la leyenda).",
+        "control": "numero"
       },
       {
         "nombre": "max",
         "tipo": "number | null",
         "porDefecto": "null",
         "requerida": false,
-        "descripcion": "Máximo del eje de valores; sin él, Chart.js elige uno redondo por encima del mayor valor."
+        "descripcion": "Máximo del eje de valores; sin él, Chart.js elige uno redondo por encima del mayor valor.",
+        "control": "numero"
       },
       {
         "nombre": "min",
         "tipo": "number | null",
         "porDefecto": "null",
         "requerida": false,
-        "descripcion": "Mínimo del eje de valores; sin él, Chart.js elige uno redondo por debajo del menor valor."
+        "descripcion": "Mínimo del eje de valores; sin él, Chart.js elige uno redondo por debajo del menor valor.",
+        "control": "numero"
       },
       {
         "nombre": "series",
@@ -7664,7 +8148,8 @@ export const MANIFIESTO_UI_KIT: readonly FichaComponente[] = [
         "tipo": "string",
         "porDefecto": "''",
         "requerida": false,
-        "descripcion": "Sufijo de los valores en el eje, el tooltip y la tabla (por ejemplo `%`)."
+        "descripcion": "Sufijo de los valores en el eje, el tooltip y la tabla (por ejemplo `%`).",
+        "control": "texto"
       }
     ],
     "eventos": [],
@@ -7672,6 +8157,10 @@ export const MANIFIESTO_UI_KIT: readonly FichaComponente[] = [
     "evitar": "- Para comparar cantidades entre categorías sin un orden en el tiempo: usar `siaf-bar-chart`.\n- Para variaciones que suben y bajan respecto de cero: usar `siaf-diverging-chart`.\n- Con más de cuatro series: la paleta da la vuelta y los colores se repiten.",
     "teclado": "- **Tab**: enfoca el gráfico (una sola parada).\n- **Flecha derecha / izquierda**: recorren las categorías y muestran el tooltip con el valor de cada serie; dan la\n  vuelta.\n- **Inicio / Fin**: van a la primera o a la última categoría.\n- **Escape**: oculta el tooltip; salir del gráfico también lo oculta.",
     "accesibilidad": "- **1.1.1 Contenido no textual (A)**: el lienzo es `role=\"img\"` con `ariaLabel` y, además, hay una tabla de datos\n  oculta (`sr-only`) con una fila por categoría y una columna por serie.\n- **1.3.1 Información y relaciones (A)**: la tabla usa `caption`, `th scope=\"col\"` para las series y\n  `th scope=\"row\"` para las categorías.\n- **2.1.1 Teclado (A)**: los valores se recorren con las flechas; al moverse, una región `aria-live` anuncia la\n  categoría y los valores.\n- **2.4.7 Foco visible (AA)**: el lienzo enfocado muestra el contorno de 2 px `border-states-focus`.\n- **1.4.1 Uso del color (A)**: las líneas se distinguen solo por color (el Figma no usa trazos distintos), pero sus\n  nombres están en la leyenda, en el tooltip y en la tabla de datos.\n- **1.4.13 Contenido en hover o foco (AA)**: Escape oculta el tooltip sin mover el puntero ni el foco.\n- **Pendiente · 1.4.11 Contraste no textual (AA)**: en oscuro las líneas de las series 1 y 2 (`bg-brand-primary`,\n  2.66:1, y `bg-brand-secondary`, 2.99:1) no llegan a 3:1 sobre la superficie; la paleta oscura de los gráficos está\n  por definir con diseño.",
+    "limitaciones": "Sin animación (`animation: false`): con animación, en una pestaña que no pinta cuadros las barras quedaban a medio camino. El canvas no entiende `var()`: los colores se leen de los tokens al pintar y se repintan al cambiar el tema. En tema oscuro, la paleta del Figma no llega a 3:1 de contraste entre series (pendiente con diseño).",
+    "incorrecto": null,
+    "correcto": null,
+    "waiAria": null,
     "figma": [
       {
         "nodo": "22743:299",
@@ -7736,14 +8225,16 @@ export const MANIFIESTO_UI_KIT: readonly FichaComponente[] = [
         "tipo": "string",
         "porDefecto": "''",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "texto"
       },
       {
         "nombre": "dividers",
         "tipo": "boolean",
         "porDefecto": "false",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "booleano"
       },
       {
         "nombre": "items",
@@ -7757,42 +8248,56 @@ export const MANIFIESTO_UI_KIT: readonly FichaComponente[] = [
         "tipo": "'horizontal' | 'vertical'",
         "porDefecto": "'vertical'",
         "requerida": false,
-        "descripcion": "`vertical` (por defecto) o `horizontal`: ítems en fila de 230 px, sin desplazamiento propio."
+        "descripcion": "`vertical` (por defecto) o `horizontal`: ítems en fila de 230 px, sin desplazamiento propio.",
+        "control": "opciones",
+        "opciones": [
+          "vertical",
+          "horizontal"
+        ]
       },
       {
         "nombre": "outlined",
         "tipo": "boolean",
         "porDefecto": "false",
         "requerida": false,
-        "descripcion": "Ítems con borde `border-states-enabled` (tarjetas)."
+        "descripcion": "Ítems con borde `border-states-enabled` (tarjetas).",
+        "control": "booleano"
       },
       {
         "nombre": "selectable",
         "tipo": "boolean",
         "porDefecto": "false",
         "requerida": false,
-        "descripcion": "Convierte la lista en opciones seleccionables con hover, foco y seleccionado."
+        "descripcion": "Convierte la lista en opciones seleccionables con hover, foco y seleccionado.",
+        "control": "booleano"
       },
       {
         "nombre": "selectedId",
         "tipo": "string | null",
         "porDefecto": "null",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "texto"
       },
       {
         "nombre": "size",
         "tipo": "'standard' | 'compact'",
         "porDefecto": "'standard'",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "opciones",
+        "opciones": [
+          "standard",
+          "compact"
+        ]
       },
       {
         "nombre": "wrapDescription",
         "tipo": "boolean",
         "porDefecto": "false",
         "requerida": false,
-        "descripcion": "Deja crecer la descripción en varias líneas (Figma «3 line+»). Por defecto se corta en una."
+        "descripcion": "Deja crecer la descripción en varias líneas (Figma «3 line+»). Por defecto se corta en una.",
+        "control": "booleano"
       }
     ],
     "eventos": [
@@ -7811,6 +8316,10 @@ export const MANIFIESTO_UI_KIT: readonly FichaComponente[] = [
     "evitar": "- Para datos en columnas: `siaf-table` o `siaf-data-table`.\n- Para opciones que se abren desde un botón: `siaf-menu` o `siaf-icon-dropdown-menu`.\n- Combinar `selectable` con switches: el switch queda dentro de un `role=\"option\"`, que no admite controles adentro.\n- Para una jerarquía de nodos: `siaf-tree-view` o `siaf-process-menu-tree`.",
     "teclado": "- **Tab**: con `selectable`, la lista es una sola parada: entra por la última opción enfocada (al principio, la\n  elegida o la primera) y la siguiente pulsación sale; sin `selectable`, solo pasa por los switches.\n- **Flecha abajo / arriba**: con `selectable`, pasan a la opción siguiente o anterior y dan la vuelta (en horizontal,\n  también **derecha / izquierda**).\n- **Inicio / Fin**: van a la primera o a la última opción.\n- **Enter / Espacio**: eligen la opción enfocada y emiten `selectedIdChange`; sobre un switch interno lo dejan\n  actuar.\n- Los switches siguen `siaf-switch`.",
     "accesibilidad": "- **1.3.1 Información y relaciones (A)**: `<ul>` y `<li>` reales; overline, título y descripción van como texto en\n  orden de lectura.\n- **Pendiente · 4.1.2 Nombre, función y valor (A)**: con `selectable` es `role=\"listbox\"` con opciones\n  `role=\"option\"` y `aria-selected` (el padre debe dar `ariaLabel`); pero un switch dentro de una opción queda\n  anidado, y ARIA trata los hijos de una opción como presentacionales.\n- **1.1.1 Contenido no textual (A)**: íconos y avatar son decorativos (`aria-hidden`); la miniatura lleva `alt`\n  vacío salvo que el padre dé uno (debe darlo si la imagen informa) y el badge contador necesita `ariaLabel` para\n  decir qué cuenta.\n- **2.1.1 Teclado (A)**: en una lista seleccionable, al enfocar la opción aparece el globo con la descripción\n  cortada.\n- **Pendiente · 2.1.1 Teclado (A)**: sin `selectable` las filas no reciben foco y la descripción cortada solo se\n  completa con el mouse (la alternativa es `wrapDescription`).\n- **1.4.13 Contenido en hover o foco (AA)**: ese tooltip (`siafTooltip`) se cierra con Escape y se puede recorrer con\n  el puntero.\n- **Pendiente · 1.4.3 Contraste mínimo (AA)**: título `text-neutral-medium` (14.53:1 / 12.87:1) y descripción\n  `text-neutral-low` (5.01:1 / 8.86:1) sobre la superficie; en el ítem seleccionado la descripción queda sobre la\n  capa `bg-states-light-selected`, que en claro la deja por debajo de 4.5:1.\n- **1.4.1 Uso del color (A)**: el seleccionado no depende solo del fondo azul: el título pasa a negrita.\n- **2.4.7 Foco visible (AA)**: la opción enfocada con teclado lleva un contorno interior azul de 2 px\n  (`border-states-focus`, 5.35:1 claro / 10.15:1 oscuro), el mismo de `siaf-menu`, además de la capa\n  `bg-states-light-focus`, que sola casi no se veía (1.27:1 en claro y sin redefinir en oscuro).\n- **2.5.8 Tamaño del objetivo (AA)**: ítems de 48 px (`standard`) o 32 px (`compact`) de alto como mínimo.",
+    "limitaciones": null,
+    "incorrecto": null,
+    "correcto": null,
+    "waiAria": null,
     "figma": [
       {
         "nodo": "7421:7061",
@@ -7966,35 +8475,45 @@ export const MANIFIESTO_UI_KIT: readonly FichaComponente[] = [
         "tipo": "boolean",
         "porDefecto": "false",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "booleano"
       },
       {
         "nombre": "dotSize",
         "tipo": "number",
         "porDefecto": "6",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "numero"
       },
       {
         "nombre": "label",
         "tipo": "string",
         "porDefecto": "'Cargando'",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "texto"
       },
       {
         "nombre": "size",
         "tipo": "number",
         "porDefecto": "32",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "numero"
       },
       {
         "nombre": "tone",
         "tipo": "'current' | 'light' | 'brand'",
         "porDefecto": "'current'",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "opciones",
+        "opciones": [
+          "current",
+          "light",
+          "brand"
+        ]
       }
     ],
     "eventos": [],
@@ -8002,6 +8521,10 @@ export const MANIFIESTO_UI_KIT: readonly FichaComponente[] = [
     "evitar": "- Para bloquear la pantalla mientras se graba, verifica o aprueba: usar `siaf-loader-overlay`.\n- Para la carga inicial de una grilla: usar `siaf-table-skeleton`.\n- Dentro de `siaf-button`: usar su `loading`, que ya pinta el giro y publica `aria-busy`.\n- Para un avance con porcentaje conocido: usar `siaf-progress-circular`.",
     "teclado": "- No recibe foco: no es interactivo.",
     "accesibilidad": "- **4.1.3 Mensajes de estado (AA)**: sin `decorative` es `role=\"status\"` con `aria-label` («Cargando» por\n  defecto), pero no tiene texto dentro y no todos los lectores anuncian una región que solo tiene nombre; el\n  texto visible de al lado tampoco forma parte de la región.\n- **1.1.1 Contenido no textual (A)**: los puntos son decorativos; el nombre sale de `label`, que conviene que\n  diga qué se espera. Con `decorative` queda con `aria-hidden` y el padre debe anunciar la espera.\n- **1.4.11 Contraste no textual (AA)**: `current` toma el color de texto del padre, `brand` usa\n  `bg-brand-accent` (4.89:1 en claro, 3.14:1 en oscuro sobre la superficie) y `light` es solo para fondos\n  oscuros.",
+    "limitaciones": null,
+    "incorrecto": null,
+    "correcto": null,
+    "waiAria": null,
     "figma": [],
     "aria": {
       "roles": [
@@ -8045,35 +8568,40 @@ export const MANIFIESTO_UI_KIT: readonly FichaComponente[] = [
         "tipo": "number",
         "porDefecto": "6",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "numero"
       },
       {
         "nombre": "label",
         "tipo": "string",
         "porDefecto": "'Procesando'",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "texto"
       },
       {
         "nombre": "message",
         "tipo": "string",
         "porDefecto": "'Procesando...'",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "texto"
       },
       {
         "nombre": "open",
         "tipo": "boolean",
         "porDefecto": "false",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "booleano"
       },
       {
         "nombre": "size",
         "tipo": "number",
         "porDefecto": "32",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "numero"
       }
     ],
     "eventos": [],
@@ -8081,6 +8609,10 @@ export const MANIFIESTO_UI_KIT: readonly FichaComponente[] = [
     "evitar": "- Para esperas locales que no deben bloquear la pantalla: usar `siaf-loader` o `siaf-table-skeleton`.\n- Agregar otro en páginas que ya usan `siaf-request-approval-modals`: ese ya trae el suyo.\n- Como única barrera contra un doble envío: el teclado sigue llegando a la página (ver Notas).",
     "teclado": "- **Tab**: mientras está abierta, el foco queda en la capa y no llega a la página de atrás; al cerrarse vuelve al\n  control que lo tenía. No se cierra con Escape: la cierra el padre al terminar.",
     "accesibilidad": "- **4.1.3 Mensajes de estado (AA)**: la capa es `role=\"status\"` con `aria-live=\"polite\"`, `aria-label` y el\n  mensaje dentro; como se crea ya llena (bloque if), no todos los lectores la anuncian.\n- **2.4.3 Orden del foco (A)**: con `siafFoco`, al abrirse el foco pasa a la capa y Tab no sale de ella; al cerrarse\n  vuelve al control que lo tenía. El lector de pantalla todavía puede recorrer la página de atrás con su cursor\n  virtual: el padre debe deshabilitar las acciones mientras dura, como `confirmDisabled` en\n  `siaf-request-approval-modals`.\n- **Pendiente · 1.4.3 Contraste mínimo (AA)**: el mensaje es blanco sobre negro al 40 % (`bg-black/40`); encima\n  de una superficie clara no llega a 4.5:1. En oscuro cumple.\n- **1.1.1 Contenido no textual (A)**: el `siaf-loader` interno va `decorative` (`aria-hidden`); la espera se\n  comunica con el mensaje y `label`.",
+    "limitaciones": null,
+    "incorrecto": null,
+    "correcto": null,
+    "waiAria": null,
     "figma": [],
     "aria": {
       "roles": [
@@ -8128,28 +8660,36 @@ export const MANIFIESTO_UI_KIT: readonly FichaComponente[] = [
         "tipo": "string",
         "porDefecto": "''",
         "requerida": false,
-        "descripcion": "Nombre de la barra para el lector de pantalla («Avance» si no hay)."
+        "descripcion": "Nombre de la barra para el lector de pantalla («Avance» si no hay).",
+        "control": "texto"
       },
       {
         "nombre": "size",
         "tipo": "number",
         "porDefecto": "24",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "numero"
       },
       {
         "nombre": "value",
         "tipo": "number",
         "porDefecto": "50",
         "requerida": false,
-        "descripcion": "Avance de 0 a 100 de la barra; se recorta a ese rango."
+        "descripcion": "Avance de 0 a 100 de la barra; se recorta a ese rango.",
+        "control": "numero"
       },
       {
         "nombre": "variant",
         "tipo": "'spinner' | 'bar'",
         "porDefecto": "'spinner'",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "opciones",
+        "opciones": [
+          "spinner",
+          "bar"
+        ]
       }
     ],
     "eventos": [],
@@ -8157,6 +8697,10 @@ export const MANIFIESTO_UI_KIT: readonly FichaComponente[] = [
     "evitar": "- Para esperas sin porcentaje: usar `siaf-loader`, o `siaf-loader-overlay` si hay que bloquear la pantalla.\n- Para un avance de 0 a 100 %: usar `siaf-progress-circular`, que ya publica `role=\"progressbar\"`.\n- Dentro de `siaf-button`: usar su `loading`.",
     "teclado": "- No recibe foco: no es interactivo.",
     "accesibilidad": "- **Pendiente · 4.1.3 Mensajes de estado (AA)**: el spinner no tiene `role`, nombre ni `aria-live`: para un\n  lector de pantalla la espera no existe.\n- **4.1.2 Nombre, función y valor (A)**: la barra es `role=\"progressbar\"` con `aria-valuemin` 0, `aria-valuemax`\n  100, `aria-valuenow` redondeado y `label` como nombre («Avance» si no hay). El porcentaje en texto lo pone quien\n  la usa, como `siaf-kpi-card`.\n- **Pendiente · 1.4.11 Contraste no textual (AA)**: en oscuro el azul `bg-brand-primary` del spinner queda en\n  2.66:1 sobre la superficie.",
+    "limitaciones": null,
+    "incorrecto": null,
+    "correcto": null,
+    "waiAria": null,
     "figma": [],
     "aria": {
       "roles": [
@@ -8203,21 +8747,28 @@ export const MANIFIESTO_UI_KIT: readonly FichaComponente[] = [
         "tipo": "string",
         "porDefecto": "''",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "texto"
       },
       {
         "nombre": "density",
         "tipo": "'standard' | 'compact'",
         "porDefecto": "'standard'",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "opciones",
+        "opciones": [
+          "standard",
+          "compact"
+        ]
       },
       {
         "nombre": "esSubmenu",
         "tipo": "boolean",
         "porDefecto": "false",
         "requerida": false,
-        "descripcion": "Uso interno: el panel es un submenú (← también lo cierra)."
+        "descripcion": "Uso interno: el panel es un submenú (← también lo cierra).",
+        "control": "booleano"
       },
       {
         "nombre": "items",
@@ -8231,21 +8782,30 @@ export const MANIFIESTO_UI_KIT: readonly FichaComponente[] = [
         "tipo": "'none' | 'icon' | 'radio' | 'checkbox'",
         "porDefecto": "'none'",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "opciones",
+        "opciones": [
+          "none",
+          "icon",
+          "radio",
+          "checkbox"
+        ]
       },
       {
         "nombre": "maxHeight",
         "tipo": "number | null",
         "porDefecto": "null",
         "requerida": false,
-        "descripcion": "Alto máximo en px; por encima aparece el scroll."
+        "descripcion": "Alto máximo en px; por encima aparece el scroll.",
+        "control": "numero"
       },
       {
         "nombre": "selectedValue",
         "tipo": "string | null",
         "porDefecto": "null",
         "requerida": false,
-        "descripcion": "Opción marcada con `leading=\"radio\"`."
+        "descripcion": "Opción marcada con `leading=\"radio\"`.",
+        "control": "texto"
       },
       {
         "nombre": "selectedValues",
@@ -8259,14 +8819,20 @@ export const MANIFIESTO_UI_KIT: readonly FichaComponente[] = [
         "tipo": "'none' | 'icon' | null",
         "porDefecto": "null",
         "requerida": false,
-        "descripcion": "Elemento inicial de las opciones del submenú. Por defecto, íconos si este menú los usa; si no, nada."
+        "descripcion": "Elemento inicial de las opciones del submenú. Por defecto, íconos si este menú los usa; si no, nada.",
+        "control": "opciones",
+        "opciones": [
+          "none",
+          "icon"
+        ]
       },
       {
         "nombre": "width",
         "tipo": "number",
         "porDefecto": "280",
         "requerida": false,
-        "descripcion": "Ancho del panel en px (280 en el Figma)."
+        "descripcion": "Ancho del panel en px (280 en el Figma).",
+        "control": "numero"
       }
     ],
     "eventos": [
@@ -8295,6 +8861,13 @@ export const MANIFIESTO_UI_KIT: readonly FichaComponente[] = [
     "evitar": "- Para abrirlo desde un botón: no armar a mano el disparador, la apertura y el cierre; usar `siaf-icon-dropdown-menu`\n  o `siaf-cascading-menu`.\n- Para elegir un valor dentro de un formulario: usar `siaf-select-options` o `siaf-radio-group`.\n- Para contenido con título, texto o acciones al pie: usar `siaf-popover`.\n- Para navegar entre pantallas: usar `siaf-process-menu-tree` o enlaces.",
     "teclado": "- **Tab**: el menú es una sola parada: entra en la última opción enfocada (al principio, la primera habilitada) y la\n  siguiente pulsación sale del menú; las opciones se recorren con las flechas.\n- **Flecha arriba / abajo**: pasan a la opción habilitada anterior o siguiente (dan la vuelta).\n- **Inicio / Fin**: van a la primera o a la última opción habilitada.\n- **Enter / Espacio**: eligen la opción y emiten `selected` (con `radio` la marcan y con `checkbox` la alternan); en\n  una opción con `children`, abren el submenú y enfocan su primera opción.\n- **Flecha derecha**: abre el submenú de la opción y enfoca su primera opción.\n- **Flecha izquierda** (dentro del submenú): lo cierra y devuelve el foco a la opción que lo abrió.\n- **Escape**: en un submenú hace lo mismo que la flecha izquierda; en el menú principal emite `closed` y quien lo\n  abre decide cerrarlo.",
     "accesibilidad": "- **4.1.2 Nombre, función y valor (A)**: el panel es `role=\"menu\"` con `aria-label` (el padre debe dar `ariaLabel`;\n  el submenú toma el texto de su opción) y cada opción, `menuitem`, `menuitemradio` o `menuitemcheckbox` con\n  `aria-checked` y `aria-disabled`; las que abren submenú llevan `aria-haspopup` y `aria-expanded`.\n- **1.1.1 Contenido no textual (A)**: los íconos son decorativos y el radio y el checkbox nativos llevan\n  `aria-hidden` y `tabindex=\"-1\"`: el estado lo publica `aria-checked`.\n- **2.1.1 Teclado (A)**: todo se opera con teclado y Tab sale del menú sin trampa; al enfocar una opción cortada,\n  `siafTooltip` muestra su texto completo.\n- **2.4.3 Orden del foco (A)**: abrir un submenú con teclado enfoca su primera opción y cerrarlo con flecha izquierda\n  o Escape devuelve el foco a la opción que lo abrió. Llevar el foco al menú al abrirlo le toca al disparador\n  (`siaf-icon-dropdown-menu` lo hace).\n- **2.4.7 Foco visible (AA)**: la opción enfocada con teclado lleva un contorno interior azul de 2 px\n  (`border-states-focus`, 5.35:1 claro / 10.15:1 oscuro) además de la capa gris `bg-states-light-focus`, que sola no\n  se distinguía en oscuro.\n- **1.4.3 Contraste mínimo (AA)**: texto `text-neutral-medium` sobre `bg-surfaces-surface-highest`, que en claro es\n  blanco como la superficie (14.53:1). Las opciones deshabilitadas (`opacity-40`) están exentas.\n- **1.4.13 Contenido en hover o foco (AA)**: el submenú que abre el puntero se pega a su opción dentro del mismo\n  contenedor, así que se puede pasar el puntero sobre él sin que se cierre; se cierra con flecha izquierda o Escape.\n- **2.5.8 Tamaño del objetivo (AA)**: 48 px por opción en `standard` y 32 px en `compact`.",
+    "limitaciones": null,
+    "incorrecto": null,
+    "correcto": null,
+    "waiAria": {
+      "nombre": "Menú",
+      "url": "https://www.w3.org/WAI/ARIA/apg/patterns/menubar/"
+    },
     "figma": [
       {
         "nodo": "7440:34249",
@@ -8419,7 +8992,8 @@ export const MANIFIESTO_UI_KIT: readonly FichaComponente[] = [
         "tipo": "boolean",
         "porDefecto": "false",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "booleano"
       },
       {
         "nombre": "hiddenNavigation",
@@ -8433,7 +9007,15 @@ export const MANIFIESTO_UI_KIT: readonly FichaComponente[] = [
         "tipo": "'Default' | 'Panel' | 'Bandeja' | 'Proceso' | 'Ajustes'",
         "porDefecto": "'Panel'",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "opciones",
+        "opciones": [
+          "Default",
+          "Panel",
+          "Bandeja",
+          "Proceso",
+          "Ajustes"
+        ]
       }
     ],
     "eventos": [
@@ -8457,6 +9039,10 @@ export const MANIFIESTO_UI_KIT: readonly FichaComponente[] = [
     "evitar": "- En escritorio: la barra fija es `siaf-sidebar` (variante `rail`), que emite los mismos eventos.\n- Para listar procesos o secciones de la bandeja: al elegir el destino, el armazón abre `siaf-process-menu-tree` o\n  `siaf-tray-menu`.\n- Para una lista de opciones dentro de una pantalla: usar `siaf-list`, o `siaf-menu` si son acciones.",
     "teclado": "- **Tab**: recorre «Crear documento» (se salta si `ctaAdd` es false) y los cinco destinos, en orden.\n- **Enter / Espacio**: eligen el destino (`navigationChanged`); «Ayuda» emite `help` y «Crear documento», `created`.",
     "accesibilidad": "- **Pendiente · 1.3.1 Información y relaciones (A)**: es un `<aside>` con `h2` y un `<nav>`, pero ninguno tiene\n  `aria-label` y los destinos son botones sueltos, sin lista `ul`/`li`: el lector no dice cuántos hay.\n- **1.4.1 Uso del color (A)**: el destino activo, además del fondo y el color, va en negrita.\n- **1.4.3 Contraste mínimo (AA)**: «Crear documento» en `text-brand-white` sobre `bg-brand-accent` (4.89:1 / 5.65:1);\n  en claro, destinos en `text-neutral-medium` sobre blanco (14.53:1). En oscuro el fondo es `bg-surfaces-field` y\n  falta medirlo.\n- **1.4.11 Contraste no textual (AA)**: el contorno de foco es el azul del kit (`border-states-focus`, 5.35:1 claro\n  / 10.15:1 oscuro sobre la superficie).\n- **Pendiente · 2.4.3 Orden del foco (A)**: no toma el foco al abrirse (el Tab pasa antes por el logo, la campana y el\n  perfil del navbar), no cierra con Escape y la página de fondo sigue en el orden de tabulación. Le toca al armazón,\n  que hoy no lo hace.\n- **2.4.7 Foco visible (AA)**: los destinos muestran un contorno azul de 2 px con `focus-visible`; «Crear documento»\n  no tiene estilo propio y queda con el anillo del navegador.\n- **2.5.8 Tamaño del objetivo (AA)**: destinos de 48 px de alto y «Crear documento» de 40 px, a todo el ancho.\n- **Pendiente · 4.1.2 Nombre, función y valor (A)**: cada destino es un `<button>` con su texto como nombre y «Crear\n  documento» usa `disabled`, pero el activo solo se marca con estilo: falta `aria-current`.",
+    "limitaciones": null,
+    "incorrecto": null,
+    "correcto": null,
+    "waiAria": null,
     "figma": [],
     "aria": {
       "roles": [],
@@ -8608,112 +9194,138 @@ export const MANIFIESTO_UI_KIT: readonly FichaComponente[] = [
         "tipo": "string",
         "porDefecto": "\"Cancelar\"",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "texto"
       },
       {
         "nombre": "confirmDisabled",
         "tipo": "boolean | null",
         "porDefecto": "null",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "booleano"
       },
       {
         "nombre": "confirmLabel",
         "tipo": "string",
         "porDefecto": "\"\"",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "texto"
       },
       {
         "nombre": "confirmVariant",
         "tipo": "'filled' | 'outline' | 'standard' | 'text' | 'primary' | 'accent' | 'secondary' | 'ghost'",
         "porDefecto": "\"primary\"",
         "requerida": false,
-        "descripcion": "Variante del botón de confirmar (las de `siaf-button`)."
+        "descripcion": "Variante del botón de confirmar (las de `siaf-button`).",
+        "control": "opciones",
+        "opciones": [
+          "filled",
+          "outline",
+          "text",
+          "standard",
+          "primary",
+          "accent",
+          "secondary",
+          "ghost"
+        ]
       },
       {
         "nombre": "description",
         "tipo": "string",
         "porDefecto": "\"\"",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "texto"
       },
       {
         "nombre": "hasProjectedActions",
         "tipo": "boolean",
         "porDefecto": "false",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "booleano"
       },
       {
         "nombre": "icon",
         "tipo": "string",
         "porDefecto": "\"\"",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "texto"
       },
       {
         "nombre": "illustrationSrc",
         "tipo": "string",
         "porDefecto": "\"\"",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "texto"
       },
       {
         "nombre": "open",
         "tipo": "boolean",
         "porDefecto": "false",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "booleano"
       },
       {
         "nombre": "reason",
         "tipo": "string",
         "porDefecto": "''",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "texto"
       },
       {
         "nombre": "reasonDisabled",
         "tipo": "boolean",
         "porDefecto": "false",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "booleano"
       },
       {
         "nombre": "reasonLabel",
         "tipo": "string",
         "porDefecto": "''",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "texto"
       },
       {
         "nombre": "reasonMaxLength",
         "tipo": "number",
         "porDefecto": "500",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "numero"
       },
       {
         "nombre": "reasonPlaceholder",
         "tipo": "string",
         "porDefecto": "\"Motivo\"",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "texto"
       },
       {
         "nombre": "reasonType",
         "tipo": "string",
         "porDefecto": "''",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "texto"
       },
       {
         "nombre": "reasonTypeLabel",
         "tipo": "string",
         "porDefecto": "'Motivo'",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "texto"
       },
       {
         "nombre": "reasonTypeOptions",
@@ -8727,35 +9339,57 @@ export const MANIFIESTO_UI_KIT: readonly FichaComponente[] = [
         "tipo": "boolean",
         "porDefecto": "true",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "booleano"
       },
       {
         "nombre": "showFooter",
         "tipo": "boolean",
         "porDefecto": "true",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "booleano"
       },
       {
         "nombre": "showIllustration",
         "tipo": "boolean",
         "porDefecto": "false",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "booleano"
       },
       {
         "nombre": "title",
         "tipo": "string",
         "porDefecto": "\"\"",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "texto"
       },
       {
         "nombre": "variant",
         "tipo": "ModalVariant",
         "porDefecto": "\"custom\"",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "opciones",
+        "opciones": [
+          "custom",
+          "delete-request",
+          "delete-record",
+          "review",
+          "undo-changes",
+          "save",
+          "verify",
+          "verify-multiple",
+          "validate",
+          "approve",
+          "approve-multiple",
+          "cancel",
+          "settings",
+          "observe",
+          "reject"
+        ]
       }
     ],
     "eventos": [
@@ -8789,6 +9423,13 @@ export const MANIFIESTO_UI_KIT: readonly FichaComponente[] = [
     "evitar": "- Repetir a mano en una request-page los seis modales del flujo: usar `siaf-request-approval-modals`.\n- Para avisar el resultado después de confirmar: usar `siaf-snackbar`; para bloquear mientras se procesa,\n  `siaf-loader-overlay`.\n- Para buscar y elegir registros o adjuntar archivos: usar `siaf-selection-side-nav` o `siaf-upload-side-nav`.\n- Dentro de un bloque if sin enlazar `open`: sin ese input no se pinta; y si el bloque lo destruye al cerrar, no anima\n  la salida (el foco sí vuelve al control que lo abrió).",
     "teclado": "- **Tab / Shift + Tab**: al abrir, el foco ya está en el primer control (la X si `showClose`, o el diálogo si no hay\n  controles); recorren los controles y dan la vuelta del último al primero sin salir del diálogo.\n- **Escape**: cierra como Cancelar (emite `canceled` y `closed`) y devuelve el foco al elemento que lo tenía antes\n  de abrir.\n- **Enter / Espacio**: activan la X, Cancelar y Aceptar (emite `confirmed`); el campo de motivo sigue\n  `text-area-control`.",
     "accesibilidad": "- **4.1.2 Nombre, función y valor (A)**: `role=\"dialog\"` con `aria-modal=\"true\"`, `aria-labelledby` al título y\n  `aria-describedby` a la descripción; la X se llama «Cerrar» (ícono con `label`).\n- **2.4.3 Orden del foco (A)**: con `siafFoco`, al abrir mueve el foco al primer control y al cerrar (con `open` en\n  false o al destruirse) lo devuelve a donde estaba.\n- **2.1.2 Sin trampas de teclado (A)**: Tab queda dentro del diálogo mientras está abierto, pero Escape siempre lo\n  cierra.\n- **Pendiente · 3.3.2 Etiquetas o instrucciones (A)**: en `observe` y `reject` el motivo es obligatorio (Aceptar\n  sigue deshabilitado sin texto) pero no se marca: no pasa `required` a `text-area-control`, que pondría el\n  asterisco y `aria-required`.\n- **2.4.7 Foco visible (AA)**: la X muestra un anillo `border-states-focus` de 2 px con `focus-visible`; los\n  botones del pie siguen `siaf-button`.\n- **1.4.11 Contraste no textual (AA)**: ese anillo es el azul del kit (`border-states-focus`, 5.35:1 claro / 10.15:1\n  oscuro sobre la superficie).\n- **1.1.1 Contenido no textual (A)**: la ilustración va con `alt=\"\"` y el ícono de respaldo es decorativo.\n- **1.4.3 Contraste mínimo (AA)**: título `text-neutral-high` y descripción `text-neutral-medium` sobre\n  `surface-highest`, que en claro es el blanco de la superficie (16.29:1 y 14.53:1).",
+    "limitaciones": null,
+    "incorrecto": null,
+    "correcto": null,
+    "waiAria": {
+      "nombre": "Diálogo modal",
+      "url": "https://www.w3.org/WAI/ARIA/apg/patterns/dialog-modal/"
+    },
     "figma": [],
     "aria": {
       "roles": [
@@ -8910,7 +9551,7 @@ export const MANIFIESTO_UI_KIT: readonly FichaComponente[] = [
     "importacion": "@kennedy122112/siaf-rp-ui-angular",
     "archivo": "node_modules/@kennedy122112/siaf-rp-ui-angular/types/kennedy122112-siaf-rp-ui-angular.d.ts",
     "descripcion": "Barra superior del shell autenticado: logo, campana de notificaciones y menú de usuario.\n\nEl contador de la campana sale de `FuenteNotificaciones.sinLeer()` y al abrir el panel la refresca; el cambio\nde perfil y el cierre de sesión, de `FuenteSesion`. Las dos las provee el proyecto: el kit no llama a ninguna API.\nEl menú de usuario incluye cambio de perfil,\ncierre de sesión y el toggle de tema, que persiste en localStorage y anima el cambio con View Transitions\ncuando el navegador las soporta. Un click fuera del componente cierra ambos desplegables.",
-    "usaSesion": true,
+    "usaSesion": false,
     "proyectaContenido": true,
     "entradas": [
       {
@@ -8918,49 +9559,56 @@ export const MANIFIESTO_UI_KIT: readonly FichaComponente[] = [
         "tipo": "string",
         "porDefecto": "'/panel'",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "texto"
       },
       {
         "nombre": "initials",
         "tipo": "string",
         "porDefecto": "'JP'",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "texto"
       },
       {
         "nombre": "officeName",
         "tipo": "string",
         "porDefecto": "'Office name'",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "texto"
       },
       {
         "nombre": "showMenu",
         "tipo": "boolean",
         "porDefecto": "true",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "booleano"
       },
       {
         "nombre": "showNotifications",
         "tipo": "boolean",
         "porDefecto": "true",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "booleano"
       },
       {
         "nombre": "showProfile",
         "tipo": "boolean",
         "porDefecto": "true",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "booleano"
       },
       {
         "nombre": "userName",
         "tipo": "string",
         "porDefecto": "'Juan Doe Perez Perez'",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "texto"
       }
     ],
     "eventos": [
@@ -8974,6 +9622,10 @@ export const MANIFIESTO_UI_KIT: readonly FichaComponente[] = [
     "evitar": "- Como cabecera de una pantalla o de una solicitud: usar `siaf-page-header` o `siaf-solicitude-header`; la barra ya\n  la pinta el armazón y no se repite dentro de una página.\n- En pantallas sin sesión, como el login: lee los perfiles y las notificaciones del usuario.\n- Para un menú de opciones en otra parte: usar `siaf-icon-dropdown-menu` o `siaf-menu`; el menú de usuario está\n  hecho a mano y no se reutiliza.",
     "teclado": "- **Tab**: recorre el botón de menú, el logo, la campana y el perfil. Al abrir el menú de usuario o el panel de\n  notificaciones, el foco entra en su primera opción; salir con Tab los cierra.\n- **Escape**: cierra el desplegable abierto y el foco vuelve a su botón (perfil o campana).\n- **Enter / Espacio**: el botón de menú emite `menuClicked`; la campana y el perfil abren o cierran su desplegable\n  (abrir uno cierra el otro).\n- **Enter** en el logo: va a `homeHref`.\n- **Enter / Espacio** en una opción del menú de usuario: la ejecuta; «Perfil» muestra u oculta la lista de perfiles.",
     "accesibilidad": "- **Pendiente · 1.3.1 Información y relaciones (A)**: la barra es un `<header>`, pero solo cuenta como región\n  `banner` fuera de `<main>`, y `siaf-app-shell` hoy la pinta dentro.\n- **Pendiente · 1.4.3 Contraste mínimo (AA)**: la barra (`text-brand-white` sobre `bg-brand-primary`, 8.79:1 / 6.67:1)\n  y el menú (`text-neutral-medium` sobre la superficie, 14.53:1 / 12.87:1) cumplen; en oscuro, el perfil activo usa\n  la clase `text-brand-primary` (el azul de fondo de marca) y no llega a 4.5:1.\n- **Pendiente · 1.4.11 Contraste no textual (AA)**: el contorno blanco de los botones de la barra cumple (8.79:1 /\n  6.67:1) y el de las opciones es el azul del kit (`border-states-focus`, 5.35:1 / 10.15:1), pero en oscuro el ícono\n  del perfil activo no llega a 3:1.\n- **2.4.3 Orden del foco (A)**: con `siafFoco`, el menú de usuario y el panel de notificaciones reciben el foco al\n  abrir, cierran con Escape o al salir con Tab, y al elegir tema o perfil el foco vuelve al botón de perfil.\n- **2.4.7 Foco visible (AA)**: contorno de 2 px con `focus-visible` en los botones de la barra y en las opciones del\n  menú; el logo y la lista de perfiles quedan con el anillo del navegador.\n- **Pendiente · 2.5.3 Etiqueta en el nombre (A)**: el botón de perfil muestra las iniciales y, desde `md`, el nombre y\n  la oficina, pero su `aria-label` fijo «Perfil de usuario» los reemplaza: el lector no dice quién inició sesión.\n- **Pendiente · 4.1.2 Nombre, función y valor (A)**: la campana y el perfil publican `aria-expanded`, pero «Abrir\n  menu» no. El menú de usuario es un `role=\"menu\"` hecho a mano: sin flechas, «Perfil» sin `aria-expanded` y\n  perfiles `menuitem` sin `aria-checked` (el activo solo se ve); `siaf-menu` ya trae flechas, Escape y `aria-checked`.\n- **Pendiente · 4.1.3 Mensajes de estado (AA)**: el número de no leídas va en el nombre de la campana\n  («Notificaciones, 3 sin leer») y el badge es `aria-hidden`, pero una notificación nueva no se anuncia: no hay\n  `role=\"status\"` ni `aria-live`.",
+    "limitaciones": "Sus breakpoints miran el ancho de la ventana, no el del contenedor: dentro de una columna angosta se ve con el diseño de escritorio.",
+    "incorrecto": null,
+    "correcto": null,
+    "waiAria": null,
     "figma": [],
     "aria": {
       "roles": [
@@ -9121,7 +9773,7 @@ export const MANIFIESTO_UI_KIT: readonly FichaComponente[] = [
     "importacion": "@kennedy122112/siaf-rp-ui-angular",
     "archivo": "node_modules/@kennedy122112/siaf-rp-ui-angular/types/kennedy122112-siaf-rp-ui-angular.d.ts",
     "descripcion": "Desplegable de notificaciones que abre la campana del navbar (lista, skeleton, vacío y \"marcar leídas\").\n\nLee y marca las notificaciones de `FuenteNotificaciones` — la misma fuente del contador de la campana, que\nprovee el proyecto: el kit no llama a ninguna API. Al tocar una notificación navega a su `ruta`.",
-    "usaSesion": true,
+    "usaSesion": false,
     "proyectaContenido": false,
     "entradas": [
       {
@@ -9129,7 +9781,8 @@ export const MANIFIESTO_UI_KIT: readonly FichaComponente[] = [
         "tipo": "boolean",
         "porDefecto": "false",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "booleano"
       }
     ],
     "eventos": [
@@ -9143,6 +9796,10 @@ export const MANIFIESTO_UI_KIT: readonly FichaComponente[] = [
     "evitar": "- Para el historial completo, con filtro y paginación: usar `siaf-tray-notifications-view` (Bandeja › Notificaciones).\n- Para avisar el resultado de una acción del usuario: usar `siaf-snackbar` o `siaf-alert`.\n- Suelto en una pantalla: `open` no lo oculta (lo decide quien lo pinta) y su posición supone la campana del navbar.",
     "teclado": "- **Tab**: al abrir, el foco entra en «Marcar todas como leídas», si hay no leídas, o en la primera notificación;\n  luego recorre cada notificación y puede salir del panel (no atrapa el foco: no es modal).\n- **Escape**: cierra el panel (emite `closed`) y el foco vuelve a la campana.\n- **Enter / Espacio**: en una notificación, emite `closed` y, si tiene documento, lo abre; en «Marcar todas como\n  leídas», las marca.",
     "accesibilidad": "- **1.3.1 Información y relaciones (A)**: encabezado `h3` y notificaciones en lista `ul`/`li`; cada una es un\n  `<button>` cuyo nombre reúne título, fecha, mensaje y número del documento.\n- **Pendiente · 1.4.3 Contraste mínimo (AA)**: título `text-text` 16.29:1 / 16.53:1, mensaje `text-neutral-medium`\n  14.53:1 / 12.87:1, fecha `text-neutral-low` 5.01:1 / 8.86:1 y código blanco sobre `bg-brand-accent` 4.89:1 / 5.65:1;\n  pero «Marcar todas como leídas» usa la clase `text-brand-primary` (azul de fondo de marca) y en oscuro queda en\n  2.66:1.\n- **1.4.11 Contraste no textual (AA)**: el contorno de foco es el azul del kit (`border-states-focus`, 5.35:1 claro\n  / 10.15:1 oscuro sobre la superficie).\n- **Pendiente · 2.4.3 Orden del foco (A)**: con `siafFoco` (sin atrapar Tab) el foco entra al abrir y Escape cierra\n  devolviéndolo a la campana, pero al marcar todas como leídas el botón desaparece y el foco se pierde.\n- **2.4.7 Foco visible (AA)**: «Marcar todas como leídas» y cada notificación muestran un contorno azul de 2 px con\n  `focus-visible`.\n- **4.1.2 Nombre, función y valor (A)**: el panel es `role=\"dialog\"` con `aria-label=\"Notificaciones\"`, y la campana\n  de `siaf-navbar` publica `aria-expanded` y `aria-haspopup=\"dialog\"`.\n- **Pendiente · 4.1.3 Mensajes de estado (AA)**: la carga se marca con `role=\"status\"` y `aria-live=\"polite\"`, pero no\n  se anuncia el resultado: ni el vacío «No tienes notificaciones nuevas.» ni el marcado de todas como leídas.",
+    "limitaciones": "Sus breakpoints miran el ancho de la ventana, no el del contenedor: dentro de una columna angosta se ve con el diseño de escritorio.",
+    "incorrecto": null,
+    "correcto": null,
+    "waiAria": null,
     "figma": [],
     "aria": {
       "roles": [
@@ -9278,14 +9935,16 @@ export const MANIFIESTO_UI_KIT: readonly FichaComponente[] = [
         "tipo": "string",
         "porDefecto": "''",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "texto"
       },
       {
         "nombre": "title",
         "tipo": "string",
         "porDefecto": "''",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "texto"
       }
     ],
     "eventos": [],
@@ -9293,6 +9952,10 @@ export const MANIFIESTO_UI_KIT: readonly FichaComponente[] = [
     "evitar": "- En pantallas de solicitud con estados y botones del flujo: usar `siaf-solicitude-header` (o\n  `siaf-solicitude-page-layout`, que ya lo trae).\n- Como título de una sección o tarjeta: pinta un `h1`; usar el título de la tarjeta (`siaf-solicitude-form-card`).\n- Más de uno por página: cada uno agrega otro `h1`.",
     "teclado": "- No recibe foco: no es interactivo. Las acciones proyectadas en `[actions]` siguen su componente (`siaf-button`).",
     "accesibilidad": "- **1.3.1 Información y relaciones (A)**: el título es el `h1` de la página y el subtítulo, un párrafo; el `header` no\n  funciona como banner porque vive dentro del `main` del shell.\n- **2.4.3 Orden del foco (A)**: las acciones van después del título en el DOM, igual que en pantalla.\n- **Pendiente · 2.1.1 Teclado (A)**: desde `sm` el título y el subtítulo se cortan y el texto completo sale con\n  `siafTooltip`, que se abre con el mouse o con el foco; como no son enfocables, con teclado no se puede ver (el\n  lector de pantalla sí lee el texto entero).\n- **1.4.3 Contraste mínimo (AA)**: título `text-neutral-high` (16.29:1 / 16.53:1) y subtítulo `text-neutral-medium`\n  (14.53:1 / 12.87:1) sobre `bg-surface`.",
+    "limitaciones": null,
+    "incorrecto": null,
+    "correcto": null,
+    "waiAria": null,
     "figma": [],
     "aria": {
       "roles": [],
@@ -9371,7 +10034,8 @@ export const MANIFIESTO_UI_KIT: readonly FichaComponente[] = [
         "tipo": "string",
         "porDefecto": "'/panel'",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "texto"
       }
     ],
     "eventos": [],
@@ -9379,6 +10043,10 @@ export const MANIFIESTO_UI_KIT: readonly FichaComponente[] = [
     "evitar": "- Para solicitudes con estados y acciones del flujo: usar `siaf-solicitude-page-layout`.\n- Para la pantalla Documentos / Registros de un proceso: usar `siaf-documents-records-page`, que ya trae breadcrumb,\n  título y pestañas.\n- Sin `siaf-page-header` en `[pageHeader]`: la página queda sin `h1`.\n- Dentro de otro contenedor con alto propio: fija su alto a la ventana menos el navbar (`100vh - 56px`).",
     "teclado": "- No recibe foco: no es interactivo. El breadcrumb y el contenido proyectado siguen su componente.",
     "accesibilidad": "- **1.3.1 Información y relaciones (A)**: pinta el breadcrumb (`siaf-breadcrumb`, un `nav` con\n  `aria-label=\"Ruta de navegación\"`) y no trae encabezado propio: el `h1` lo pone el `siaf-page-header` proyectado en\n  `[pageHeader]`. No agrega landmarks: vive dentro del `main` del shell.\n- **2.4.3 Orden del foco (A)**: el DOM sigue el orden visual: breadcrumb, encabezado con sus acciones y cuerpo.",
+    "limitaciones": null,
+    "incorrecto": null,
+    "correcto": null,
+    "waiAria": null,
     "figma": [],
     "aria": {
       "roles": [],
@@ -9437,49 +10105,64 @@ export const MANIFIESTO_UI_KIT: readonly FichaComponente[] = [
         "tipo": "string",
         "porDefecto": "''",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "texto"
       },
       {
         "nombre": "navigation",
         "tipo": "'Inactive' | 'Activate'",
         "porDefecto": "'Activate'",
         "requerida": false,
-        "descripcion": "'Activate' (default): flechas navegables — se deshabilitan solas en los bordes (page 1 / última). 'Inactive' fuerza ambas deshabilitadas."
+        "descripcion": "'Activate' (default): flechas navegables — se deshabilitan solas en los bordes (page 1 / última). 'Inactive' fuerza ambas deshabilitadas.",
+        "control": "opciones",
+        "opciones": [
+          "Inactive",
+          "Activate"
+        ]
       },
       {
         "nombre": "page",
         "tipo": "number",
         "porDefecto": "1",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "numero"
       },
       {
         "nombre": "pageSize",
         "tipo": "number",
         "porDefecto": "10",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "numero"
       },
       {
         "nombre": "position",
         "tipo": "'Top' | 'Bottom'",
         "porDefecto": "'Top'",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "opciones",
+        "opciones": [
+          "Top",
+          "Bottom"
+        ]
       },
       {
         "nombre": "rowPage",
         "tipo": "boolean",
         "porDefecto": "false",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "booleano"
       },
       {
         "nombre": "rowsPerPage",
         "tipo": "number",
         "porDefecto": "10",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "numero"
       },
       {
         "nombre": "rowsPerPageOptions",
@@ -9493,14 +10176,16 @@ export const MANIFIESTO_UI_KIT: readonly FichaComponente[] = [
         "tipo": "number",
         "porDefecto": "800",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "numero"
       },
       {
         "nombre": "totalPages",
         "tipo": "number",
         "porDefecto": "1",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "numero"
       }
     ],
     "eventos": [
@@ -9529,6 +10214,10 @@ export const MANIFIESTO_UI_KIT: readonly FichaComponente[] = [
     "evitar": "- `position=\"Top\"` suelta sobre la tabla: la barra superior es siempre `siaf-table-controls`, que ya la incluye.\n- Forzar `navigation=\"Inactive\"` cuando todo cabe en una página: `Activate` (por defecto) ya deshabilita las flechas\n  en los bordes.\n- Para avanzar por las etapas de un flujo: `siaf-steps` o `siaf-button`.",
     "teclado": "- **Tab**: recorre el select de filas por página (con `rowPage`) y las flechas; una flecha deshabilitada queda fuera.\n- **Enter / Espacio**: en una flecha, cambian de página (emiten `previous` o `next`).\n- **Flechas arriba / abajo**: en el select nativo eligen otra cantidad de filas (emite `rowsPerPageChange`).",
     "accesibilidad": "- **1.3.1 Información y relaciones (A)**: es un `<nav aria-label=\"Paginación\">`; en la grilla estándar hay dos con el\n  mismo nombre (el de `siaf-table-controls` arriba y este abajo).\n- **4.1.2 Nombre, función y valor (A)**: las flechas son `<button>` con `aria-label` («Página anterior», «Página\n  siguiente») y `disabled` en los bordes; el select lleva `aria-label` «Filas por página».\n- **Pendiente · 4.1.3 Mensajes de estado (AA)**: el contador es un `<span>` sin `role=\"status\"` ni `aria-live`:\n  cambiar de página o de filas por página, o filtrar, no se anuncia.\n- **Pendiente · 2.4.3 Orden del foco (A)**: al llegar a la primera o la última página, la flecha enfocada pasa a\n  `disabled` y el componente no mueve el foco a otro control.\n- **1.4.3 Contraste mínimo (AA)**: contador en `text-neutral-low` (5.01:1 / 8.86:1) y valor del select en\n  `text-neutral-high` (16.29:1 / 16.53:1) sobre la superficie.\n- **Pendiente · 1.4.11 Contraste no textual (AA)**: el borde del select es `border-states-enabled` (2.44:1 /\n  2.59:1). El anillo de foco ya es el azul del kit (`border-states-focus`, 5.35:1 / 10.15:1).\n- **2.4.7 Foco visible (AA)**: el select y las flechas muestran un anillo de 2 px `border-states-focus` separado\n  2 px. El del select antes no se pintaba: con `outline-none`, Tailwind v4 dejaba el estilo del contorno en `none`.\n- **2.5.8 Tamaño del objetivo (AA)**: flechas de 40 px y select de 32 px de alto.",
+    "limitaciones": null,
+    "incorrecto": null,
+    "correcto": null,
+    "waiAria": null,
     "figma": [],
     "aria": {
       "roles": [],
@@ -9629,6 +10318,10 @@ export const MANIFIESTO_UI_KIT: readonly FichaComponente[] = [
     "evitar": "- Para elegir o cambiar un parámetro: las tarjetas no son interactivas; la búsqueda se cambia desde la cabecera de\n  la consulta, con `siaf-filter-pill` o con `siaf-custom-filter`.\n- Cuando la pantalla necesita «Quitar filtros»: este bloque no lo tiene (así está en el Figma); las consultas de hoy\n  siguen con `siaf-consultas-filtros-chips`.",
     "teclado": "- **Tab**: cuando las tarjetas no entran, el carril recibe el foco y las flechas izquierda y derecha lo desplazan;\n  después llega a los botones que retroceden y avanzan (los que estén a la vista).\n- **Enter / Espacio**: en un botón, retroceden o avanzan el carril.",
     "accesibilidad": "- **1.3.1 Información y relaciones (A)**: título `<h3>` y las tarjetas como `<ul>` / `<li>` de `siaf-list`; cada una se\n  lee «Nombre, valor».\n- **2.1.1 Teclado (A)**: el carril con desplazamiento es una `region` enfocable con nombre («Parámetros aplicados»),\n  así las tarjetas que no entran se alcanzan sin mouse; los botones hacen lo mismo con un clic.\n- **4.1.2 Nombre, función y valor (A)**: los botones se llaman «Ver parámetros anteriores» y «Ver más parámetros».\n- **2.4.3 Orden del foco (A)**: al llegar a un extremo desaparece el botón de ese lado; si tenía el foco, este pasa al\n  botón del otro lado (o al carril) en vez de perderse.\n- **1.1.1 Contenido no textual (A)**: los íconos son decorativos; el nombre del parámetro va como texto.\n- **2.4.7 Foco visible (AA)**: el carril y el botón muestran el anillo `border-states-focus` (5.35:1 / 10.15:1).\n- **1.4.11 Contraste no textual (AA)**: el borde de las tarjetas es decorativo (`border-states-enabled`); cada tarjeta\n  se distingue también por su espacio y su contenido.",
+    "limitaciones": null,
+    "incorrecto": null,
+    "correcto": null,
+    "waiAria": null,
     "figma": [
       {
         "nodo": "22402:16429",
@@ -9724,49 +10417,60 @@ export const MANIFIESTO_UI_KIT: readonly FichaComponente[] = [
         "tipo": "'start' | 'end'",
         "porDefecto": "'end'",
         "requerida": false,
-        "descripcion": "Borde del disparador con el que se alinea el panel: `end` (derecha, por defecto) o `start`."
+        "descripcion": "Borde del disparador con el que se alinea el panel: `end` (derecha, por defecto) o `start`.",
+        "control": "opciones",
+        "opciones": [
+          "start",
+          "end"
+        ]
       },
       {
         "nombre": "ariaLabel",
         "tipo": "string",
         "porDefecto": "''",
         "requerida": false,
-        "descripcion": "Nombre accesible del panel cuando no tiene `title`."
+        "descripcion": "Nombre accesible del panel cuando no tiene `title`.",
+        "control": "texto"
       },
       {
         "nombre": "floating",
         "tipo": "boolean",
         "porDefecto": "false",
         "requerida": false,
-        "descripcion": "El panel, fijo junto al disparador: dentro de un contenedor con scroll (una tabla) no queda recortado."
+        "descripcion": "El panel, fijo junto al disparador: dentro de un contenedor con scroll (una tabla) no queda recortado.",
+        "control": "booleano"
       },
       {
         "nombre": "open",
         "tipo": "boolean",
         "porDefecto": "false",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "booleano"
       },
       {
         "nombre": "text",
         "tipo": "string",
         "porDefecto": "''",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "texto"
       },
       {
         "nombre": "title",
         "tipo": "string",
         "porDefecto": "''",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "texto"
       },
       {
         "nombre": "width",
         "tipo": "number",
         "porDefecto": "268",
         "requerida": false,
-        "descripcion": "Ancho del panel en px: el del Figma (UI KIT 9059:20300) es 268."
+        "descripcion": "Ancho del panel en px: el del Figma (UI KIT 9059:20300) es 268.",
+        "control": "numero"
       }
     ],
     "eventos": [
@@ -9785,6 +10489,10 @@ export const MANIFIESTO_UI_KIT: readonly FichaComponente[] = [
     "evitar": "- Para el texto completo de algo truncado: usar `siafTooltip`.\n- Para una lista de opciones o comandos: usar `siaf-menu` o `siaf-icon-dropdown-menu`.\n- Para confirmar acciones irreversibles (Eliminar, Anular) o pedir datos: usar `siaf-modal` o\n  `siaf-annulment-modal`.\n- Para contenido largo o formularios: usar `siaf-side-nav` (o `siaf-side-panel` si necesita todo el ancho).",
     "teclado": "- **Escape**: emite `closed` si está abierto; el padre pone `open` en false.\n- **Tab**: al abrir, el foco entra en la primera acción (o en el panel, si no tiene); salir con Tab emite `closed`.\n- **Enter / Espacio** en una acción: emiten `action` con su `value` (o su `label`).",
     "accesibilidad": "- **4.1.2 Nombre, función y valor (A)**: el panel es `role=\"dialog\"` con nombre desde `title` (`aria-labelledby`) o\n  desde `ariaLabel`; el padre debe dar `ariaLabel` si no hay título y poner `aria-expanded` en el disparador, que el\n  componente no toca.\n- **1.4.13 Contenido en hover o foco (AA)**: no depende del hover: queda visible hasta Escape, un clic fuera o que\n  el padre lo cierre, y se puede recorrer con el puntero sin que desaparezca.\n- **2.1.2 Sin trampas de teclado (A)**: no retiene el foco; Tab sale del panel y Escape lo cierra.\n- **2.4.3 Orden del foco (A)**: con `siafFoco`, al abrir el foco entra en el panel y al cerrarse (Escape, una acción\n  o salir con Tab) vuelve al disparador.\n- **2.4.7 Foco visible (AA)**: las acciones muestran un contorno de 2 px `border-states-focus` separado 2 px.\n- **1.4.11 Contraste no textual (AA)**: ese contorno es el azul del kit (`border-states-focus`, 5.35:1 claro /\n  10.15:1 oscuro sobre la superficie).\n- **2.5.8 Tamaño del objetivo (AA)**: cada acción mide al menos 32 px de alto.",
+    "limitaciones": "Dentro de una tabla con scroll o al pie de la página, el panel absoluto queda recortado o agranda el scroll: ahí va `[floating]=\"true\"`, que lo pinta fijo junto al disparador.",
+    "incorrecto": null,
+    "correcto": null,
+    "waiAria": null,
     "figma": [
       {
         "nodo": "9059:20300",
@@ -9906,21 +10614,24 @@ export const MANIFIESTO_UI_KIT: readonly FichaComponente[] = [
         "tipo": "string",
         "porDefecto": "'Buscar proceso o procedimiento'",
         "requerida": false,
-        "descripcion": "Etiqueta del buscador: se lee dentro del campo vacío y sube al borde al escribir."
+        "descripcion": "Etiqueta del buscador: se lee dentro del campo vacío y sube al borde al escribir.",
+        "control": "texto"
       },
       {
         "nombre": "subtitle",
         "tipo": "string",
         "porDefecto": "'Seleccionar proceso o procedimiento'",
         "requerida": false,
-        "descripcion": "Texto sobre el árbol; no se pinta cuando la búsqueda no encuentra nada."
+        "descripcion": "Texto sobre el árbol; no se pinta cuando la búsqueda no encuentra nada.",
+        "control": "texto"
       },
       {
         "nombre": "title",
         "tipo": "string",
         "porDefecto": "'Procesos'",
         "requerida": false,
-        "descripcion": "Título del panel, en mayúsculas; también da nombre al `<aside>`."
+        "descripcion": "Título del panel, en mayúsculas; también da nombre al `<aside>`.",
+        "control": "texto"
       }
     ],
     "eventos": [
@@ -9934,6 +10645,10 @@ export const MANIFIESTO_UI_KIT: readonly FichaComponente[] = [
     "evitar": "- Para envolverlo o copiarlo en otro componente de menú: por eso se retiró `siaf-admin-menu`; basta pasarle otros\n  `nodes` y textos.\n- Para mostrar datos jerárquicos de solo lectura dentro de una pantalla: usar `siaf-tree-view`.\n- Para buscar registros en el servidor: usar `siaf-form-table-search` (en Documentos y registros y la bandeja, su\n  variante `siaf-records-search-toolbar`); este buscador solo filtra la navegación en memoria.\n- Para dejar marcado de entrada un nodo del árbol por defecto: la vista inicial no marca nada; `selected` en los\n  datos queda para un árbol que lo necesite.",
     "teclado": "- **Tab**: pasa por el buscador, por «Limpiar búsqueda» cuando hay texto y luego por los nodos visibles en orden.\n- **Escribir en el buscador**: filtra el árbol en vivo, sin distinguir tildes ni mayúsculas, y abre las ramas con\n  coincidencias.\n- **Enter / Espacio** en «Limpiar búsqueda»: vacía el buscador, vuelve a mostrar el árbol completo y devuelve el\n  foco al campo.\n- **Enter / Espacio** en un nodo: lo marca y emite `nodeSelected`; si tiene hijos, además los muestra u oculta. Los\n  nodos `comingSoon` solo expanden.",
     "accesibilidad": "- **1.3.1 Información y relaciones (A)**: el `<aside>` toma su nombre del título (`h2`), así que en Ajustes se\n  anuncia «Ajustes»; el subtítulo es un `h3` y los nodos van en listas anidadas (`ul`/`li`), por lo que el lector\n  anuncia cuántos hay en cada nivel y su anidación. No es un `role=\"tree\"`: sigue el patrón de navegación con\n  botones que muestran u ocultan su rama.\n- **1.4.1 Uso del color (A)**: el nodo marcado no se distingue solo por el color: además del fondo\n  `bg-states-light-activated` y el texto `text-neutral-activated`, pasa a negrita.\n- **1.4.3 Contraste mínimo (AA)**: título `text-neutral-high` 16.29:1 claro / 12.83:1 oscuro; subtítulo y nodos\n  `text-neutral-medium` 14.53:1 / 9.99:1; nodo marcado 7.18:1 / 13.28:1 sobre su fondo.\n- **1.4.11 Contraste no textual (AA)**: las flechas `icon-states-enabled` 8.70:1 claro / 9.99:1 oscuro; el contorno\n  de foco es el azul del kit (`border-states-focus`, 5.35:1 claro / 10.15:1 oscuro sobre la superficie).\n- **Pendiente · 2.4.3 Orden del foco (A)**: no toma el foco al abrirse ni cierra con Escape. El armazón lo pinta\n  después del rail: desde Procesos el Tab pasa antes por Ayuda y Ajustes, y si lo pide una página\n  (`ShellNavigationService`) queda antes que el botón que lo abrió.\n- **2.4.7 Foco visible (AA)**: cada nodo muestra por dentro un contorno azul de 2 px con `focus-visible`.\n- **4.1.2 Nombre, función y valor (A)**: los nodos con hijos publican `aria-expanded` y el marcado,\n  `aria-current=\"true\"`; «Limpiar búsqueda» tiene nombre propio.\n- **4.1.3 Mensajes de estado (AA)**: una región `role=\"status\"` anuncia al filtrar cuántas coincidencias quedan o\n  que no hay ninguna.",
+    "limitaciones": null,
+    "incorrecto": null,
+    "correcto": null,
+    "waiAria": null,
     "figma": [
       {
         "nodo": "18418:2155",
@@ -10098,21 +10813,24 @@ export const MANIFIESTO_UI_KIT: readonly FichaComponente[] = [
         "tipo": "string",
         "porDefecto": "''",
         "requerida": false,
-        "descripcion": "Texto sobre el porcentaje (ej. «Completado»)."
+        "descripcion": "Texto sobre el porcentaje (ej. «Completado»).",
+        "control": "texto"
       },
       {
         "nombre": "size",
         "tipo": "number",
         "porDefecto": "150",
         "requerida": false,
-        "descripcion": "Lado del anillo en px; el grosor y los textos escalan con él."
+        "descripcion": "Lado del anillo en px; el grosor y los textos escalan con él.",
+        "control": "numero"
       },
       {
         "nombre": "value",
         "tipo": "number",
         "porDefecto": "0",
         "requerida": false,
-        "descripcion": "Avance de 0 a 100; se recorta a ese rango."
+        "descripcion": "Avance de 0 a 100; se recorta a ese rango.",
+        "control": "numero"
       }
     ],
     "eventos": [],
@@ -10120,6 +10838,10 @@ export const MANIFIESTO_UI_KIT: readonly FichaComponente[] = [
     "evitar": "- Para esperas sin porcentaje: usar `siaf-loader`, o `siaf-loader-overlay` si hay que bloquear la pantalla.\n- Para los pasos de un flujo: usar `siaf-steps` o `siaf-action-tracker`.\n- Para ver cómo se reparte un total entre varias partes: usar `siaf-donut-chart`.\n- Con `size` muy por debajo de 150 px: los textos escalan con el anillo (la etiqueta mide `size` × 0.08) y\n  dejan de leerse.",
     "teclado": "- No recibe foco: no es interactivo.",
     "accesibilidad": "- **4.1.2 Nombre, función y valor (A)**: es `role=\"progressbar\"` con `aria-valuemin` 0, `aria-valuemax` 100 y\n  `aria-valuenow` redondeado; el nombre es `label`, o «Avance» si no hay.\n- **1.1.1 Contenido no textual (A)**: el anillo SVG va con `aria-hidden` y el porcentaje también está en texto,\n  así que el anillo no es la única pista del avance.\n- **1.4.3 Contraste mínimo (AA)**: etiqueta y porcentaje en `text-neutral-medium`, 14.53:1 sobre la superficie\n  (12.87:1 en oscuro).\n- **4.1.3 Mensajes de estado (AA)**: una barra de progreso no es región viva: si `value` cambia en vivo, el\n  lector no lo anuncia solo y el padre debe avisar los hitos.",
+    "limitaciones": null,
+    "incorrecto": null,
+    "correcto": null,
+    "waiAria": null,
     "figma": [
       {
         "nodo": "20157:95",
@@ -10184,14 +10906,16 @@ export const MANIFIESTO_UI_KIT: readonly FichaComponente[] = [
         "tipo": "boolean",
         "porDefecto": "false",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "booleano"
       },
       {
         "nombre": "title",
         "tipo": "string",
         "porDefecto": "'Parámetros de consulta'",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "texto"
       },
       {
         "nombre": "values",
@@ -10217,6 +10941,10 @@ export const MANIFIESTO_UI_KIT: readonly FichaComponente[] = [
     "evitar": "- Para refinar un resultado ya consultado (condiciones, agrupar): eso es «Filtros avanzados».\n- Para elegir registros de un catálogo largo con búsqueda: usar `siaf-selection-side-nav`.\n- Para filtrar una grilla con píldoras: usar `siaf-filter-pill`.",
     "teclado": "- **Tab**: al abrir, el foco entra en la X; recorre los campos, «Limpiar todo» y «Aplicar consulta», y da la vuelta\n  sin salir del panel.\n- **Escape**: cierra el panel sin aplicar (emite `closed`) y el foco vuelve al botón que lo abrió; con una lista\n  abierta, Escape cierra primero la lista.\n- **Enter / Espacio**: en «Aplicar consulta», emite `applied` con los valores y cierra.",
     "accesibilidad": "- **4.1.2 Nombre, función y valor (A)**: `role=\"dialog\"` con `aria-modal=\"true\"` y `aria-labelledby` al título; la X\n  se llama «Cerrar» más el título.\n- **2.4.3 Orden del foco (A)**: con `siafFoco`, al abrir lleva el foco a la X y al cerrar lo devuelve al botón que lo\n  abrió.\n- **2.1.2 Sin trampas de teclado (A)**: Tab queda dentro mientras está abierto, pero Escape siempre lo cierra.\n- **3.3.2 Etiquetas o instrucciones (A)**: cada campo lleva su etiqueta y el asterisco de obligatorio; «Aplicar\n  consulta» queda deshabilitado hasta completarlos.\n- **1.3.1 Información y relaciones (A)**: el título es un `h2` y los campos van en el orden en que se leen.\n- **2.4.7 Foco visible (AA)**: la X muestra el contorno de 2 px `border-states-focus`; los campos y botones siguen su\n  componente.",
+    "limitaciones": null,
+    "incorrecto": null,
+    "correcto": null,
+    "waiAria": null,
     "figma": [
       {
         "nodo": "22402:15484",
@@ -10258,7 +10986,8 @@ export const MANIFIESTO_UI_KIT: readonly FichaComponente[] = [
         "tipo": "string",
         "porDefecto": "''",
         "requerida": false,
-        "descripcion": "Pestaña activa al empezar; por defecto, la primera."
+        "descripcion": "Pestaña activa al empezar; por defecto, la primera.",
+        "control": "texto"
       },
       {
         "nombre": "config",
@@ -10272,7 +11001,8 @@ export const MANIFIESTO_UI_KIT: readonly FichaComponente[] = [
         "tipo": "boolean",
         "porDefecto": "false",
         "requerida": false,
-        "descripcion": "Mientras la pantalla consulta: la tabla o las gráficas pasan a esqueleto y «Exportar» se deshabilita."
+        "descripcion": "Mientras la pantalla consulta: la tabla o las gráficas pasan a esqueleto y «Exportar» se deshabilita.",
+        "control": "booleano"
       },
       {
         "nombre": "result",
@@ -10323,6 +11053,10 @@ export const MANIFIESTO_UI_KIT: readonly FichaComponente[] = [
     "evitar": "- Para la bandeja de documentos y registros de un proceso: usar `siaf-documents-records-page`.\n- Para una vista de solo lectura que no es un reporte: usar `siaf-page-shell` con `siaf-page-header`.\n- Maquetar otra consulta con estado vacío, panel de búsqueda y tabla a mano: pasar su configuración a esta\n  plantilla.\n- Calcular los KPI o los gráficos en la pantalla y pintarlos aparte: declararlos en `charts`, así siguen a la búsqueda\n  y a los filtros de la tabla.",
     "teclado": "- **Tab**: recorre las migas, «Favoritos» y «Parámetros», las tarjetas de parámetros aplicados, el selector de vista,\n  «Exportar», las pestañas y, en la vista de datos, el buscador y sus botones, los filtros, la tabla y la paginación;\n  en la de gráficas, cada gráfico.\n- **Enter** en el buscador: busca en todas las columnas (sin distinguir mayúsculas ni tildes) y vuelve a la primera\n  página.\n- El panel de parámetros, el selector de vista, el menú «Exportar», las pestañas, las píldoras, la tabla y los\n  gráficos siguen su componente.",
     "accesibilidad": "- **1.3.1 Información y relaciones (A)**: el título de la pantalla es el `h1` de `siaf-page-header`; el de la tarjeta\n  del resultado, un `h2`, y el de cada gráfico, el `h3` de `siaf-chart-section`.\n- **4.1.2 Nombre, función y valor (A)**: el selector de vista es un grupo «Vista del resultado» con `aria-pressed` en\n  cada botón, nombrado como su tooltip; «Exportar» anuncia su menú con `aria-haspopup` y `aria-expanded`.\n- **4.1.3 Mensajes de estado (AA)**: el total de filas tras buscar o filtrar se anuncia en una región\n  `aria-live=\"polite\"` que no se ve.\n- **2.4.3 Orden del foco (A)**: al cerrar el panel de parámetros el foco vuelve a «Parámetros».\n- **3.2.2 Al introducir datos (A)**: escribir en el buscador no cambia la tabla hasta pulsar Enter; elegir un filtro\n  predeterminado sí filtra al momento, y se anuncia.\n- **1.1.1 Contenido no textual (A)**: cada gráfico se llama como su título y lleva su tabla de datos oculta; con una\n  búsqueda o un filtro activos, una nota avisa con cuántas filas se calcularon.\n- **1.4.10 Reajuste del contenido (AA)**: en pantallas angostas las acciones del encabezado bajan, las tarjetas KPI\n  y los gráficos pasan a una columna y la tabla se desplaza dentro de su zona, sin desplazar la página.",
+    "limitaciones": null,
+    "incorrecto": null,
+    "correcto": null,
+    "waiAria": null,
     "figma": [
       {
         "nodo": "9455:107865",
@@ -10434,28 +11168,32 @@ export const MANIFIESTO_UI_KIT: readonly FichaComponente[] = [
         "tipo": "boolean",
         "porDefecto": "false",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "booleano"
       },
       {
         "nombre": "inline",
         "tipo": "boolean",
         "porDefecto": "false",
         "requerida": false,
-        "descripcion": "Opciones en una sola línea (ej. Si/No), en vez de apiladas."
+        "descripcion": "Opciones en una sola línea (ej. Si/No), en vez de apiladas.",
+        "control": "booleano"
       },
       {
         "nombre": "label",
         "tipo": "string",
         "porDefecto": "''",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "texto"
       },
       {
         "nombre": "name",
         "tipo": "string",
         "porDefecto": "'radio-group'",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "texto"
       },
       {
         "nombre": "options",
@@ -10469,14 +11207,16 @@ export const MANIFIESTO_UI_KIT: readonly FichaComponente[] = [
         "tipo": "boolean",
         "porDefecto": "false",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "booleano"
       },
       {
         "nombre": "value",
         "tipo": "string",
         "porDefecto": "''",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "texto"
       }
     ],
     "eventos": [
@@ -10490,6 +11230,13 @@ export const MANIFIESTO_UI_KIT: readonly FichaComponente[] = [
     "evitar": "- Para listas largas o que vienen de un catálogo: usar `siaf-input` con `type=\"select\"` o, si hay que buscar,\n  `siaf-selection-side-nav`.\n- Para marcar varias opciones o encender algo al instante: casillas o `siaf-switch`.\n- Repetir a mano los `input type=\"radio\"` con `accent-brand-primary`, como aún hacen las secciones de vigencia y de\n  dinámica del formulario de cuenta contable.\n- Dos grupos en la misma pantalla con el `name` por defecto: comparten `radio-group` y se desmarcan entre sí.",
     "teclado": "- **Tab**: entra al grupo por la opción marcada y sale de él.\n- **Flechas**: pasan a la opción anterior o siguiente y la marcan (radio nativo).\n- **Espacio**: marca la opción enfocada.",
     "accesibilidad": "- **1.3.1 Información y relaciones (A)**: `fieldset` con `legend` (el `label`) y cada radio dentro de su `<label>`.\n  El padre debe dar `label`: sin él el grupo queda sin nombre, como hoy en los formularios de eventos, que ponen la\n  pregunta fuera del componente.\n- **4.1.2 Nombre, función y valor (A)**: radios nativos: el navegador publica el rol, el marcado y `disabled`. El\n  padre debe dar un `name` único por grupo.\n- **Pendiente · 3.3.2 Etiquetas o instrucciones (A)**: el asterisco solo existe en la `legend`, y `aria-required` va\n  en cada radio, rol que no lo admite en ARIA 1.2 (sí `radiogroup`).\n- **Pendiente · 3.3.1 Identificación de errores (A)**: no tiene entrada de error ni `aria-invalid`; el aviso de un\n  grupo obligatorio sin respuesta lo tiene que pintar y asociar el padre.\n- **2.4.7 Foco visible (AA)**: no define estilo propio; queda el anillo de foco nativo del navegador.\n- **Pendiente · 1.4.11 Contraste no textual (AA)**: el círculo lo dibuja el navegador y, marcado, lo pinta\n  `accent-brand-primary`: 8.79:1 en claro, pero 2.66:1 en oscuro.\n- **2.5.8 Tamaño del objetivo (AA)**: cada opción es una `label` de 40 px de alto, clicable entera.\n- **1.4.3 Contraste mínimo (AA)**: opciones y `legend` en `text-neutral-high` 16.29:1; asterisco\n  `text-feedback-danger` 9.84:1.",
+    "limitaciones": null,
+    "incorrecto": null,
+    "correcto": null,
+    "waiAria": {
+      "nombre": "Grupo de radios",
+      "url": "https://www.w3.org/WAI/ARIA/apg/patterns/radio/"
+    },
     "figma": [],
     "aria": {
       "roles": [],
@@ -10548,14 +11295,16 @@ export const MANIFIESTO_UI_KIT: readonly FichaComponente[] = [
         "tipo": "string",
         "porDefecto": "''",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "texto"
       },
       {
         "nombre": "value",
         "tipo": "string",
         "porDefecto": "''",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "texto"
       }
     ],
     "eventos": [],
@@ -10563,6 +11312,10 @@ export const MANIFIESTO_UI_KIT: readonly FichaComponente[] = [
     "evitar": "- Para el modo lectura de una solicitud o los criterios de una consulta: usar `readonly-field`, que es el que usan\n  las pantallas.\n- Para el ítem elegido desde un panel lateral: usar `siaf-summary-card`; para un aviso breve, `message-box`.\n- Para un dato que el usuario puede cambiar: usar `siaf-input`.",
     "teclado": "- No recibe foco: no es interactivo.",
     "accesibilidad": "- **1.3.1 Información y relaciones (A)**: es texto estático: la etiqueta va antes del valor en el DOM, así que se\n  leen juntos y en orden; no usa `dt`/`dd` ni `aria-labelledby`.\n- **Pendiente · 1.4.3 Contraste mínimo (AA)**: la etiqueta de 12 px va en `text-neutral-low` sobre\n  `bg-surfaces-surface-high` (`bg-surface-muted`), par que la tabla no mide: con los valores del tema claro no llega\n  a 4.5:1 (sobre `surface-low`, un fondo más claro, ya baja a 4.64:1).",
+    "limitaciones": null,
+    "incorrecto": null,
+    "correcto": null,
+    "waiAria": null,
     "figma": [],
     "aria": {
       "roles": [],
@@ -10619,14 +11372,31 @@ export const MANIFIESTO_UI_KIT: readonly FichaComponente[] = [
         "tipo": "'standard' | 'small'",
         "porDefecto": "'small'",
         "requerida": false,
-        "descripcion": "`small` (24 px) o `standard` (32 px)."
+        "descripcion": "`small` (24 px) o `standard` (32 px).",
+        "control": "opciones",
+        "opciones": [
+          "standard",
+          "small"
+        ]
       },
       {
         "nombre": "status",
         "tipo": "'Activo' | 'Inactivo' | 'Anulado' | 'En Proceso' | 'Validado' | 'Eliminado' | 'Abierto' | 'Cerrado' | 'Procesado'",
         "porDefecto": "'Activo'",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "opciones",
+        "opciones": [
+          "Activo",
+          "Inactivo",
+          "Anulado",
+          "En Proceso",
+          "Validado",
+          "Eliminado",
+          "Abierto",
+          "Cerrado",
+          "Procesado"
+        ]
       }
     ],
     "eventos": [],
@@ -10634,6 +11404,10 @@ export const MANIFIESTO_UI_KIT: readonly FichaComponente[] = [
     "evitar": "- Para el estado del flujo de una solicitud (Elaborado, Verificado, Observado): usar `siaf-flow-status-tag`.\n- Para otros estados con los tonos del Figma: usar `siaf-status-tag` directo.\n- Para etiquetas libres, categorías o filtros: usar `siaf-tag`; para contadores, `siaf-badge`.\n- Como control por sí mismo: si el estado dispara una acción, envolverlo en un `<button>` con `aria-label` que\n  diga la acción, como los periodos abiertos en la configuración de Apertura contable.",
     "teclado": "- No recibe foco: no es interactivo.",
     "accesibilidad": "- **1.4.1 Uso del color (A)**: el estado va escrito; el tono y el ícono solo lo refuerzan.\n- **1.1.1 Contenido no textual (A)**: el ícono es decorativo (`siaf-icon` con `aria-hidden`); el estado se lee del\n  texto.\n- **1.4.3 Contraste mínimo (AA)**, en claro: con fondo suave, 5.81:1 en azul, 11.46:1 en gris y 6.21:1 en rojo;\n  con solo borde (En Proceso y Validado), 8.29:1 en azul sobre la superficie.\n- **1.3.1 Información y relaciones (A)**: es un `<span>`; el contexto lo da el padre (cabecera de la columna o\n  la etiqueta «Estado del registro»).\n- **4.1.3 Mensajes de estado (AA)**: no es región viva: un cambio de estado no se anuncia desde la etiqueta.",
+    "limitaciones": null,
+    "incorrecto": null,
+    "correcto": null,
+    "waiAria": null,
     "figma": [
       {
         "nodo": "19299:105",
@@ -10670,28 +11444,32 @@ export const MANIFIESTO_UI_KIT: readonly FichaComponente[] = [
         "tipo": "string",
         "porDefecto": "'Buscar'",
         "requerida": false,
-        "descripcion": "aria-label (también se usa como sr-only para lectores de pantalla)."
+        "descripcion": "aria-label (también se usa como sr-only para lectores de pantalla).",
+        "control": "texto"
       },
       {
         "nombre": "disabled",
         "tipo": "boolean",
         "porDefecto": "false",
         "requerida": false,
-        "descripcion": "Deshabilita el input."
+        "descripcion": "Deshabilita el input.",
+        "control": "booleano"
       },
       {
         "nombre": "placeholder",
         "tipo": "string",
         "porDefecto": "'Buscar'",
         "requerida": false,
-        "descripcion": "Placeholder visible."
+        "descripcion": "Placeholder visible.",
+        "control": "texto"
       },
       {
         "nombre": "value",
         "tipo": "string",
         "porDefecto": "''",
         "requerida": false,
-        "descripcion": "Valor actual del input."
+        "descripcion": "Valor actual del input.",
+        "control": "texto"
       }
     ],
     "eventos": [
@@ -10710,6 +11488,10 @@ export const MANIFIESTO_UI_KIT: readonly FichaComponente[] = [
     "evitar": "- Sin acciones propias, sobre las tablas de las solicitudes o en Apertura contable: `siaf-form-table-search`, el\n  buscador del resto de las pantallas.\n- Para un campo de formulario con etiqueta y validación: `siaf-input`.\n- Para filtros por opciones o por condiciones: `siaf-filter-pill` y `siaf-custom-filter` debajo de la barra, no\n  como acciones.\n- Rehacer el campo con la lupa y los menús a mano: la bandeja lo hacía hasta 2026-09 y quedaba distinta.",
     "teclado": "- **Tab**: recorre el campo, la lupa y después las acciones proyectadas.\n- **Enter**: en el campo, confirma la búsqueda y emite `valueChange` y `searchSubmit` con lo escrito; escribir no\n  busca.\n- **Enter / Espacio**: en la lupa confirman igual. Las acciones siguen su componente (p. ej.\n  `siaf-icon-dropdown-menu`).",
     "accesibilidad": "- **Pendiente · 4.1.2 Nombre, función y valor (A)**: el input `ariaLabel` no se usa en la plantilla, pese a lo que\n  dice su comentario: el nombre del campo sale de `placeholder`, hoy «Buscar» en todas las pantallas. Cada acción\n  proyectada necesita su propio `ariaLabel`.\n- **Pendiente · 4.1.3 Mensajes de estado (AA)**: el resultado de la búsqueda no se anuncia; la pantalla debe\n  anunciar el total (p. ej. con `role=\"status\"`).\n- **Pendiente · 1.4.11 Contraste no textual (AA)**: el borde del campo sin foco es `border-states-enabled` (2.44:1 /\n  2.59:1). El anillo de foco de la lupa ya es el azul del kit (`border-states-focus`, 5.35:1 / 10.15:1).\n- **2.4.7 Foco visible (AA)**: el campo pasa a un borde de 2 px `border-states-focus` (5.35:1 / 10.15:1) y la lupa\n  muestra un anillo de 2 px.\n- **2.5.8 Tamaño del objetivo (AA)**: la lupa mide 24 px; las acciones, lo que defina su componente.",
+    "limitaciones": null,
+    "incorrecto": null,
+    "correcto": null,
+    "waiAria": null,
     "figma": [],
     "aria": {
       "roles": [],
@@ -10750,14 +11532,16 @@ export const MANIFIESTO_UI_KIT: readonly FichaComponente[] = [
         "tipo": "string",
         "porDefecto": "''",
         "requerida": false,
-        "descripcion": "Pestaña activa. Si no matchea ningún `tab.id`, no se marca ninguna."
+        "descripcion": "Pestaña activa. Si no matchea ningún `tab.id`, no se marca ninguna.",
+        "control": "texto"
       },
       {
         "nombre": "ariaLabel",
         "tipo": "string",
         "porDefecto": "'Pestañas'",
         "requerida": false,
-        "descripcion": "Nombre accesible de la fila de pestañas."
+        "descripcion": "Nombre accesible de la fila de pestañas.",
+        "control": "texto"
       },
       {
         "nombre": "tabs",
@@ -10778,6 +11562,10 @@ export const MANIFIESTO_UI_KIT: readonly FichaComponente[] = [
     "evitar": "- Cuando hace falta la pestaña de carpeta (`border=true`), `fullWidth` o `idBase` para enlazar el panel: usar\n  `siaf-tabs`, que los expone.\n- Para «Detalle | Historial» de un registro: usar `siaf-detail-history-tabs`.\n- Para sub-vistas dentro de una pestaña: usar `siaf-buttons-group`, como en Registros de la bandeja del catálogo de\n  ajuste.",
     "teclado": "- No agrega teclas propias: la fila es `siaf-tabs`.\n- **Tab**: entra en la pestaña activa y el siguiente Tab sale de la fila.\n- **Flecha izquierda / derecha** e **Inicio / Fin**: cambian de pestaña y la activan, lo que emite `activeIdChange`.",
     "accesibilidad": "- **4.1.2 Nombre, función y valor (A)**: dibuja `siaf-tabs` (`role=\"tablist\"` y pestañas `role=\"tab\"` con\n  `aria-selected`) y le pasa `ariaLabel`, que por defecto dice «Pestañas»: el padre debe dar uno propio, como\n  «Documentos y registros» en la bandeja (la configuración de Apertura contable deja el genérico).\n- **Pendiente · 1.3.1 Información y relaciones (A)**: no expone `idBase` de `siaf-tabs`, así que el contenido no\n  puede enlazarse a su pestaña con `role=\"tabpanel\"` y `aria-labelledby`; hoy ni la bandeja ni Apertura contable\n  marcan el panel.\n- **2.1.1 Teclado (A)**: flechas e Inicio / Fin de `siaf-tabs`; solo la activa entra en el orden de tabulación.\n- **2.4.7 Foco visible (AA)**: heredado de `siaf-tabs`: contorno interior azul de 2 px (`border-states-focus`),\n  también en la pestaña activa, que es la que recibe el foco.\n- **1.4.3 Contraste mínimo (AA)**: activa `text-neutral-activated` (8.79:1 claro / 17.76:1 oscuro) e inactivas\n  `text-neutral-low` (5.01:1 / 8.86:1) sobre `bg-surface`, el fondo de la cabecera de la bandeja.\n- **1.4.1 Uso del color (A)**: la activa va en negrita además del subrayado azul de 2 px.\n- **2.5.8 Tamaño del objetivo (AA)**: pestañas de 40 px de alto.",
+    "limitaciones": null,
+    "incorrecto": null,
+    "correcto": null,
+    "waiAria": null,
     "figma": [],
     "aria": {
       "roles": [],
@@ -10805,7 +11593,8 @@ export const MANIFIESTO_UI_KIT: readonly FichaComponente[] = [
         "tipo": "string",
         "porDefecto": "''",
         "requerida": false,
-        "descripcion": "Línea de apoyo bajo el título; si no entra, se corta con tooltip."
+        "descripcion": "Línea de apoyo bajo el título; si no entra, se corta con tooltip.",
+        "control": "texto"
       },
       {
         "nombre": "fields",
@@ -10819,21 +11608,24 @@ export const MANIFIESTO_UI_KIT: readonly FichaComponente[] = [
         "tipo": "string",
         "porDefecto": "''",
         "requerida": false,
-        "descripcion": "Ícono de Material Icons del ítem."
+        "descripcion": "Ícono de Material Icons del ítem.",
+        "control": "texto"
       },
       {
         "nombre": "label",
         "tipo": "string",
         "porDefecto": "''",
         "requerida": false,
-        "descripcion": "Qué se resume, en versalitas sobre el ítem («Entidad»); también nombra la sección."
+        "descripcion": "Qué se resume, en versalitas sobre el ítem («Entidad»); también nombra la sección.",
+        "control": "texto"
       },
       {
         "nombre": "title",
         "tipo": "string",
         "porDefecto": null,
         "requerida": true,
-        "descripcion": "Nombre del ítem consultado."
+        "descripcion": "Nombre del ítem consultado.",
+        "control": "texto"
       }
     ],
     "eventos": [],
@@ -10841,6 +11633,10 @@ export const MANIFIESTO_UI_KIT: readonly FichaComponente[] = [
     "evitar": "- Para el ítem elegido desde un panel lateral en una solicitud: usar `siaf-summary-card`, con indicador y ✕.\n- Para los criterios que el usuario aplicó: van en `siaf-parametros-aplicados`.\n- Para un monto con su avance: usar `siaf-kpi-card`.\n- Con muchos datos: no hace scroll; más de tres campos se apilan en pantallas angostas pero cansan la lectura.",
     "teclado": "- No recibe foco: no es interactiva. Si la descripción está cortada, su texto completo aparece con el puntero.",
     "accesibilidad": "- **1.3.1 Información y relaciones (A)**: es una `section` nombrada con la etiqueta; los datos son una lista de\n  definiciones (`dl`), así cada valor se lee con su etiqueta.\n- **1.1.1 Contenido no textual (A)**: el ícono es decorativo (`aria-hidden`): el título dice qué es.\n- **1.4.3 Contraste mínimo (AA)**: título, descripción y valores `text-neutral-medium` sobre `surface-low` (13.46:1\n  claro / 12.09:1 oscuro) y etiquetas `text-neutral-low` (4.64:1 / 8.32:1), la más justa en claro.\n- **1.4.12 Espaciado del texto (AA)**: los textos no tienen alto fijo; el título y los valores pasan a otra línea si\n  no entran.",
+    "limitaciones": null,
+    "incorrecto": null,
+    "correcto": null,
+    "waiAria": null,
     "figma": [
       {
         "nodo": "22402:16450",
@@ -10936,7 +11732,8 @@ export const MANIFIESTO_UI_KIT: readonly FichaComponente[] = [
         "tipo": "string",
         "porDefecto": "'Resultado del reporte'",
         "requerida": false,
-        "descripcion": "Nombre de la tabla y de su zona desplazable."
+        "descripcion": "Nombre de la tabla y de su zona desplazable.",
+        "control": "texto"
       },
       {
         "nombre": "columns",
@@ -10950,14 +11747,16 @@ export const MANIFIESTO_UI_KIT: readonly FichaComponente[] = [
         "tipo": "string",
         "porDefecto": "'No se encontraron resultados con los filtros aplicados.'",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "texto"
       },
       {
         "nombre": "rowKey",
         "tipo": "string",
         "porDefecto": "''",
         "requerida": false,
-        "descripcion": "Clave que identifica cada fila; sin ella se usa la posición."
+        "descripcion": "Clave que identifica cada fila; sin ella se usa la posición.",
+        "control": "texto"
       },
       {
         "nombre": "rows",
@@ -10985,6 +11784,10 @@ export const MANIFIESTO_UI_KIT: readonly FichaComponente[] = [
     "evitar": "- Para grillas con selección de filas y acciones: usar la grilla estándar (`siaf-table-controls` y\n  `siaf-pagination`) o `siaf-documents-records-table`.\n- Para una tabla corta de solo lectura sin grupos: usar `siaf-data-table`.\n- `fixed` en una columna que no es la última: solo se fija la del extremo derecho.",
     "teclado": "- **Tab**: entra en la zona desplazable de la tabla (con flechas se desplaza) y luego en cada enlace.\n- **Enter / Espacio**: en un enlace, emiten `linkClicked` con la fila y la columna.",
     "accesibilidad": "- **1.3.1 Información y relaciones (A)**: tabla real con `thead`; los grupos son `th scope=\"colgroup\"` y las columnas\n  `th scope=\"col\"`, así cada celda se anuncia con su grupo y su columna.\n- **4.1.2 Nombre, función y valor (A)**: la tabla toma su nombre de `ariaLabel`; los enlaces son `button` nativos\n  con el texto del valor.\n- **2.1.1 Teclado (A)**: la zona desplazable es `role=\"region\"` con nombre y `tabindex=\"0\"`, para desplazarla con\n  flechas sin mouse.\n- **2.4.7 Foco visible (AA)**: la zona y los enlaces muestran el contorno de 2 px `border-states-focus`.\n- **4.1.3 Mensajes de estado (AA)**: sin filas, el aviso de la tabla es `role=\"status\"`.\n- **1.4.3 Contraste mínimo (AA)**: cabecera `text-neutral-high` sobre `surface-high` (12.84:1 claro / 14.62:1\n  oscuro), celdas `text-neutral-medium` (14.53:1 / 12.87:1) y enlaces `text-brand-primary` (8.79:1 / 10.15:1) sobre\n  la superficie.",
+    "limitaciones": null,
+    "incorrecto": null,
+    "correcto": null,
+    "waiAria": null,
     "figma": [
       {
         "nodo": "22715:12806",
@@ -11100,56 +11903,64 @@ export const MANIFIESTO_UI_KIT: readonly FichaComponente[] = [
         "tipo": "boolean",
         "porDefecto": "false",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "booleano"
       },
       {
         "nombre": "deleteOpen",
         "tipo": "boolean",
         "porDefecto": "false",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "booleano"
       },
       {
         "nombre": "loaderLabel",
         "tipo": "string",
         "porDefecto": "'Grabando'",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "texto"
       },
       {
         "nombre": "loaderMessage",
         "tipo": "string",
         "porDefecto": "'Grabando solicitud...'",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "texto"
       },
       {
         "nombre": "observeOpen",
         "tipo": "boolean",
         "porDefecto": "false",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "booleano"
       },
       {
         "nombre": "reason",
         "tipo": "string",
         "porDefecto": "''",
         "requerida": false,
-        "descripcion": "Comentario de la observación / motivo del rechazo."
+        "descripcion": "Comentario de la observación / motivo del rechazo.",
+        "control": "texto"
       },
       {
         "nombre": "rejectOpen",
         "tipo": "boolean",
         "porDefecto": "false",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "booleano"
       },
       {
         "nombre": "rejectReasonType",
         "tipo": "string",
         "porDefecto": "''",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "texto"
       },
       {
         "nombre": "rejectReasonTypeOptions",
@@ -11163,63 +11974,99 @@ export const MANIFIESTO_UI_KIT: readonly FichaComponente[] = [
         "tipo": "string",
         "porDefecto": "''",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "texto"
       },
       {
         "nombre": "requestType",
         "tipo": "string",
         "porDefecto": "''",
         "requerida": false,
-        "descripcion": "Tipo de acción real ('modificación', 'reversión', …) — pisa la palabra del preset para que el snackbar no diga siempre \"creación\"."
+        "descripcion": "Tipo de acción real ('modificación', 'reversión', …) — pisa la palabra del preset para que el snackbar no diga siempre \"creación\".",
+        "control": "texto"
       },
       {
         "nombre": "saveOpen",
         "tipo": "boolean",
         "porDefecto": "false",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "booleano"
       },
       {
         "nombre": "saving",
         "tipo": "boolean",
         "porDefecto": "false",
         "requerida": false,
-        "descripcion": "Acción en curso — deshabilita confirmar y muestra el loader."
+        "descripcion": "Acción en curso — deshabilita confirmar y muestra el loader.",
+        "control": "booleano"
       },
       {
         "nombre": "snackbarMessage",
         "tipo": "string",
         "porDefecto": "''",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "texto"
       },
       {
         "nombre": "snackbarOpen",
         "tipo": "boolean",
         "porDefecto": "false",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "booleano"
       },
       {
         "nombre": "snackbarTone",
         "tipo": "'success' | 'error'",
         "porDefecto": "'success'",
         "requerida": false,
-        "descripcion": "Tono del snackbar (success/error) y mensaje libre (pisa a variant)."
+        "descripcion": "Tono del snackbar (success/error) y mensaje libre (pisa a variant).",
+        "control": "opciones",
+        "opciones": [
+          "success",
+          "error"
+        ]
       },
       {
         "nombre": "snackbarVariant",
         "tipo": "SnackbarVariant",
         "porDefecto": "'custom'",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "opciones",
+        "opciones": [
+          "custom",
+          "changes-done",
+          "record-done",
+          "record-deleted",
+          "changes-saved",
+          "changes-undone",
+          "request-uploaded",
+          "file-uploaded",
+          "creation-elaborated",
+          "creation-verified",
+          "modification-verified",
+          "creation-approved",
+          "modification-approved",
+          "creation-observed",
+          "modification-observed",
+          "creation-rejected",
+          "modification-rejected",
+          "creation-deleted",
+          "modification-deleted",
+          "bulk-approved",
+          "bulk-verified"
+        ]
       },
       {
         "nombre": "verifyOpen",
         "tipo": "boolean",
         "porDefecto": "false",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "booleano"
       }
     ],
     "eventos": [
@@ -11293,6 +12140,10 @@ export const MANIFIESTO_UI_KIT: readonly FichaComponente[] = [
     "evitar": "- Para una confirmación fuera del flujo de aprobación (p. ej. cambiar contraseña): usar `siaf-modal` directo.\n- En la bandeja: `siaf-documents-records-page` ya trae sus modales de verificar y aprobar múltiples.\n- Para la carga inicial de la página: el loader es solo para acciones; la espera inicial va con `loading` del layout\n  o `siaf-table-skeleton`.\n- Volver a pintar a mano `siaf-modal`, `siaf-loader-overlay` o `siaf-snackbar` junto a él: el padre solo maneja\n  `saveOpen`, `approveOpen`… y los eventos.",
     "teclado": "- No agrega teclado propio: cada confirmación sigue `siaf-modal` (el foco entra al abrir, Tab da la vuelta dentro,\n  Escape cancela y Enter o Espacio activan Cancelar y Aceptar).\n- El aviso sigue `siaf-snackbar`: no toma el foco al aparecer y su X se alcanza con Tab.",
     "accesibilidad": "- **4.1.2 Nombre, función y valor (A)**: cada confirmación es un `siaf-modal` (`role=\"dialog\"`, `aria-modal`) cuyo\n  nombre es el título del preset: «¿Grabar solicitud?», «¿Aprobar solicitud?», «¿Rechazar solicitud?»…\n- **2.4.3 Orden del foco (A)**: hereda de `siaf-modal` el foco al abrir y la vuelta al disparador al cerrar; el padre\n  debe bajar `saveOpen`, `approveOpen`… a false en vez de destruir el componente.\n- **2.1.2 Sin trampas de teclado (A)**: Escape cierra cada modal como Cancelar y emite `saveClosed`, `verifyClosed`,\n  `deleteClosed` o `approvalClosed`.\n- **4.1.3 Mensajes de estado (AA)**: el resultado se anuncia con `siaf-snackbar` (`role=\"status\"`; `role=\"alert\"` con\n  `snackbarTone=\"error\"`) y la espera con `siaf-loader-overlay` (`role=\"status\"`, `aria-live=\"polite\"` y\n  `loaderLabel` como nombre).\n- **Pendiente · 3.3.2 Etiquetas o instrucciones (A)**: observar y rechazar exigen el motivo sin marcarlo como\n  obligatorio (hereda de `siaf-modal`).\n- **Pendiente · 1.4.11 Contraste no textual (AA)**: en oscuro el anillo de foco de la X de cada modal queda bajo 3:1\n  (hereda de `siaf-modal`).",
+    "limitaciones": null,
+    "incorrecto": null,
+    "correcto": null,
+    "waiAria": null,
     "figma": [],
     "aria": {
       "roles": [],
@@ -11329,14 +12180,16 @@ export const MANIFIESTO_UI_KIT: readonly FichaComponente[] = [
         "tipo": "boolean",
         "porDefecto": "false",
         "requerida": false,
-        "descripcion": "Con `multiple`, una casilla nativa por opción en vez del check (Figma «Menu» con casillas)."
+        "descripcion": "Con `multiple`, una casilla nativa por opción en vez del check (Figma «Menu» con casillas).",
+        "control": "booleano"
       },
       {
         "nombre": "multiple",
         "tipo": "boolean",
         "porDefecto": "false",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "booleano"
       },
       {
         "nombre": "options",
@@ -11350,14 +12203,16 @@ export const MANIFIESTO_UI_KIT: readonly FichaComponente[] = [
         "tipo": "string",
         "porDefecto": "''",
         "requerida": false,
-        "descripcion": "Con casillas, agrega arriba la fila que marca o desmarca todas («Seleccionar todo»)."
+        "descripcion": "Con casillas, agrega arriba la fila que marca o desmarca todas («Seleccionar todo»).",
+        "control": "texto"
       },
       {
         "nombre": "selectedValue",
         "tipo": "string",
         "porDefecto": "''",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "texto"
       },
       {
         "nombre": "selectedValues",
@@ -11383,6 +12238,13 @@ export const MANIFIESTO_UI_KIT: readonly FichaComponente[] = [
     "evitar": "- Para un campo de formulario completo: usar `siaf-input` con `type=\"select\"`, que ya pinta etiqueta, borde y error.\n- Para un menú de acciones (Editar, Anular, Exportar): usar `siaf-menu` o `siaf-icon-dropdown-menu`.\n- Para catálogos largos: no filtra ni busca; usar `siaf-selection-side-nav`.",
     "teclado": "- **Tab**: la lista es una sola parada: entra por la última opción enfocada (al principio, la elegida o la primera\n  habilitada) y la siguiente pulsación sale.\n- **Flecha abajo / arriba**: pasan a la opción habilitada siguiente o anterior y dan la vuelta.\n- **Inicio / Fin**: van a la primera o a la última opción habilitada.\n- **Enter / Espacio**: eligen la opción enfocada (emite `selected`); abrir, cerrar y Escape los maneja quien lo usa.\n  La opción elegida lleva `data-foco-inicial`: con `siafFoco`, el foco entra por ella al abrir la lista.\n- Con casillas, **Enter / Espacio** en «Seleccionar todo» marca o desmarca todas (emite `allSelected`).",
     "accesibilidad": "- **4.1.2 Nombre, función y valor (A)**: `role=\"listbox\"` con `aria-multiselectable`; cada opción es `role=\"option\"`\n  con `aria-selected` y `disabled` nativo.\n- **Pendiente · 4.1.2 Nombre, función y valor (A)**: el `listbox` no tiene nombre (`aria-label` o `aria-labelledby`)\n  ni una entrada para recibirlo del padre.\n- **2.1.1 Teclado (A)**: al enfocar una opción con la etiqueta cortada aparece su texto completo (`siafTooltip`).\n- **2.4.7 Foco visible (AA)**: la opción enfocada con teclado lleva un contorno interior azul de 2 px\n  (`border-states-focus`, 5.35:1 claro / 10.15:1 oscuro), el mismo de `siaf-menu` y `siaf-list`; no cambia el\n  fondo, así la elegida sigue marcada mientras tiene el foco.\n- **1.4.1 Uso del color (A)**: la opción elegida además va en negrita y con un check (`aria-hidden`); con casillas,\n  con la casilla marcada.\n- **1.1.1 Contenido no textual (A)**: con casillas, cada opción es un elemento con `role=\"option\"` (un `<input>` no\n  puede ir dentro de un botón) y la casilla nativa lleva `aria-hidden` y `tabindex=\"-1\"`: el estado lo publica\n  `aria-selected`.\n- **1.4.3 Contraste mínimo (AA)**: en claro, las opciones van en `text-neutral-medium` 14.53:1 sobre la superficie;\n  la elegida, `text-neutral-activated` sobre `bg-states-light-selected`, par que la tabla no mide.\n- **2.5.8 Tamaño del objetivo (AA)**: cada opción mide al menos 48 px de alto (`min-h-12`) y ocupa todo el ancho.",
+    "limitaciones": null,
+    "incorrecto": null,
+    "correcto": null,
+    "waiAria": {
+      "nombre": "Lista de opciones",
+      "url": "https://www.w3.org/WAI/ARIA/apg/patterns/listbox/"
+    },
     "figma": [],
     "aria": {
       "roles": [
@@ -11505,14 +12367,16 @@ export const MANIFIESTO_UI_KIT: readonly FichaComponente[] = [
         "tipo": "string",
         "porDefecto": "'Aceptar'",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "texto"
       },
       {
         "nombre": "cancelLabel",
         "tipo": "string",
         "porDefecto": "'Cancelar'",
         "requerida": false,
-        "descripcion": "Etiquetas de botones (i18n-friendly)."
+        "descripcion": "Etiquetas de botones (i18n-friendly).",
+        "control": "texto"
       },
       {
         "nombre": "columns",
@@ -11526,7 +12390,8 @@ export const MANIFIESTO_UI_KIT: readonly FichaComponente[] = [
         "tipo": "boolean",
         "porDefecto": "false",
         "requerida": false,
-        "descripcion": "Escape hatch para casos que no encajan en la tabla declarativa (p.ej. estructuras jerárquicas con grupos expandibles). Cuando es true, en vez de la tabla auto-generada se proyecta el contenido del componente (`<ng-content>`). El shell (overlay, header, búsqueda, paginación, footer) se mantiene; `columns`/`rows` se ignoran. La selección la maneja el padre; usa `selectedIds` para controlar el disabled de Aceptar."
+        "descripcion": "Escape hatch para casos que no encajan en la tabla declarativa (p.ej. estructuras jerárquicas con grupos expandibles). Cuando es true, en vez de la tabla auto-generada se proyecta el contenido del componente (`<ng-content>`). El shell (overlay, header, búsqueda, paginación, footer) se mantiene; `columns`/`rows` se ignoran. La selección la maneja el padre; usa `selectedIds` para controlar el disabled de Aceptar.",
+        "control": "booleano"
       },
       {
         "nombre": "disabledIds",
@@ -11540,63 +12405,76 @@ export const MANIFIESTO_UI_KIT: readonly FichaComponente[] = [
         "tipo": "string",
         "porDefecto": "'No se encontraron resultados.'",
         "requerida": false,
-        "descripcion": "Texto en la tabla cuando no hay filas."
+        "descripcion": "Texto en la tabla cuando no hay filas.",
+        "control": "texto"
       },
       {
         "nombre": "filtersTitle",
         "tipo": "string",
         "porDefecto": "'Filtros'",
         "requerida": false,
-        "descripcion": "Título del panel de filtros."
+        "descripcion": "Título del panel de filtros.",
+        "control": "texto"
       },
       {
         "nombre": "idKey",
         "tipo": "string",
         "porDefecto": "'id'",
         "requerida": false,
-        "descripcion": "Propiedad de cada fila que la identifica unívocamente. Default: 'id'."
+        "descripcion": "Propiedad de cada fila que la identifica unívocamente. Default: 'id'.",
+        "control": "texto"
       },
       {
         "nombre": "mode",
         "tipo": "'single' | 'multiple'",
         "porDefecto": "'single'",
         "requerida": false,
-        "descripcion": "'single' (radio) o 'multiple' (checkbox)."
+        "descripcion": "'single' (radio) o 'multiple' (checkbox).",
+        "control": "opciones",
+        "opciones": [
+          "single",
+          "multiple"
+        ]
       },
       {
         "nombre": "open",
         "tipo": "boolean",
         "porDefecto": "false",
         "requerida": false,
-        "descripcion": "Si está abierto. Cuando se pasa a false el componente no renderiza nada."
+        "descripcion": "Si está abierto. Cuando se pasa a false el componente no renderiza nada.",
+        "control": "booleano"
       },
       {
         "nombre": "page",
         "tipo": "number",
         "porDefecto": "1",
         "requerida": false,
-        "descripcion": "Página actual (1-based)."
+        "descripcion": "Página actual (1-based).",
+        "control": "numero"
       },
       {
         "nombre": "pageSize",
         "tipo": "number",
         "porDefecto": "10",
         "requerida": false,
-        "descripcion": "Tamaño de página."
+        "descripcion": "Tamaño de página.",
+        "control": "numero"
       },
       {
         "nombre": "paginated",
         "tipo": "boolean",
         "porDefecto": "false",
         "requerida": false,
-        "descripcion": "Activa la paginación. Cuando es true, las `rows` que recibe ya están paginadas por el padre; el componente solo renderiza los controles `siaf-pagination` y emite los eventos de navegación."
+        "descripcion": "Activa la paginación. Cuando es true, las `rows` que recibe ya están paginadas por el padre; el componente solo renderiza los controles `siaf-pagination` y emite los eventos de navegación.",
+        "control": "booleano"
       },
       {
         "nombre": "requireSelection",
         "tipo": "boolean",
         "porDefecto": "true",
         "requerida": false,
-        "descripcion": "Si Aceptar exige al menos 1 selección. Default: true."
+        "descripcion": "Si Aceptar exige al menos 1 selección. Default: true.",
+        "control": "booleano"
       },
       {
         "nombre": "rows",
@@ -11610,7 +12488,8 @@ export const MANIFIESTO_UI_KIT: readonly FichaComponente[] = [
         "tipo": "number",
         "porDefecto": "10",
         "requerida": false,
-        "descripcion": "Filas por página seleccionadas."
+        "descripcion": "Filas por página seleccionadas.",
+        "control": "numero"
       },
       {
         "nombre": "rowsPerPageOptions",
@@ -11624,35 +12503,40 @@ export const MANIFIESTO_UI_KIT: readonly FichaComponente[] = [
         "tipo": "string",
         "porDefecto": "'Buscar'",
         "requerida": false,
-        "descripcion": "Placeholder/aria del buscador."
+        "descripcion": "Placeholder/aria del buscador.",
+        "control": "texto"
       },
       {
         "nombre": "searchValue",
         "tipo": "string",
         "porDefecto": "''",
         "requerida": false,
-        "descripcion": "Valor actual del buscador (controlado por el padre)."
+        "descripcion": "Valor actual del buscador (controlado por el padre).",
+        "control": "texto"
       },
       {
         "nombre": "selectAllChecked",
         "tipo": "boolean",
         "porDefecto": "false",
         "requerida": false,
-        "descripcion": "Estado del checkbox \"seleccionar todo\" (lo controla el padre)."
+        "descripcion": "Estado del checkbox \"seleccionar todo\" (lo controla el padre).",
+        "control": "booleano"
       },
       {
         "nombre": "selectAllIndeterminate",
         "tipo": "boolean",
         "porDefecto": "false",
         "requerida": false,
-        "descripcion": "Estado indeterminado del checkbox \"seleccionar todo\"."
+        "descripcion": "Estado indeterminado del checkbox \"seleccionar todo\".",
+        "control": "booleano"
       },
       {
         "nombre": "selectAllLabel",
         "tipo": "string",
         "porDefecto": "'Seleccionar filas'",
         "requerida": false,
-        "descripcion": "Etiqueta del checkbox \"seleccionar todo\"."
+        "descripcion": "Etiqueta del checkbox \"seleccionar todo\".",
+        "control": "texto"
       },
       {
         "nombre": "selectedIds",
@@ -11666,56 +12550,64 @@ export const MANIFIESTO_UI_KIT: readonly FichaComponente[] = [
         "tipo": "boolean",
         "porDefecto": "false",
         "requerida": false,
-        "descripcion": "Muestra a la derecha de la lista el panel de filtros del padre (lo que proyecta con el atributo `filtros`), con su pie Cancelar / Aplicar; mientras está abierto, el pie principal desaparece. Lo abre el embudo del buscador (`filterClick`), que lo publica con `aria-expanded`."
+        "descripcion": "Muestra a la derecha de la lista el panel de filtros del padre (lo que proyecta con el atributo `filtros`), con su pie Cancelar / Aplicar; mientras está abierto, el pie principal desaparece. Lo abre el embudo del buscador (`filterClick`), que lo publica con `aria-expanded`.",
+        "control": "booleano"
       },
       {
         "nombre": "showRowsPerPage",
         "tipo": "boolean",
         "porDefecto": "true",
         "requerida": false,
-        "descripcion": "Muestra el selector de filas por página en la barra inferior."
+        "descripcion": "Muestra el selector de filas por página en la barra inferior.",
+        "control": "booleano"
       },
       {
         "nombre": "showSelectAll",
         "tipo": "boolean",
         "porDefecto": "false",
         "requerida": false,
-        "descripcion": "Solo en `mode='multiple'`. Renderiza `siaf-table-controls` arriba de la tabla (en vez de la paginación superior) con un checkbox de \"seleccionar todo\", estado indeterminado y contador de seleccionados. La lógica de qué se considera \"todo seleccionado\" la decide el padre."
+        "descripcion": "Solo en `mode='multiple'`. Renderiza `siaf-table-controls` arriba de la tabla (en vez de la paginación superior) con un checkbox de \"seleccionar todo\", estado indeterminado y contador de seleccionados. La lógica de qué se considera \"todo seleccionado\" la decide el padre.",
+        "control": "booleano"
       },
       {
         "nombre": "showTopPagination",
         "tipo": "boolean",
         "porDefecto": "false",
         "requerida": false,
-        "descripcion": "Muestra también una barra de paginación arriba de la tabla."
+        "descripcion": "Muestra también una barra de paginación arriba de la tabla.",
+        "control": "booleano"
       },
       {
         "nombre": "tableMinWidthClass",
         "tipo": "string",
         "porDefecto": "''",
         "requerida": false,
-        "descripcion": "Clase de ancho mínimo para la tabla (p.ej. `min-w-[1700px]`) para habilitar scroll horizontal."
+        "descripcion": "Clase de ancho mínimo para la tabla (p.ej. `min-w-[1700px]`) para habilitar scroll horizontal.",
+        "control": "texto"
       },
       {
         "nombre": "title",
         "tipo": "string",
         "porDefecto": "''",
         "requerida": false,
-        "descripcion": "Título mostrado en el header (también usado para aria-labels)."
+        "descripcion": "Título mostrado en el header (también usado para aria-labels).",
+        "control": "texto"
       },
       {
         "nombre": "totalItems",
         "tipo": "number",
         "porDefecto": "0",
         "requerida": false,
-        "descripcion": "Total de items (sin paginar)."
+        "descripcion": "Total de items (sin paginar).",
+        "control": "numero"
       },
       {
         "nombre": "totalPages",
         "tipo": "number",
         "porDefecto": "1",
         "requerida": false,
-        "descripcion": "Total de páginas."
+        "descripcion": "Total de páginas.",
+        "control": "numero"
       }
     ],
     "eventos": [
@@ -11779,6 +12671,10 @@ export const MANIFIESTO_UI_KIT: readonly FichaComponente[] = [
     "evitar": "- Para elegir entre pocas opciones fijas: usar `siaf-input` tipo select, `siaf-select-options` o `siaf-radio-group`.\n- Para adjuntar archivos: usar `siaf-upload-side-nav`; para mostrar u ocultar columnas, `siaf-column-visibility-panel`.\n- Maquetar otro panel de búsqueda con overlay, tabla y botones: este reemplazó los 15 que había en los formularios.\n- Para filtrar la grilla de la página: usar `siaf-custom-filter` o `siaf-filter-pill`.",
     "teclado": "- **Tab**: al abrir, el foco entra en la X; recorre el buscador, la barra de la grilla, los controles de selección, la\n  paginación y Cancelar / Aceptar, y da la vuelta sin salir del panel. En `single` todo el grupo de radios es una sola\n  parada. Con `customTable`, la tabla proyectada trae su propio teclado.\n- **Escape**: cierra el panel (emite `closed`) y el foco vuelve al control que lo abrió. Con el foco en el panel de\n  filtros, cierra solo los filtros (emite `filtersCanceled`), que al abrirse llevan el foco a su primer campo y al\n  cerrarse lo devuelven al embudo.\n- **Espacio**: en `multiple` marca o desmarca la casilla enfocada; en `single` elige el radio.\n- **Flechas**: en `single` pasan al radio anterior o siguiente y lo eligen (grupo nativo por `name`); saltan los\n  deshabilitados.\n- **Enter** en el buscador: aplica la búsqueda (sigue `siaf-form-table-search`).\n- **Enter / Espacio**: activan la X y Cancelar (emiten `closed`) y Aceptar (emite `accepted` con los ids).",
     "accesibilidad": "- **4.1.2 Nombre, función y valor (A)**: `role=\"dialog\"` con `aria-modal=\"true\"` y `aria-label` igual al `title`; la\n  X se llama «Cerrar» más el título, y las casillas y los radios nativos exponen marcado y deshabilitado.\n- **2.4.3 Orden del foco (A)**: con `siafFoco`, al abrir lleva el foco a la X y al cerrar lo devuelve al campo que lo\n  abrió; Tab no sale a la página de atrás.\n- **2.1.2 Sin trampas de teclado (A)**: Tab queda dentro mientras está abierto, pero Escape siempre lo cierra.\n- **1.3.1 Información y relaciones (A)**: título `h2` y tabla real con `thead` y un `th` por columna.\n- **Pendiente · 2.4.6 Encabezados y etiquetas (AA)**: todas las casillas y radios se llaman «Seleccionar fila» (su\n  columna lleva un `th` vacío), y el buscador siempre se rotula «Buscar»: `searchPlaceholder` llega al `ariaLabel` de\n  `siaf-form-table-search`, que no lo usa.\n- **1.4.1 Uso del color (A)**: la fila elegida lleva la casilla o el radio marcado además del fondo\n  `bg-states-light-selected`; la no elegible, el control deshabilitado además de la opacidad.\n- **Pendiente · 4.1.3 Mensajes de estado (AA)**: «No se encontraron resultados.» aparece dentro de la tabla sin\n  `role=\"status\"`: el resultado de la búsqueda no se anuncia.\n- **2.4.7 Foco visible (AA)**: la X, las casillas y los radios muestran el anillo nativo del navegador (sin\n  `outline-none`); el buscador, la barra, la paginación y los botones del pie siguen su componente.",
+    "limitaciones": null,
+    "incorrecto": null,
+    "correcto": null,
+    "waiAria": null,
     "figma": [],
     "aria": {
       "roles": [
@@ -11920,70 +12816,80 @@ export const MANIFIESTO_UI_KIT: readonly FichaComponente[] = [
         "tipo": "string",
         "porDefecto": "'Cancelar'",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "texto"
       },
       {
         "nombre": "closeOnCancel",
         "tipo": "boolean",
         "porDefecto": "true",
         "requerida": false,
-        "descripcion": "El botón de la izquierda cierra el panel, como el Cancelar del Figma. En `false` solo emite `canceled`: para un pie que no cancela, como el «Limpiar todo» de los parámetros de consulta."
+        "descripcion": "El botón de la izquierda cierra el panel, como el Cancelar del Figma. En `false` solo emite `canceled`: para un pie que no cancela, como el «Limpiar todo» de los parámetros de consulta.",
+        "control": "booleano"
       },
       {
         "nombre": "confirmDisabled",
         "tipo": "boolean",
         "porDefecto": "false",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "booleano"
       },
       {
         "nombre": "confirmLabel",
         "tipo": "string",
         "porDefecto": "'Aceptar'",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "texto"
       },
       {
         "nombre": "embedded",
         "tipo": "boolean",
         "porDefecto": "false",
         "requerida": false,
-        "descripcion": "Se pinta dentro de otro contenedor, sin fondo oscuro, diálogo ni animación."
+        "descripcion": "Se pinta dentro de otro contenedor, sin fondo oscuro, diálogo ni animación.",
+        "control": "booleano"
       },
       {
         "nombre": "open",
         "tipo": "boolean",
         "porDefecto": "false",
         "requerida": false,
-        "descripcion": "Abierto o cerrado; con `embedded` no se usa: el panel se pinta siempre."
+        "descripcion": "Abierto o cerrado; con `embedded` no se usa: el panel se pinta siempre.",
+        "control": "booleano"
       },
       {
         "nombre": "showClose",
         "tipo": "boolean",
         "porDefecto": "true",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "booleano"
       },
       {
         "nombre": "showFooter",
         "tipo": "boolean",
         "porDefecto": "true",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "booleano"
       },
       {
         "nombre": "showReturn",
         "tipo": "boolean",
         "porDefecto": "false",
         "requerida": false,
-        "descripcion": "Flecha «Volver» antes del título."
+        "descripcion": "Flecha «Volver» antes del título.",
+        "control": "booleano"
       },
       {
         "nombre": "title",
         "tipo": "string",
         "porDefecto": "''",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "texto"
       }
     ],
     "eventos": [
@@ -12012,6 +12918,10 @@ export const MANIFIESTO_UI_KIT: readonly FichaComponente[] = [
     "evitar": "- Para elegir registros de un catálogo: usar `siaf-selection-side-nav`; para adjuntar archivos, `siaf-upload-side-nav`;\n  para los parámetros de una consulta, `siaf-query-parameters-panel`.\n- Para el historial de un documento o registro: usar `siaf-document-history-panel`, `siaf-account-history-panel` o\n  `siaf-asiento-history-panel`.\n- Cuando el contenido necesita todo el ancho de la pantalla (una tabla, un documento): usar `siaf-side-panel`.\n- Para una confirmación corta: usar `siaf-modal`.",
     "teclado": "- **Tab / Shift + Tab**: al abrir, el foco entra en el primer control del encabezado (la flecha o la X); recorren el\n  contenido y Cancelar / Aceptar, y dan la vuelta sin salir del panel.\n- **Escape**: cierra el panel (emite `closed`) y el foco vuelve al control que lo abrió.\n- **Enter / Espacio**: la flecha emite `returned`, la X emite `closed`, Cancelar emite `canceled` (y `closed` si no es\n  `embedded`) y Aceptar emite `confirmed`.\n- `embedded` no atrapa el foco ni cierra con Escape: sigue el orden de la página que lo contiene.",
     "accesibilidad": "- **4.1.2 Nombre, función y valor (A)**: el panel es `role=\"dialog\"` con `aria-modal=\"true\"` y `aria-labelledby` al\n  título; la X se llama «Cerrar» más el título y la flecha, «Volver». Con `embedded` es una sección nombrada por su\n  título, sin diálogo.\n- **1.3.1 Información y relaciones (A)**: el título es un `h2`; con `embedded`, un `h3`, porque va dentro de otro\n  panel con título propio.\n- **2.4.3 Orden del foco (A)**: con `siafFoco`, al abrir lleva el foco al encabezado y al cerrar lo devuelve al control\n  que lo abrió; Tab no sale a la página de atrás.\n- **2.1.2 Sin trampas de teclado (A)**: Tab queda dentro mientras está abierto, pero Escape siempre lo cierra.\n- **2.4.7 Foco visible (AA)**: la flecha y la X muestran el anillo `border-states-focus` de 2 px (5.35:1 claro /\n  10.15:1 oscuro); Cancelar y Aceptar siguen `siaf-button`.\n- **2.5.8 Tamaño del objetivo (AA)**: la flecha y la X miden 40 px.\n- **1.4.3 Contraste mínimo (AA)**: título `text-neutral-high` sobre la superficie (16.29:1 claro / 16.53:1 oscuro).",
+    "limitaciones": null,
+    "incorrecto": null,
+    "correcto": null,
+    "waiAria": null,
     "figma": [
       {
         "nodo": "8856:7121",
@@ -12135,91 +13045,104 @@ export const MANIFIESTO_UI_KIT: readonly FichaComponente[] = [
         "tipo": "string",
         "porDefecto": "'Cancelar'",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "texto"
       },
       {
         "nombre": "confirmDisabled",
         "tipo": "boolean",
         "porDefecto": "false",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "booleano"
       },
       {
         "nombre": "confirmLabel",
         "tipo": "string",
         "porDefecto": "'Aceptar'",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "texto"
       },
       {
         "nombre": "navCancelLabel",
         "tipo": "string",
         "porDefecto": "'Cancelar'",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "texto"
       },
       {
         "nombre": "navConfirmDisabled",
         "tipo": "boolean",
         "porDefecto": "false",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "booleano"
       },
       {
         "nombre": "navConfirmLabel",
         "tipo": "string",
         "porDefecto": "'Aplicar'",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "texto"
       },
       {
         "nombre": "navTitle",
         "tipo": "string",
         "porDefecto": "'Filtros'",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "texto"
       },
       {
         "nombre": "open",
         "tipo": "boolean",
         "porDefecto": "false",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "booleano"
       },
       {
         "nombre": "showClose",
         "tipo": "boolean",
         "porDefecto": "true",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "booleano"
       },
       {
         "nombre": "showFooter",
         "tipo": "boolean",
         "porDefecto": "true",
         "requerida": false,
-        "descripcion": "Pie Cancelar / Aceptar; con `showNav` no se muestra, como en el Figma."
+        "descripcion": "Pie Cancelar / Aceptar; con `showNav` no se muestra, como en el Figma.",
+        "control": "booleano"
       },
       {
         "nombre": "showNav",
         "tipo": "boolean",
         "porDefecto": "false",
         "requerida": false,
-        "descripcion": "Panel de filtros a la derecha del cuerpo, con el contenido que lleva el atributo `sidePanelNav`."
+        "descripcion": "Panel de filtros a la derecha del cuerpo, con el contenido que lleva el atributo `sidePanelNav`.",
+        "control": "booleano"
       },
       {
         "nombre": "showReturn",
         "tipo": "boolean",
         "porDefecto": "false",
         "requerida": false,
-        "descripcion": "Flecha «Volver» antes del título."
+        "descripcion": "Flecha «Volver» antes del título.",
+        "control": "booleano"
       },
       {
         "nombre": "title",
         "tipo": "string",
         "porDefecto": "''",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "texto"
       }
     ],
     "eventos": [
@@ -12258,6 +13181,10 @@ export const MANIFIESTO_UI_KIT: readonly FichaComponente[] = [
     "evitar": "- Para un formulario corto o un detalle breve: usar `siaf-side-nav`, de 420 px.\n- Para elegir registros, adjuntar archivos o los parámetros de una consulta: usar `siaf-selection-side-nav`,\n  `siaf-upload-side-nav` o `siaf-query-parameters-panel`.\n- Para una confirmación corta: usar `siaf-modal`.",
     "teclado": "- **Tab / Shift + Tab**: al abrir, el foco entra en el primer control del encabezado (la flecha o la X); recorren el\n  contenido, el panel de filtros y los botones del pie, y dan la vuelta sin salir del panel.\n- **Escape**: cierra el panel (emite `closed`) y el foco vuelve al control que lo abrió.\n- **Enter / Espacio**: la flecha emite `returned`, la X emite `closed`, Cancelar emite `canceled` y `closed`, Aceptar\n  emite `confirmed`, y en el panel de filtros Cancelar y Aplicar emiten `navCanceled` y `navConfirmed`.",
     "accesibilidad": "- **4.1.2 Nombre, función y valor (A)**: el panel es `role=\"dialog\"` con `aria-modal=\"true\"` y `aria-labelledby` al\n  título; la X se llama «Cerrar» más el título y la flecha, «Volver».\n- **1.3.1 Información y relaciones (A)**: el título es un `h2` y el del panel de filtros, un `h3` dentro de una\n  sección nombrada por él.\n- **2.4.3 Orden del foco (A)**: con `siafFoco`, al abrir lleva el foco al encabezado y al cerrar lo devuelve al control\n  que lo abrió; Tab no sale a la página de atrás.\n- **2.1.2 Sin trampas de teclado (A)**: Tab queda dentro mientras está abierto, pero Escape siempre lo cierra.\n- **1.4.10 Reajuste del contenido (AA)**: en pantallas angostas ocupa todo el ancho y el panel de filtros baja\n  debajo del contenido, sin desplazamiento horizontal.\n- **2.4.7 Foco visible (AA)**: la flecha y la X muestran el anillo `border-states-focus` de 2 px (5.35:1 claro /\n  10.15:1 oscuro); los botones del pie siguen `siaf-button`.\n- **2.5.8 Tamaño del objetivo (AA)**: la flecha y la X miden 40 px.\n- **1.4.3 Contraste mínimo (AA)**: título `text-neutral-high` sobre la superficie (16.29:1 claro / 16.53:1 oscuro).",
+    "limitaciones": null,
+    "incorrecto": null,
+    "correcto": null,
+    "waiAria": null,
     "figma": [
       {
         "nodo": "8842:12884",
@@ -12377,14 +13304,16 @@ export const MANIFIESTO_UI_KIT: readonly FichaComponente[] = [
         "tipo": "boolean",
         "porDefecto": "false",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "booleano"
       },
       {
         "nombre": "ctaAdd",
         "tipo": "boolean",
         "porDefecto": "true",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "booleano"
       },
       {
         "nombre": "hiddenNavigation",
@@ -12405,21 +13334,35 @@ export const MANIFIESTO_UI_KIT: readonly FichaComponente[] = [
         "tipo": "'Default' | 'Panel' | 'Bandeja' | 'Proceso' | 'Ajustes'",
         "porDefecto": "'Default'",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "opciones",
+        "opciones": [
+          "Default",
+          "Panel",
+          "Bandeja",
+          "Proceso",
+          "Ajustes"
+        ]
       },
       {
         "nombre": "title",
         "tipo": "string",
         "porDefecto": "'SIAF RP'",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "texto"
       },
       {
         "nombre": "variant",
         "tipo": "'rail' | 'expanded'",
         "porDefecto": "'rail'",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "opciones",
+        "opciones": [
+          "rail",
+          "expanded"
+        ]
       }
     ],
     "eventos": [
@@ -12443,6 +13386,10 @@ export const MANIFIESTO_UI_KIT: readonly FichaComponente[] = [
     "evitar": "- En móvil: usar `siaf-mobile-navigation-menu`, que comparte `SidebarNavigation` y los mismos handlers.\n- Para navegar dentro de un módulo (Documentos / Registros, Detalle / Historial): usar `siaf-tabs` o\n  `siaf-records-tabs`.\n- La variante `expanded` en pantallas nuevas: no tiene uso en la app y sus enlaces usan `href` en vez del router;\n  para un menú de destinos, `siaf-process-menu-tree` con otro arreglo de nodos.",
     "teclado": "- **Tab**: recorre Crear, Panel, Bandeja, Procesos, Ayuda (con `buttonHelp`) y Ajustes; Crear deshabilitado\n  (`ctaAdd` en false) se salta.\n- **Enter / Espacio**: emiten `created`, `navigationChanged` o `help`; el componente no navega ni abre paneles.\n- **Enter** (variante `expanded`): sigue el enlace `<a href>` del ítem.",
     "accesibilidad": "- **Pendiente · 1.3.1 Información y relaciones (A)**: es un `<aside>` con un `<nav>` que solo agrupa Panel, Bandeja y\n  Procesos (Crear, Ayuda y Ajustes quedan fuera); ni el `aside` ni el `nav` tienen `aria-label` y los destinos no\n  van en lista `ul`/`li`.\n- **Pendiente · 1.4.1 Uso del color (A)**: en el rail, el destino activo solo cambia de color (capa `brand-primary`\n  detrás del ícono y el ícono en azul); el texto no cambia. En `expanded` el activo además va en `font-medium`.\n- **1.4.3 Contraste mínimo (AA)**: rail con `text-neutral-medium` sobre la superficie (14.53:1 / 12.87:1); en\n  `expanded`, título y activo en blanco sobre `bg-brand-secondary` (8.70:1 / 5.95:1).\n- **Pendiente · 1.4.11 Contraste no textual (AA)**: el contorno de foco del rail es el azul del kit\n  (`border-states-focus`, 5.35:1 / 10.15:1), pero en oscuro el ícono activo, en `bg-brand-primary`, no llega a 3:1.\n- **2.4.7 Foco visible (AA)**: los botones del rail muestran un contorno azul de 2 px con `focus-visible`; los enlaces\n  de `expanded` quedan con el anillo del navegador.\n- **2.5.8 Tamaño del objetivo (AA)**: cada botón del rail ocupa el ancho de la barra (56 px) y más de 60 px de alto.\n- **Pendiente · 4.1.2 Nombre, función y valor (A)**: cada destino es un `<button>` con su texto como nombre y Crear usa\n  `disabled`, pero el activo no publica `aria-current` (tampoco `item.active` en `expanded`). En el armazón, Bandeja,\n  Procesos y Ajustes abren un panel sin `aria-expanded`: el componente no recibe si está abierto.",
+    "limitaciones": null,
+    "incorrecto": null,
+    "correcto": null,
+    "waiAria": null,
     "figma": [],
     "aria": {
       "roles": [],
@@ -12593,77 +13540,118 @@ export const MANIFIESTO_UI_KIT: readonly FichaComponente[] = [
         "tipo": "string",
         "porDefecto": "''",
         "requerida": false,
-        "descripcion": "Texto del botón de acción (ej. «Deshacer»). Sin texto no se muestra."
+        "descripcion": "Texto del botón de acción (ej. «Deshacer»). Sin texto no se muestra.",
+        "control": "texto"
       },
       {
         "nombre": "bulkStatus",
         "tipo": "string",
         "porDefecto": "''",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "texto"
       },
       {
         "nombre": "dismissible",
         "tipo": "boolean",
         "porDefecto": "true",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "booleano"
       },
       {
         "nombre": "fileName",
         "tipo": "string",
         "porDefecto": "''",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "texto"
       },
       {
         "nombre": "message",
         "tipo": "string",
         "porDefecto": "''",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "texto"
       },
       {
         "nombre": "open",
         "tipo": "boolean",
         "porDefecto": "true",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "booleano"
       },
       {
         "nombre": "requestAction",
         "tipo": "string",
         "porDefecto": "''",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "texto"
       },
       {
         "nombre": "requestNumber",
         "tipo": "string",
         "porDefecto": "'0001'",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "texto"
       },
       {
         "nombre": "requestType",
         "tipo": "string",
         "porDefecto": "''",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "texto"
       },
       {
         "nombre": "tone",
         "tipo": "'info' | 'success' | 'warning' | 'neutral' | 'error'",
         "porDefecto": "'success'",
         "requerida": false,
-        "descripcion": "Tipo del aviso: define el ícono y su color. `neutral` no lleva ícono."
+        "descripcion": "Tipo del aviso: define el ícono y su color. `neutral` no lleva ícono.",
+        "control": "opciones",
+        "opciones": [
+          "neutral",
+          "info",
+          "success",
+          "warning",
+          "error"
+        ]
       },
       {
         "nombre": "variant",
         "tipo": "SnackbarVariant",
         "porDefecto": "'custom'",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "opciones",
+        "opciones": [
+          "custom",
+          "changes-done",
+          "record-done",
+          "record-deleted",
+          "changes-saved",
+          "changes-undone",
+          "request-uploaded",
+          "file-uploaded",
+          "creation-elaborated",
+          "creation-verified",
+          "modification-verified",
+          "creation-approved",
+          "modification-approved",
+          "creation-observed",
+          "modification-observed",
+          "creation-rejected",
+          "modification-rejected",
+          "creation-deleted",
+          "modification-deleted",
+          "bulk-approved",
+          "bulk-verified"
+        ]
       }
     ],
     "eventos": [
@@ -12682,6 +13670,10 @@ export const MANIFIESTO_UI_KIT: readonly FichaComponente[] = [
     "evitar": "- Para los avisos de grabar, verificar, aprobar, observar o rechazar una solicitud: los emite\n  `siaf-request-approval-modals` con `[requestType]`.\n- Para mensajes que deben quedar fijos en la pantalla o explicar una restricción: usar `siaf-alert`.\n- Para pedir confirmación antes de actuar: usar `siaf-modal`.",
     "teclado": "- **Tab**: llega al botón de acción (con `actionLabel`) y a la × (con `dismissible`) según su lugar en el DOM;\n  el aviso no toma el foco al aparecer.\n- **Enter / Espacio**: el botón de acción emite `action` y la × emite `closed` (botones nativos).",
     "accesibilidad": "- **4.1.3 Mensajes de estado (AA)**: `warning` y `error` son `role=\"alert\"` y los demás `role=\"status\"`; ojo: la\n  región nace junto con el texto (bloque if) y un `status` que aparece ya lleno no siempre se anuncia.\n- **1.1.1 Contenido no textual (A)**: el ícono del tono es decorativo (`aria-hidden`) y `neutral` no lleva: el\n  texto tiene que decir si la acción salió bien o falló.\n- **1.4.3 Contraste mínimo (AA)**: texto blanco sobre el fondo casi negro del aviso en ambos temas\n  (`bg-on-surfaces-high` en claro, `bg-snackbar` en oscuro).\n- **4.1.2 Nombre, función y valor (A)**: la × es un `<button>` con `aria-label=\"Cerrar mensaje\"` y el botón de\n  acción se nombra con su texto visible.\n- **2.4.7 Foco visible (AA)**: los dos botones muestran un contorno blanco de 2 px.\n- **2.5.8 Tamaño del objetivo (AA)**: la × mide 32 × 32 px y el botón de acción, 32 px de alto.\n- **2.2.1 Tiempo ajustable (A)**: no tiene temporizador: queda visible hasta que el usuario lo cierra o el padre\n  cambia `open`.\n- **2.4.3 Orden del foco (A)**: al cerrarlo con la × el botón desaparece y el foco queda en el documento.",
+    "limitaciones": null,
+    "incorrecto": null,
+    "correcto": null,
+    "waiAria": null,
     "figma": [],
     "aria": {
       "roles": [
@@ -12779,21 +13771,24 @@ export const MANIFIESTO_UI_KIT: readonly FichaComponente[] = [
         "tipo": "boolean",
         "porDefecto": "false",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "booleano"
       },
       {
         "nombre": "title",
         "tipo": "string",
         "porDefecto": "''",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "texto"
       },
       {
         "nombre": "titleInfo",
         "tipo": "string",
         "porDefecto": "''",
         "requerida": false,
-        "descripcion": "Tooltip del ícono (i) junto al título; si está vacío no se muestra el ícono."
+        "descripcion": "Tooltip del ícono (i) junto al título; si está vacío no se muestra el ícono.",
+        "control": "texto"
       }
     ],
     "eventos": [],
@@ -12801,6 +13796,10 @@ export const MANIFIESTO_UI_KIT: readonly FichaComponente[] = [
     "evitar": "- Para el N° y el estado del documento o para los datos generales de la solicitud: usar\n  `siaf-document-summary-card` o `siaf-solicitude-info-card`.\n- Para un contenedor genérico fuera de las solicitudes: usar `siaf-card`.\n- Sin `title` cuando hacen falta acciones: no se pinta la cabecera y las `card-actions` no aparecen.\n- Para secciones que el usuario pliega: usar `siaf-expansion-panel` dentro de la tarjeta.",
     "teclado": "- No recibe foco: es un contenedor. Las `card-actions` y el contenido siguen el teclado de su componente; el ícono\n  (i) de `titleInfo` no es enfocable.",
     "accesibilidad": "- **1.3.1 Información y relaciones (A)**: el título es un `h2` dentro de un `section`, así cada sección de la\n  solicitud aparece en la lista de encabezados.\n- **1.4.3 Contraste mínimo (AA)**: título `text-neutral-high` sobre la superficie, 16.29:1 (oscuro 16.53:1).\n- **Pendiente · 1.1.1 Contenido no textual (A)**: el ícono (i) de `titleInfo` recibe `label` pero sigue\n  `decorative` (`aria-hidden`), así que su texto no llega al lector de pantalla; hoy ningún consumidor lo usa.\n- **Pendiente · 2.1.1 Teclado (A)**: ese texto solo se ve en el atributo `title` al pasar el puntero; el ícono no\n  recibe foco.\n- **Pendiente · 4.1.3 Mensajes de estado (AA)**: con `loading` la cabecera pinta una barra animada sin texto ni\n  `aria-busy`, así que la carga no se anuncia.",
+    "limitaciones": null,
+    "incorrecto": null,
+    "correcto": null,
+    "waiAria": null,
     "figma": [],
     "aria": {
       "roles": [],
@@ -12880,175 +13879,244 @@ export const MANIFIESTO_UI_KIT: readonly FichaComponente[] = [
         "tipo": "string",
         "porDefecto": "'Aprobar'",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "texto"
       },
       {
         "nombre": "customActions",
         "tipo": "boolean",
         "porDefecto": "false",
         "requerida": false,
-        "descripcion": "Reemplaza el grupo de botones estándar por contenido proyectado con el atributo `actions`: `<siaf-button actions ...>`. Para procesos con acciones fuera de la matriz rol/estado."
+        "descripcion": "Reemplaza el grupo de botones estándar por contenido proyectado con el atributo `actions`: `<siaf-button actions ...>`. Para procesos con acciones fuera de la matriz rol/estado.",
+        "control": "booleano"
       },
       {
         "nombre": "deleteLabel",
         "tipo": "string",
         "porDefecto": "'Eliminar'",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "texto"
       },
       {
         "nombre": "editLabel",
         "tipo": "string",
         "porDefecto": "'Editar'",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "texto"
       },
       {
         "nombre": "heading",
         "tipo": "string",
         "porDefecto": "'Heading name'",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "texto"
       },
       {
         "nombre": "loading",
         "tipo": "boolean",
         "porDefecto": "false",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "booleano"
       },
       {
         "nombre": "observeLabel",
         "tipo": "string",
         "porDefecto": "'Observar'",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "texto"
       },
       {
         "nombre": "rejectLabel",
         "tipo": "string",
         "porDefecto": "'Rechazar'",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "texto"
       },
       {
         "nombre": "role",
         "tipo": "'' | SolicitudeHeaderRole",
         "porDefecto": "''",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "opciones",
+        "opciones": [
+          "",
+          "creator",
+          "reviewer",
+          "approver"
+        ]
       },
       {
         "nombre": "saveDisabled",
         "tipo": "boolean",
         "porDefecto": "false",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "booleano"
       },
       {
         "nombre": "saveVariant",
         "tipo": "'primary' | 'accent' | 'secondary'",
         "porDefecto": "'secondary'",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "opciones",
+        "opciones": [
+          "primary",
+          "secondary",
+          "accent"
+        ]
       },
       {
         "nombre": "secondaryText",
         "tipo": "string",
         "porDefecto": "'Creacion'",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "texto"
       },
       {
         "nombre": "showButtonGroup",
         "tipo": "boolean",
         "porDefecto": "true",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "booleano"
       },
       {
         "nombre": "showDelete",
         "tipo": "boolean",
         "porDefecto": "false",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "booleano"
       },
       {
         "nombre": "showEdit",
         "tipo": "boolean",
         "porDefecto": "false",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "booleano"
       },
       {
         "nombre": "showReturn",
         "tipo": "boolean",
         "porDefecto": "false",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "booleano"
       },
       {
         "nombre": "showSecondaryText",
         "tipo": "boolean",
         "porDefecto": "true",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "booleano"
       },
       {
         "nombre": "showTag",
         "tipo": "boolean",
         "porDefecto": "true",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "booleano"
       },
       {
         "nombre": "showVerify",
         "tipo": "boolean",
         "porDefecto": "true",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "booleano"
       },
       {
         "nombre": "state",
         "tipo": "'' | SolicitudeHeaderState",
         "porDefecto": "''",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "opciones",
+        "opciones": [
+          "",
+          "new",
+          "edit",
+          "readonly",
+          "elaborated",
+          "registered",
+          "verified",
+          "validated",
+          "reviewed",
+          "generated",
+          "in_process",
+          "authorized",
+          "signed",
+          "approved",
+          "accepted",
+          "published",
+          "processed",
+          "observed",
+          "pending",
+          "failed",
+          "deleted",
+          "rejected",
+          "annulled"
+        ]
       },
       {
         "nombre": "tagLabel",
         "tipo": "string",
         "porDefecto": "'Nuevo'",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "texto"
       },
       {
         "nombre": "tagTone",
         "tipo": "'info' | 'accent'",
         "porDefecto": "'accent'",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "opciones",
+        "opciones": [
+          "accent",
+          "info"
+        ]
       },
       {
         "nombre": "type",
         "tipo": "'readonly' | 'actions'",
         "porDefecto": "'readonly'",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "opciones",
+        "opciones": [
+          "readonly",
+          "actions"
+        ]
       },
       {
         "nombre": "verifyDisabled",
         "tipo": "boolean",
         "porDefecto": "false",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "booleano"
       },
       {
         "nombre": "verifyLabel",
         "tipo": "string",
         "porDefecto": "'Verificar'",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "texto"
       }
     ],
     "eventos": [
@@ -13102,6 +14170,10 @@ export const MANIFIESTO_UI_KIT: readonly FichaComponente[] = [
     "evitar": "- Suelto con su propio breadcrumb y contenedor: usar `siaf-solicitude-page-layout`, que lo fija bajo el navbar y\n  reenvía los eventos (hoy solo la ruta `formulario` de asiento de ajuste lo arma a mano).\n- Para pantallas sin ciclo de documento (consultas, listados): usar `siaf-page-header`.\n- Para acciones de una tarjeta o sección: ponerlas en la tarjeta y apagar la botonera con `showButtonGroup` en false,\n  como el Gestor de Usuarios.\n- Para mostrar el estado del documento en el flujo: usar `siaf-flow-status-tag`; esta etiqueta solo marca «Nuevo» o\n  «Edición».",
     "teclado": "- **Tab**: recorre Regresar (si `showReturn`) y los botones visibles en su orden; en móvil, la barra fija inferior va\n  en el DOM justo después del encabezado. Los deshabilitados no reciben foco.\n- **Enter / Espacio**: activan cada botón y emiten su evento (`returned`, `canceled`, `saved`, `verified`, `edited`,\n  `deleted`, `approved`, `observed` o `rejected`). Los botones siguen `siaf-button`.",
     "accesibilidad": "- **1.3.1 Información y relaciones (A)**: `heading` es el `h1` de la página; la etiqueta y el texto secundario van\n  como texto junto a él.\n- **4.1.2 Nombre, función y valor (A)**: Regresar lleva `aria-label=\"Regresar\"`; en la barra móvil cada botón se\n  nombra con su texto visible (el ícono de la principal es decorativo), y los deshabilitados (Grabar sin cambios,\n  Eliminar en observado) exponen `disabled`.\n- **2.5.8 Tamaño del objetivo (AA)**: los botones de la barra móvil miden 48 px de alto; en escritorio, 40.\n- **2.4.3 Orden del foco (A)**: en escritorio los botones siguen al título; en móvil la barra fija inferior va en el\n  DOM después del encabezado, así que Tab llega a las acciones antes que al formulario.\n- **Pendiente · 2.4.11 Foco no oculto (AA)**: en móvil la barra de acciones es `fixed` abajo y no hay\n  `scroll-padding`: al avanzar con Tab, un campo puede quedar tapado por ella.\n- **1.4.11 Contraste no textual (AA)**: el anillo de foco de Regresar (2 px) es el azul del kit\n  (`border-states-focus`, 5.35:1 claro / 10.15:1 oscuro sobre `bg-surface`). Los demás botones siguen `siaf-button`.\n- **1.4.3 Contraste mínimo (AA)**: `h1` `text-text` (16.29:1 / 16.53:1), texto secundario `text-text-muted` (5.01:1 /\n  8.86:1) y la etiqueta en blanco sobre `bg-brand-accent` (4.89:1 / 5.65:1) o `bg-brand-primary` (8.79:1 / 6.67:1).\n- **Pendiente · 4.1.3 Mensajes de estado (AA)**: con `loading` el título y los botones se cambian por un esqueleto\n  sin `aria-busy` ni `role=\"status\"`: la carga no se anuncia.\n- **Pendiente · 2.1.1 Teclado (A)**: desde `sm` el `h1` se corta y el texto completo sale con `siafTooltip`, que se\n  abre con el mouse o con el foco; como el `h1` no es enfocable, con teclado no se puede ver.",
+    "limitaciones": "Sus breakpoints miran el ancho de la ventana, no el del contenedor: dentro de una columna angosta se ve con el diseño de escritorio.",
+    "incorrecto": null,
+    "correcto": null,
+    "waiAria": null,
     "figma": [],
     "aria": {
       "roles": [],
@@ -13233,7 +14305,8 @@ export const MANIFIESTO_UI_KIT: readonly FichaComponente[] = [
         "tipo": "boolean",
         "porDefecto": "false",
         "requerida": false,
-        "descripcion": "Cuando es true, un campo \"Fecha\" que llegue vacío se completa UNA sola vez con la fecha/hora en que se abrió el documento y queda CONGELADO: marca cuándo se inició la solicitud y no debe cambiar (antes usaba un reloj en vivo que se actualizaba cada segundo — incorrecto). Si el padre provee un valor explícito (p. ej. la fecha de creación persistida de un documento existente), se muestra ese valor."
+        "descripcion": "Cuando es true, un campo \"Fecha\" que llegue vacío se completa UNA sola vez con la fecha/hora en que se abrió el documento y queda CONGELADO: marca cuándo se inició la solicitud y no debe cambiar (antes usaba un reloj en vivo que se actualizaba cada segundo — incorrecto). Si el padre provee un valor explícito (p. ej. la fecha de creación persistida de un documento existente), se muestra ese valor.",
+        "control": "booleano"
       },
       {
         "nombre": "fields",
@@ -13248,6 +14321,10 @@ export const MANIFIESTO_UI_KIT: readonly FichaComponente[] = [
     "evitar": "- Para el N° y el estado del documento: usar `siaf-document-summary-card`.\n- Para el ítem elegido desde un panel lateral: usar `siaf-summary-card`.\n- Para campos editables: usar `siaf-input` dentro de `siaf-solicitude-form-card`.\n- Dos campos con la misma etiqueta: la etiqueta es la clave del `track` y no debe repetirse.",
     "teclado": "- No recibe foco: no es interactivo.",
     "accesibilidad": "- **1.3.1 Información y relaciones (A)**: cada etiqueta precede a su valor en el orden de lectura (`span` y\n  `strong`).\n- **1.4.3 Contraste mínimo (AA)**: etiquetas `text-neutral-low` 5.01:1 (oscuro 8.86:1) y valores\n  `text-neutral-high` 16.29:1 (16.53:1) sobre la superficie.\n- **1.4.13 Contenido en hover o foco (AA)**: desde `sm` una etiqueta larga se trunca y se completa con `siafTooltip`,\n  que se cierra con Escape y se puede recorrer con el puntero.\n- **Pendiente · 2.1.1 Teclado (A)**: la etiqueta no recibe foco, así que con teclado el globo no aparece (el lector\n  de pantalla sí lee la etiqueta entera).",
+    "limitaciones": null,
+    "incorrecto": null,
+    "correcto": null,
+    "waiAria": null,
     "figma": [],
     "aria": {
       "roles": [],
@@ -13325,91 +14402,134 @@ export const MANIFIESTO_UI_KIT: readonly FichaComponente[] = [
         "tipo": "boolean",
         "porDefecto": "false",
         "requerida": false,
-        "descripcion": "Reemplaza los botones estándar del header por el slot proyectado `[actions]`."
+        "descripcion": "Reemplaza los botones estándar del header por el slot proyectado `[actions]`.",
+        "control": "booleano"
       },
       {
         "nombre": "floatingPanelOpen",
         "tipo": "boolean",
         "porDefecto": "false",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "booleano"
       },
       {
         "nombre": "heading",
         "tipo": "string",
         "porDefecto": "''",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "texto"
       },
       {
         "nombre": "loading",
         "tipo": "boolean",
         "porDefecto": "false",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "booleano"
       },
       {
         "nombre": "role",
         "tipo": "'' | SolicitudeHeaderRole",
         "porDefecto": "'creator'",
         "requerida": false,
-        "descripcion": "Rol del encabezado; vacío (el visualizador) no muestra el grupo de botones estándar."
+        "descripcion": "Rol del encabezado; vacío (el visualizador) no muestra el grupo de botones estándar.",
+        "control": "opciones",
+        "opciones": [
+          "",
+          "creator",
+          "reviewer",
+          "approver"
+        ]
       },
       {
         "nombre": "saveDisabled",
         "tipo": "boolean",
         "porDefecto": "false",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "booleano"
       },
       {
         "nombre": "secondaryText",
         "tipo": "string",
         "porDefecto": "''",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "texto"
       },
       {
         "nombre": "showButtonGroup",
         "tipo": "boolean",
         "porDefecto": "true",
         "requerida": false,
-        "descripcion": "Apaga el grupo de botones estándar del header (para páginas con botones a nivel de card)."
+        "descripcion": "Apaga el grupo de botones estándar del header (para páginas con botones a nivel de card).",
+        "control": "booleano"
       },
       {
         "nombre": "showReturn",
         "tipo": "boolean",
         "porDefecto": "true",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "booleano"
       },
       {
         "nombre": "showTag",
         "tipo": "boolean",
         "porDefecto": "true",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "booleano"
       },
       {
         "nombre": "state",
         "tipo": "SolicitudeHeaderState",
         "porDefecto": "'new'",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "opciones",
+        "opciones": [
+          "new",
+          "edit",
+          "readonly",
+          "elaborated",
+          "registered",
+          "verified",
+          "validated",
+          "reviewed",
+          "generated",
+          "in_process",
+          "authorized",
+          "signed",
+          "approved",
+          "accepted",
+          "published",
+          "processed",
+          "observed",
+          "pending",
+          "failed",
+          "deleted",
+          "rejected",
+          "annulled"
+        ]
       },
       {
         "nombre": "trayMenuOpen",
         "tipo": "boolean",
         "porDefecto": "false",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "booleano"
       },
       {
         "nombre": "verifyDisabled",
         "tipo": "boolean",
         "porDefecto": "false",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "booleano"
       }
     ],
     "eventos": [
@@ -13463,6 +14583,10 @@ export const MANIFIESTO_UI_KIT: readonly FichaComponente[] = [
     "evitar": "- Para consultas, reportes y listados sin ciclo de documento: usar `siaf-page-shell` con `siaf-page-header`.\n- Para la pantalla Documentos / Registros de un proceso: usar `siaf-documents-records-page`.\n- Rearmar a mano el breadcrumb y `siaf-solicitude-header` en la página: se pierden la cabecera fija y el reenvío de\n  eventos.\n- Repetir Grabar o Verificar dentro del contenido cuando la matriz de `role` y `state` ya los resuelve en el header.",
     "teclado": "- No agrega teclado propio: Tab recorre el breadcrumb, Regresar y los botones de `siaf-solicitude-header` y después\n  el contenido proyectado; cada control sigue su componente.",
     "accesibilidad": "- **1.3.1 Información y relaciones (A)**: breadcrumb (`nav` con `aria-label=\"Ruta de navegación\"`) y el `h1` del\n  header arriba; las tarjetas proyectadas siguen con `h2` (`siaf-solicitude-form-card`). No agrega landmarks: vive\n  dentro del `main` del shell.\n- **2.4.3 Orden del foco (A)**: el DOM sigue el orden visual: breadcrumb, Regresar, acciones del header y contenido.\n- **Pendiente · 2.4.11 Foco no oculto (AA)**: en escritorio la cabecera es `sticky` bajo el navbar y no hay\n  `scroll-padding`: al volver con Shift + Tab, un campo puede quedar tapado. En móvil, `pb-24` solo evita que la\n  barra fija del header tape el final del contenido.\n- **Pendiente · 4.1.3 Mensajes de estado (AA)**: con `loading` el esqueleto del header no se anuncia (hereda de\n  `siaf-solicitude-header`).",
+    "limitaciones": "Sus breakpoints miran el ancho de la ventana, no el del contenedor: dentro de una columna angosta se ve con el diseño de escritorio.",
+    "incorrecto": null,
+    "correcto": null,
+    "waiAria": null,
     "figma": [],
     "aria": {
       "roles": [],
@@ -13512,28 +14636,48 @@ export const MANIFIESTO_UI_KIT: readonly FichaComponente[] = [
         "tipo": "'solid' | 'soft' | 'outline'",
         "porDefecto": "'soft'",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "opciones",
+        "opciones": [
+          "solid",
+          "soft",
+          "outline"
+        ]
       },
       {
         "nombre": "icon",
         "tipo": "string",
         "porDefecto": "''",
         "requerida": false,
-        "descripcion": "Ícono de Material Icons (relleno, 20 px) antes del texto."
+        "descripcion": "Ícono de Material Icons (relleno, 20 px) antes del texto.",
+        "control": "texto"
       },
       {
         "nombre": "size",
         "tipo": "'standard' | 'small'",
         "porDefecto": "'standard'",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "opciones",
+        "opciones": [
+          "standard",
+          "small"
+        ]
       },
       {
         "nombre": "tone",
         "tipo": "'default' | 'info' | 'success' | 'warning' | 'danger'",
         "porDefecto": "'default'",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "opciones",
+        "opciones": [
+          "default",
+          "info",
+          "success",
+          "warning",
+          "danger"
+        ]
       }
     ],
     "eventos": [],
@@ -13541,6 +14685,10 @@ export const MANIFIESTO_UI_KIT: readonly FichaComponente[] = [
     "evitar": "- Para el estado del flujo de una solicitud: usar `siaf-flow-status-tag`, que ya sabe el tono de cada estado.\n- Para el estado de un registro (Activo, Abierto, Cerrado…): usar `siaf-record-status-tag`.\n- Para filtros aplicados, opciones que se eligen o valores que se pueden quitar: usar `siaf-tag`; para contadores,\n  `siaf-badge`.\n- Como única señal del estado: el tono es solo color, el estado tiene que ir escrito.",
     "teclado": "- No recibe foco: no es interactiva.",
     "accesibilidad": "- **1.4.1 Uso del color (A)**: el estado va escrito; el tono y el ícono solo lo refuerzan.\n- **1.1.1 Contenido no textual (A)**: el ícono es decorativo (`siaf-icon` con `aria-hidden`); el estado se lee del\n  texto.\n- **1.3.1 Información y relaciones (A)**: es un `<span>`; el contexto lo da quien la contiene (la cabecera de la\n  columna o la etiqueta del dato).\n- **1.4.3 Contraste mínimo (AA)**: en claro, `solid` con texto blanco da 12.24:1 en `default`, 5.82:1 en `info`,\n  4.71:1 en `success` y 7.13:1 en `danger`; `soft`, 11.46:1, 5.81:1, 5.31:1 y 6.21:1 en esos tonos; y `outline`,\n  sobre la superficie, de 5.25:1 (`warning`) a 14.53:1 (`default`). En oscuro cumplen los 15: `solid` de 5.31:1\n  (`warning`) a 7.97:1 (`default`), `soft` de 8.24:1 a 11.45:1 y `outline` de 10.59:1 a 16.53:1.\n- **Pendiente · 1.4.3 Contraste mínimo (AA)**: en claro, `warning` no llega a 4.5:1 con texto de 12 px ni en `solid`\n  (blanco sobre `bg-status-solid-warning`, 3.39:1) ni en `soft` (4.43:1); son los colores del Figma, a revisar con\n  diseño.\n- **4.1.3 Mensajes de estado (AA)**: no es región viva: un cambio de estado no se anuncia desde la etiqueta.",
+    "limitaciones": null,
+    "incorrecto": "<!-- Un estado no es un tag de filtro ni de acción -->\n<siaf-tag>Aprobado</siaf-tag>",
+    "correcto": "<siaf-status-tag tone=\"success\">Aprobado</siaf-status-tag>",
+    "waiAria": null,
     "figma": [
       {
         "nodo": "19358:721",
@@ -13768,7 +14916,8 @@ export const MANIFIESTO_UI_KIT: readonly FichaComponente[] = [
         "tipo": "boolean",
         "porDefecto": "false",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "booleano"
       }
     ],
     "eventos": [
@@ -13782,6 +14931,10 @@ export const MANIFIESTO_UI_KIT: readonly FichaComponente[] = [
     "evitar": "- Para el ítem elegido desde un panel lateral: usar `siaf-summary-card`, que no es seleccionable.\n- Para pasos numerados de un flujo: usar `siaf-steps`; para los responsables de una solicitud,\n  `siaf-action-tracker`.\n- Con enlaces o botones adentro: toda la tarjeta ya es un `button` y no admite otros controles.\n- Para elegir entre opciones de un formulario: usar `siaf-radio-group` o `siaf-buttons-group`.",
     "teclado": "- **Tab**: enfoca la tarjeta completa (es un `button`).\n- **Enter / Espacio**: emiten `selectedChange` con el valor contrario a `selected`; el padre actualiza la selección.",
     "accesibilidad": "- **4.1.2 Nombre, función y valor (A)**: es un `button` nativo con `aria-pressed` según `selected`; su nombre es el\n  texto de todas sus etiquetas y valores.\n- **1.4.1 Uso del color (A)**: la elegida no depende del color: suma la barra lateral y la sombra.\n- **1.4.3 Contraste mínimo (AA)**: etiquetas `text-neutral-low` 5.01:1 (oscuro 8.86:1) y valores\n  `text-neutral-medium` 14.53:1 (12.87:1) sobre la superficie.\n- **2.4.7 Foco visible (AA)**: contorno de 2 px `border-states-focus` separado 2 px (5.35:1 claro / 10.15:1 oscuro).\n- **Pendiente · 1.4.11 Contraste no textual (AA)**: en oscuro la barra de la elegida usa `bg-brand-primary`, 2.66:1\n  sobre la superficie, y el borde de las demás (`divider-strong`) no llega a 3:1 en ningún tema.\n- **1.4.13 Contenido en hover o foco (AA)**: desde `sm` los valores truncados se completan con `siafTooltip`, que\n  también aparece al enfocar la tarjeta, se cierra con Escape y se puede recorrer con el puntero. Si se cortan la\n  etiqueta y el valor, con el foco solo se ve el primero (el lector de pantalla lee los dos).\n- **2.5.8 Tamaño del objetivo (AA)**: toda la tarjeta es el objetivo, de al menos 180 px de ancho.",
+    "limitaciones": null,
+    "incorrecto": null,
+    "correcto": null,
+    "waiAria": null,
     "figma": [],
     "aria": {
       "roles": [],
@@ -13898,21 +15051,32 @@ export const MANIFIESTO_UI_KIT: readonly FichaComponente[] = [
         "tipo": "number",
         "porDefecto": "1",
         "requerida": false,
-        "descripcion": "Paso activo, contando desde 1."
+        "descripcion": "Paso activo, contando desde 1.",
+        "control": "numero"
       },
       {
         "nombre": "orientation",
         "tipo": "'horizontal' | 'vertical'",
         "porDefecto": "'horizontal'",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "opciones",
+        "opciones": [
+          "horizontal",
+          "vertical"
+        ]
       },
       {
         "nombre": "size",
         "tipo": "'default' | 'small'",
         "porDefecto": "'default'",
         "requerida": false,
-        "descripcion": "Solo en vertical con círculos: `default` (40 px con número) o `small` (24 px sin número)."
+        "descripcion": "Solo en vertical con círculos: `default` (40 px con número) o `small` (24 px sin número).",
+        "control": "opciones",
+        "opciones": [
+          "default",
+          "small"
+        ]
       },
       {
         "nombre": "steps",
@@ -13926,7 +15090,12 @@ export const MANIFIESTO_UI_KIT: readonly FichaComponente[] = [
         "tipo": "'default' | 'cards'",
         "porDefecto": "'default'",
         "requerida": false,
-        "descripcion": "`cards`: vertical, con un `siaf-stepper-card` por paso (sus `fields`) y el punto a la derecha."
+        "descripcion": "`cards`: vertical, con un `siaf-stepper-card` por paso (sus `fields`) y el punto a la derecha.",
+        "control": "opciones",
+        "opciones": [
+          "default",
+          "cards"
+        ]
       }
     ],
     "eventos": [
@@ -13940,6 +15109,10 @@ export const MANIFIESTO_UI_KIT: readonly FichaComponente[] = [
     "evitar": "- Para el avance y los responsables de una solicitud (Elaborado, Verificado, Aprobado): usar `siaf-action-tracker`.\n- Para hitos con fecha y detalle: usar `siaf-timeline`.\n- Como navegación entre vistas: para cambiar de vista usar `siaf-tabs`.\n- Muchos pasos en `horizontal`: la fila se desplaza; pasar a `vertical`.\n- `variant=\"cards\"` con valores largos: la tarjeta mide 200 px y los corta (el texto completo sale en el tooltip).",
     "teclado": "- Con círculos no recibe foco: no es interactivo.\n- Con `variant=\"cards\"`, **Tab** recorre las tarjetas (cada una es un `button`) y **Enter / Espacio** elige la\n  enfocada: emite `activeStepChange`.",
     "accesibilidad": "- **1.3.1 Información y relaciones (A)**: los pasos son una lista ordenada (`ol` y `li`); círculos, puntos y líneas\n  van con `aria-hidden`.\n- **4.1.2 Nombre, función y valor (A)**: con círculos, el paso actual lleva `aria-current=\"step\"` y cada nombre suma\n  en texto oculto «paso N de M» y su estado (completado, paso actual o pendiente). Con tarjetas, cada una es un\n  `button` con `aria-pressed` (la activa en `true`) nombrado por sus etiquetas y valores.\n- **Pendiente · 1.4.1 Uso del color (A)**: con círculos, a la vista, completado o pendiente solo se distingue por el\n  relleno del círculo (azul o gris) y el actual se ve igual que los completados; el estado en texto solo llega al\n  lector de pantalla. Con tarjetas no depende del color: la activa suma la barra y la sombra.\n- **Pendiente · 1.4.3 Contraste mínimo (AA)**: nombres `text-neutral-high` 16.29:1 (oscuro 16.53:1) y número blanco\n  sobre `bg-brand-primary` 8.79:1 (6.67:1) cumplen, pero el número de los pendientes (`text-neutral-low` sobre\n  `surface-high`) no llega a 4.5:1 en claro.\n- **Pendiente · 1.4.11 Contraste no textual (AA)**: en oscuro el círculo o punto azul da 2.66:1 sobre la superficie\n  (`bg-brand-primary`). El punto gris de las tarjetas usa `text-neutral-low` (5.01:1 claro / 8.86:1 oscuro).",
+    "limitaciones": null,
+    "incorrecto": null,
+    "correcto": null,
+    "waiAria": null,
     "figma": [
       {
         "nodo": "1264:580",
@@ -14041,14 +15214,16 @@ export const MANIFIESTO_UI_KIT: readonly FichaComponente[] = [
         "tipo": "boolean",
         "porDefecto": "false",
         "requerida": false,
-        "descripcion": "Estilo con borde (sin sombra) en vez del elevado por defecto."
+        "descripcion": "Estilo con borde (sin sombra) en vez del elevado por defecto.",
+        "control": "booleano"
       },
       {
         "nombre": "closeLabel",
         "tipo": "string",
         "porDefecto": "'Cerrar'",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "texto"
       },
       {
         "nombre": "columns",
@@ -14069,14 +15244,16 @@ export const MANIFIESTO_UI_KIT: readonly FichaComponente[] = [
         "tipo": "boolean",
         "porDefecto": "true",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "booleano"
       },
       {
         "nombre": "showIndicator",
         "tipo": "boolean",
         "porDefecto": "true",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "booleano"
       }
     ],
     "eventos": [
@@ -14090,6 +15267,10 @@ export const MANIFIESTO_UI_KIT: readonly FichaComponente[] = [
     "evitar": "- Para 2 o más ítems: usar la grilla estándar (`siaf-table-controls` + tabla + `siaf-pagination` Bottom); sin\n  ítems, el placeholder gris o `empty-section`.\n- Para el N° y el estado del documento abierto: usar `siaf-document-summary-card`.\n- Para ítems con detalle que se despliega: usar `siaf-collapsible-card`.\n- Para elegir entre tarjetas: usar `siaf-stepper-card`; esta no es seleccionable.",
     "teclado": "- **Tab**: enfoca la ✕ cuando `showClose` está activo; sin ella la tarjeta no recibe foco.\n- **Enter / Espacio** en la ✕: emiten `closed`; el foco no se mueve solo: al quitar el ítem, el padre debe\n  llevarlo, por ejemplo, al botón de búsqueda.",
     "accesibilidad": "- **4.1.2 Nombre, función y valor (A)**: la ✕ es un `button` con nombre desde `closeLabel` (por defecto «Cerrar»);\n  el padre debe nombrar el ítem, como «Quitar entidad del estado».\n- **1.1.1 Contenido no textual (A)**: la barra lateral y el ícono de la ✕ son decorativos (`aria-hidden`); el ícono\n  de un campo solo se anuncia si trae `iconLabel` y, si no, queda decorativo.\n- **1.4.3 Contraste mínimo (AA)**: etiquetas `text-neutral-low` 5.01:1 (oscuro 8.86:1) y valores\n  `text-neutral-medium` 14.53:1 (12.87:1) sobre la superficie.\n- **2.4.7 Foco visible (AA)**: la ✕ muestra un contorno de 2 px `border-states-focus` separado 2 px.\n- **1.4.11 Contraste no textual (AA)**: ese contorno es el azul del kit (`border-states-focus`, 5.35:1 claro /\n  10.15:1 oscuro sobre la superficie).\n- **1.4.13 Contenido en hover o foco (AA)**: desde `sm` los valores truncados se completan con `siafTooltip`, que\n  se cierra con Escape y se puede recorrer con el puntero.\n- **Pendiente · 2.1.1 Teclado (A)**: ese texto no recibe foco, así que con teclado el globo no aparece (el lector de\n  pantalla sí lo lee entero).\n- **2.5.8 Tamaño del objetivo (AA)**: la ✕ mide 40 × 40 px.",
+    "limitaciones": null,
+    "incorrecto": null,
+    "correcto": null,
+    "waiAria": null,
     "figma": [],
     "aria": {
       "roles": [],
@@ -14198,28 +15379,32 @@ export const MANIFIESTO_UI_KIT: readonly FichaComponente[] = [
         "tipo": "string",
         "porDefecto": "''",
         "requerida": false,
-        "descripcion": "Nombre accesible cuando no hay `label` visible (ej. un switch dentro de un ítem de lista)."
+        "descripcion": "Nombre accesible cuando no hay `label` visible (ej. un switch dentro de un ítem de lista).",
+        "control": "texto"
       },
       {
         "nombre": "checked",
         "tipo": "boolean",
         "porDefecto": "false",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "booleano"
       },
       {
         "nombre": "disabled",
         "tipo": "boolean",
         "porDefecto": "false",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "booleano"
       },
       {
         "nombre": "label",
         "tipo": "string",
         "porDefecto": "''",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "texto"
       }
     ],
     "eventos": [
@@ -14233,6 +15418,13 @@ export const MANIFIESTO_UI_KIT: readonly FichaComponente[] = [
     "evitar": "- Para las preguntas Sí/No de una solicitud, que se graban con el documento: usar `siaf-radio-group` con `[inline]`.\n- Para seleccionar filas o varias opciones de una lista: checkbox nativo, como en `siaf-table-controls`.\n- Sin `label` visible ni `ariaLabel`: el interruptor queda sin nombre.",
     "teclado": "- **Tab**: enfoca el interruptor; el riel muestra un contorno de 2 px en `brand-primary`.\n- **Espacio**: lo enciende o lo apaga (checkbox nativo con `role=\"switch\"`; Enter no lo cambia).",
     "accesibilidad": "- **4.1.2 Nombre, función y valor (A)**: `<input type=\"checkbox\" role=\"switch\">` con `aria-checked` y `disabled`\n  nativo; se nombra con el `label` que lo envuelve o con `ariaLabel` (el padre debe dar uno de los dos).\n- **2.4.7 Foco visible (AA)**: el input está oculto con `sr-only` y el foco con teclado pinta en el riel un contorno\n  de 2 px separado 2 px (`peer-focus-visible`).\n- **Pendiente · 1.4.11 Contraste no textual (AA)**: apagado, el riel es `bg-border` (`border-states-enabled`, 2.44:1\n  claro y 2.59:1 oscuro); en oscuro, el riel encendido y el contorno de foco (`brand-primary`) quedan en 2.66:1.\n- **1.4.1 Uso del color (A)**: además del color, el círculo cambia de lado.\n- **2.5.8 Tamaño del objetivo (AA)**: el riel mide 44 × 24 px y toda la `label` es clicable.\n- **1.4.3 Contraste mínimo (AA)**: la etiqueta va en `text-neutral-high` 16.29:1; deshabilitado baja al 50 % de\n  opacidad (exento).",
+    "limitaciones": null,
+    "incorrecto": null,
+    "correcto": null,
+    "waiAria": {
+      "nombre": "Interruptor",
+      "url": "https://www.w3.org/WAI/ARIA/apg/patterns/switch/"
+    },
     "figma": [],
     "aria": {
       "roles": [
@@ -14308,21 +15500,24 @@ export const MANIFIESTO_UI_KIT: readonly FichaComponente[] = [
         "tipo": "string",
         "porDefecto": "'id'",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "texto"
       },
       {
         "nombre": "padreKey",
         "tipo": "string",
         "porDefecto": "''",
         "requerida": false,
-        "descripcion": "El campo con el id de la fila padre: las hijas van debajo con la línea de nivel (ver `siaf-data-table`)."
+        "descripcion": "El campo con el id de la fila padre: las hijas van debajo con la línea de nivel (ver `siaf-data-table`).",
+        "control": "texto"
       },
       {
         "nombre": "reordenable",
         "tipo": "boolean",
         "porDefecto": "false",
         "requerida": false,
-        "descripcion": "Suma la manija a cada fila para reordenarlas."
+        "descripcion": "Suma la manija a cada fila para reordenarlas.",
+        "control": "booleano"
       },
       {
         "nombre": "rows",
@@ -14343,6 +15538,10 @@ export const MANIFIESTO_UI_KIT: readonly FichaComponente[] = [
     "evitar": "- Para enlace al documento, tags de estado, checkbox o historial por fila: `siaf-documents-records-table`.\n- Para paginar o seleccionar: no lo hace; va la grilla estándar alrededor (`siaf-table-controls` arriba y\n  `siaf-pagination` con `position=\"Bottom\"` y `rowPage` abajo).\n- Para ítems sin columnas (título, descripción, ícono): `siaf-list`.",
     "teclado": "- Sin `reordenable` no recibe foco: no es interactiva. El scroll es el de `siaf-data-table`, sin `tabindex`.\n- Con `reordenable`, Tab llega a la manija de cada fila; Espacio, ↑ ↓ y Escape la mueven (ver `siafReordenable`).",
     "accesibilidad": "- **1.3.1 Información y relaciones (A)**: pinta `siaf-data-table`: `<table>` con `<thead>` y un `<th>` por columna.\n  No admite `<caption>` ni `ariaLabel` (el padre debe titularla con un encabezado cercano) y no ordena columnas,\n  así que no aplica `aria-sort`.\n- **1.4.3 Contraste mínimo (AA)**: celdas en `text-neutral-high` sobre la superficie (16.29:1 / 16.53:1).",
+    "limitaciones": null,
+    "incorrecto": null,
+    "correcto": null,
+    "waiAria": null,
     "figma": [],
     "aria": {
       "roles": [],
@@ -14370,147 +15569,168 @@ export const MANIFIESTO_UI_KIT: readonly FichaComponente[] = [
         "tipo": "boolean",
         "porDefecto": "false",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "booleano"
       },
       {
         "nombre": "deleteDisabled",
         "tipo": "boolean",
         "porDefecto": "false",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "booleano"
       },
       {
         "nombre": "deleteLabel",
         "tipo": "string",
         "porDefecto": "'Eliminar filas seleccionadas'",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "texto"
       },
       {
         "nombre": "disabled",
         "tipo": "boolean",
         "porDefecto": "false",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "booleano"
       },
       {
         "nombre": "editDisabled",
         "tipo": "boolean",
         "porDefecto": "false",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "booleano"
       },
       {
         "nombre": "editLabel",
         "tipo": "string",
         "porDefecto": "'Editar fila seleccionada'",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "texto"
       },
       {
         "nombre": "exportLabel",
         "tipo": "string",
         "porDefecto": "'Exportar filas seleccionadas'",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "texto"
       },
       {
         "nombre": "hideTopPaginationOnMobile",
         "tipo": "boolean",
         "porDefecto": "false",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "booleano"
       },
       {
         "nombre": "indeterminate",
         "tipo": "boolean",
         "porDefecto": "false",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "booleano"
       },
       {
         "nombre": "menuLabel",
         "tipo": "string",
         "porDefecto": "'Mas opciones'",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "texto"
       },
       {
         "nombre": "page",
         "tipo": "number",
         "porDefecto": "1",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "numero"
       },
       {
         "nombre": "pageSize",
         "tipo": "number",
         "porDefecto": "10",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "numero"
       },
       {
         "nombre": "selectAllLabel",
         "tipo": "string",
         "porDefecto": "'Seleccionar filas'",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "texto"
       },
       {
         "nombre": "selectedCount",
         "tipo": "number",
         "porDefecto": "0",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "numero"
       },
       {
         "nombre": "showDeleteAction",
         "tipo": "boolean",
         "porDefecto": "false",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "booleano"
       },
       {
         "nombre": "showEditAction",
         "tipo": "boolean",
         "porDefecto": "false",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "booleano"
       },
       {
         "nombre": "showExportAction",
         "tipo": "boolean",
         "porDefecto": "false",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "booleano"
       },
       {
         "nombre": "showMenuAction",
         "tipo": "boolean",
         "porDefecto": "false",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "booleano"
       },
       {
         "nombre": "showSelection",
         "tipo": "boolean",
         "porDefecto": "true",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "booleano"
       },
       {
         "nombre": "totalItems",
         "tipo": "number",
         "porDefecto": "0",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "numero"
       },
       {
         "nombre": "totalPages",
         "tipo": "number",
         "porDefecto": "1",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "numero"
       }
     ],
     "eventos": [
@@ -14554,6 +15774,10 @@ export const MANIFIESTO_UI_KIT: readonly FichaComponente[] = [
     "evitar": "- Armar la barra a mano con un checkbox y `siaf-pagination` en `Top`: esa paginación solo vive dentro de este\n  componente.\n- Para la paginación de abajo: `siaf-pagination` con `position=\"Bottom\"` y `rowPage`.\n- Para acciones que no dependen de la selección (crear, exportar todo): van en la cabecera de la sección con\n  `siaf-button` o `siaf-icon-dropdown-menu`; aquí solo aparecen con filas elegidas.",
     "teclado": "- **Tab**: recorre el checkbox de seleccionar todo, las acciones visibles y las flechas de la paginación.\n- **Espacio**: marca o desmarca el checkbox (nativo) y emite `selectionChange`.\n- **Enter / Espacio**: ejecutan la acción enfocada. Las flechas siguen `siaf-pagination` y las acciones proyectadas,\n  su componente.",
     "accesibilidad": "- **4.1.2 Nombre, función y valor (A)**: checkbox nativo con `aria-label` (`selectAllLabel`, «Seleccionar filas» por\n  defecto) y estado mixto con `indeterminate`; las acciones son `<button>` con `aria-label` (`editLabel`,\n  `deleteLabel`, `exportLabel` y `menuLabel`, este «Mas opciones» sin tilde); `editDisabled` y `deleteDisabled` usan\n  `disabled`.\n- **Pendiente · 4.1.3 Mensajes de estado (AA)**: el contador de la paginación superior no se anuncia al cambiar de\n  página o filtrar (lo hereda de `siaf-pagination`), y tampoco hay aviso de cuántas filas quedan elegidas.\n- **Pendiente · 2.4.3 Orden del foco (A)**: las acciones solo existen con filas elegidas: si una deja la selección\n  en 0 (p. ej. Eliminar), su botón enfocado desaparece y el foco no pasa a otro control.\n- **1.4.11 Contraste no textual (AA)**: borde del checkbox en `icon-states-enabled` (8.70:1 / 12.87:1; marcado, en\n  `icon-states-active`, 8.79:1 / 10.15:1) e íconos de acción en `text-neutral-low` (5.01:1 / 8.86:1).\n- **2.4.7 Foco visible (AA)**: sin estilo propio: el checkbox y los botones muestran el anillo nativo del navegador;\n  las flechas, el de `siaf-pagination`.\n- **2.5.8 Tamaño del objetivo (AA)**: el `<label>` del checkbox y cada acción miden 40 × 40 px.",
+    "limitaciones": null,
+    "incorrecto": null,
+    "correcto": null,
+    "waiAria": null,
     "figma": [],
     "aria": {
       "roles": [],
@@ -14621,28 +15845,32 @@ export const MANIFIESTO_UI_KIT: readonly FichaComponente[] = [
         "tipo": "string",
         "porDefecto": "'Cargando contenido de la tabla'",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "texto"
       },
       {
         "nombre": "columns",
         "tipo": "number",
         "porDefecto": "9",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "numero"
       },
       {
         "nombre": "minWidthClass",
         "tipo": "string",
         "porDefecto": "''",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "texto"
       },
       {
         "nombre": "rows",
         "tipo": "number",
         "porDefecto": "6",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "numero"
       }
     ],
     "eventos": [],
@@ -14650,6 +15878,10 @@ export const MANIFIESTO_UI_KIT: readonly FichaComponente[] = [
     "evitar": "- Para esperas que no son una tabla (procesar un archivo, grabar): `siaf-loader`, `siaf-loader-overlay` o\n  `siaf-loading-progress`.\n- Cuando la consulta ya respondió sin filas: `siaf-empty-state` o `empty-section`.\n- Con columnas o ancho distintos de la tabla real: pasar los mismos `columns` y `minWidthClass` para que la\n  pantalla no salte al terminar.",
     "teclado": "- No recibe foco: no es interactivo.",
     "accesibilidad": "- **4.1.3 Mensajes de estado (AA)**: el contenedor es `role=\"status\"` con `aria-live=\"polite\"` y repite `ariaLabel`\n  en un texto `sr-only` («Cargando contenido de la tabla» por defecto); el padre debe pasar uno que diga qué se\n  carga. El fin de la carga no se anuncia: le toca a la grilla.\n- **Pendiente · 1.3.1 Información y relaciones (A)**: la tabla de barras no lleva `aria-hidden`: dentro del mensaje\n  de carga el lector puede encontrar una tabla con cabeceras `<th>` vacías.",
+    "limitaciones": null,
+    "incorrecto": null,
+    "correcto": null,
+    "waiAria": null,
     "figma": [],
     "aria": {
       "roles": [
@@ -14711,35 +15943,40 @@ export const MANIFIESTO_UI_KIT: readonly FichaComponente[] = [
         "tipo": "string",
         "porDefecto": "''",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "texto"
       },
       {
         "nombre": "ariaLabel",
         "tipo": "string",
         "porDefecto": "''",
         "requerida": false,
-        "descripcion": "Nombre accesible de la fila de pestañas."
+        "descripcion": "Nombre accesible de la fila de pestañas.",
+        "control": "texto"
       },
       {
         "nombre": "border",
         "tipo": "boolean",
         "porDefecto": "true",
         "requerida": false,
-        "descripcion": "Figma «Border»: `true` dibuja la activa como carpeta; `false`, con subrayado azul."
+        "descripcion": "Figma «Border»: `true` dibuja la activa como carpeta; `false`, con subrayado azul.",
+        "control": "booleano"
       },
       {
         "nombre": "fullWidth",
         "tipo": "boolean",
         "porDefecto": "false",
         "requerida": false,
-        "descripcion": "Reparte el ancho disponible entre las pestañas."
+        "descripcion": "Reparte el ancho disponible entre las pestañas.",
+        "control": "booleano"
       },
       {
         "nombre": "idBase",
         "tipo": "string",
         "porDefecto": "''",
         "requerida": false,
-        "descripcion": "Prefijo de los ids de las pestañas (`idBase-idDeLaPestaña`), para que el panel los cite en `aria-labelledby`."
+        "descripcion": "Prefijo de los ids de las pestañas (`idBase-idDeLaPestaña`), para que el panel los cite en `aria-labelledby`.",
+        "control": "texto"
       },
       {
         "nombre": "tabs",
@@ -14765,6 +16002,13 @@ export const MANIFIESTO_UI_KIT: readonly FichaComponente[] = [
     "evitar": "- Para acciones o para navegar a otra ruta: usar `siaf-button` o un enlace.\n- Para seguir un flujo por etapas: usar `siaf-steps` o `siaf-action-tracker`.\n- Pestañas anidadas dentro de otra pestaña.\n- Esconder una vista que el usuario no puede abrir si el diseño la muestra: marcarla `disabled`.",
     "teclado": "- **Tab**: entra a la fila en la pestaña activa (o en la primera habilitada, si ninguna lo está) y el siguiente Tab\n  sale de la fila.\n- **Flecha izquierda / derecha**: pasan a la pestaña habilitada anterior o siguiente (dan la vuelta) y la activan.\n- **Inicio / Fin**: van a la primera o a la última pestaña habilitada y la activan.\n- **Enter / Espacio**: activan la pestaña enfocada (cada pestaña es un `<button>`). Las deshabilitadas no reciben\n  foco.",
     "accesibilidad": "- **4.1.2 Nombre, función y valor (A)**: la fila es `role=\"tablist\"` y cada pestaña un `<button>` con `role=\"tab\"` y\n  `aria-selected`. El padre debe dar `ariaLabel` a la fila (por defecto va vacío) y, en el contenido,\n  `role=\"tabpanel\"` con `aria-labelledby` apuntando al id de la pestaña (`idBase` + `-` + id de la pestaña); hoy solo\n  lo hace la ficha del `/ui-kit`.\n- **2.1.1 Teclado (A)**: flechas izquierda y derecha, Inicio y Fin; solo la activa (o la primera, si ninguna lo está)\n  entra en el orden de tabulación (roving tabindex).\n- **2.4.7 Foco visible (AA)**: `:focus-visible` pinta un contorno interior azul de 2 px (`border-states-focus`,\n  5.35:1 claro / 10.15:1 oscuro) sobre la capa `bg-states-light-focus`. Es un `outline`, no una sombra: en la\n  pestaña activa, que es la que recibe el foco, la sombra del subrayado o de la carpeta ya no lo tapa.\n- **1.4.3 Contraste mínimo (AA)**: activa `text-neutral-activated` (8.79:1 claro / 17.76:1 oscuro) e inactivas\n  `text-neutral-low` (5.01:1 / 8.86:1) sobre la superficie; con `border=false` el fondo es el del padre.\n- **1.4.1 Uso del color (A)**: la activa además va en negrita, así que el estado no depende del subrayado\n  (`border-states-active`, 2.02:1 en oscuro) ni del borde de carpeta.\n- **2.5.8 Tamaño del objetivo (AA)**: cada pestaña mide al menos 40 px de alto.\n- **4.1.2 Nombre, función y valor (A)**: una pestaña `disabled` es un `<button disabled>`, así que el lector la anuncia\n  como no disponible; su texto tenue (`text-neutral-disabled`) está exento de 1.4.3 por ser un control inactivo.",
+    "limitaciones": null,
+    "incorrecto": null,
+    "correcto": null,
+    "waiAria": {
+      "nombre": "Pestañas",
+      "url": "https://www.w3.org/WAI/ARIA/apg/patterns/tabs/"
+    },
     "figma": [
       {
         "nodo": "2588:135",
@@ -14889,63 +16133,82 @@ export const MANIFIESTO_UI_KIT: readonly FichaComponente[] = [
         "tipo": "boolean",
         "porDefecto": "false",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "booleano"
       },
       {
         "nombre": "dragged",
         "tipo": "boolean",
         "porDefecto": "false",
         "requerida": false,
-        "descripcion": "Estado visual de arrastre del Figma (capa y sombra); no arrastra nada."
+        "descripcion": "Estado visual de arrastre del Figma (capa y sombra); no arrastra nada.",
+        "control": "booleano"
       },
       {
         "nombre": "expanded",
         "tipo": "boolean | null",
         "porDefecto": "null",
         "requerida": false,
-        "descripcion": "En `filter`: si el menú que abre está abierto; con valor, publica `aria-expanded` y gira la flecha."
+        "descripcion": "En `filter`: si el menú que abre está abierto; con valor, publica `aria-expanded` y gira la flecha.",
+        "control": "booleano"
       },
       {
         "nombre": "icon",
         "tipo": "string",
         "porDefecto": "''",
         "requerida": false,
-        "descripcion": "Ícono inicial de Material Icons. En `filter`, sin él, el check aparece al estar elegido."
+        "descripcion": "Ícono inicial de Material Icons. En `filter`, sin él, el check aparece al estar elegido.",
+        "control": "texto"
       },
       {
         "nombre": "removable",
         "tipo": "boolean",
         "porDefecto": "false",
         "requerida": false,
-        "descripcion": "Muestra la × (en `input` y `filter`); se oculta con `disabled`."
+        "descripcion": "Muestra la × (en `input` y `filter`); se oculta con `disabled`.",
+        "control": "booleano"
       },
       {
         "nombre": "removeLabel",
         "tipo": "string",
         "porDefecto": "'Quitar'",
         "requerida": false,
-        "descripcion": "Nombre de la × para el lector de pantalla: «Quitar filtro Estado»."
+        "descripcion": "Nombre de la × para el lector de pantalla: «Quitar filtro Estado».",
+        "control": "texto"
       },
       {
         "nombre": "selected",
         "tipo": "boolean",
         "porDefecto": "false",
         "requerida": false,
-        "descripcion": "Elegido: fondo y borde azules. No aplica a `action`."
+        "descripcion": "Elegido: fondo y borde azules. No aplica a `action`.",
+        "control": "booleano"
       },
       {
         "nombre": "size",
         "tipo": "'standard' | 'small'",
         "porDefecto": "'standard'",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "opciones",
+        "opciones": [
+          "standard",
+          "small"
+        ]
       },
       {
         "nombre": "variant",
         "tipo": "'input' | 'choice' | 'filter' | 'action'",
         "porDefecto": "'input'",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "opciones",
+        "opciones": [
+          "input",
+          "choice",
+          "filter",
+          "action"
+        ]
       }
     ],
     "eventos": [
@@ -14969,6 +16232,10 @@ export const MANIFIESTO_UI_KIT: readonly FichaComponente[] = [
     "evitar": "- Para el estado de un documento, un registro u otro estado con color: usar `siaf-flow-status-tag`,\n  `siaf-record-status-tag` o `siaf-status-tag`.\n- Para un filtro con menú hecho a mano: usar `siaf-filter-pill`, que ya dibuja con `filter`.\n- Para la acción principal de una pantalla o un formulario: usar `siaf-button`.\n- Para contadores o avisos de novedades: usar `siaf-badge`.",
     "teclado": "- **Tab**: enfoca el botón del tag (`choice`, `filter` y `action`) y, si tiene, su ×; `input` sin × no recibe foco.\n- **Enter / Espacio**: en `choice` elige o deselecciona; en `filter` y `action` emiten `clicked`; sobre la ×, emiten\n  `removed`.",
     "accesibilidad": "- **4.1.2 Nombre, función y valor (A)**: `choice`, `filter` y `action` son `<button>` nombrados por su texto; `choice`\n  publica `aria-pressed` y `filter`, con `expanded`, `aria-haspopup=\"menu\"` y `aria-expanded`. La × es otro `<button>`\n  con `aria-label` (`removeLabel`), al lado del principal y no dentro.\n- **2.4.7 Foco visible (AA)**: con el foco en el botón o en la ×, el tag pinta la capa y el borde de foco del Figma y\n  el anillo del kit, 2 px `border-states-focus` separado 2 px (5.35:1 claro / 10.15:1 oscuro).\n- **1.4.1 Uso del color (A)**: `filter` elegido suma el check; `choice` elegido solo cambia de color en pantalla, y el\n  lector lo sabe por `aria-pressed`.\n- **1.4.3 Contraste mínimo (AA)**: sin elegir, `text-neutral-medium` sobre la superficie (14.53:1 claro / 12.87:1\n  oscuro); elegido, `text-neutral-activated` sobre la capa `bg-states-light-selected` (7.69:1 / 17.15:1).\n  Deshabilitado queda fuera del criterio.\n- **2.4.3 Orden del foco (A)**: al quitar un tag, la × desaparece con el foco adentro: quien lo quita lleva el foco a\n  otro control, como `siaf-filter-pill`, que lo deja en el botón de la píldora.\n- **Pendiente · 1.4.11 Contraste no textual (AA)**: el borde sin elegir es `border-states-enabled` (2.44:1 claro /\n  2.59:1 oscuro) y el de elegido, `border-states-active`, baja a 2.02:1 en oscuro.\n- **Pendiente · 2.5.8 Tamaño del objetivo (AA)**: la × mide 20 × 20 px, pegada al botón principal.",
+    "limitaciones": "El texto que se lee junto va en el mismo nodo: entre dos `span`, Angular quita el espacio y se lee «Estado:Aprobado».",
+    "incorrecto": "<siaf-tag><span>Estado:</span> <span>Aprobado</span></siaf-tag>",
+    "correcto": "<siaf-tag>Estado: Aprobado</siaf-tag>",
+    "waiAria": null,
     "figma": [
       {
         "nodo": "12474:5170",
@@ -15145,21 +16412,24 @@ export const MANIFIESTO_UI_KIT: readonly FichaComponente[] = [
         "tipo": "number",
         "porDefecto": "-1",
         "requerida": false,
-        "descripcion": "Índice del hito en curso (desde 0). -1: sin empezar; `items.length`: terminado."
+        "descripcion": "Índice del hito en curso (desde 0). -1: sin empezar; `items.length`: terminado.",
+        "control": "numero"
       },
       {
         "nombre": "detailLabel",
         "tipo": "string",
         "porDefecto": "'Ver detalle'",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "texto"
       },
       {
         "nombre": "itemLabel",
         "tipo": "string",
         "porDefecto": "'hito'",
         "requerida": false,
-        "descripcion": "Cómo se llama un hito en el resumen del detalle: «9 procedimientos completados de 11»."
+        "descripcion": "Cómo se llama un hito en el resumen del detalle: «9 procedimientos completados de 11».",
+        "control": "texto"
       },
       {
         "nombre": "items",
@@ -15173,35 +16443,40 @@ export const MANIFIESTO_UI_KIT: readonly FichaComponente[] = [
         "tipo": "string",
         "porDefecto": "'hitos'",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "texto"
       },
       {
         "nombre": "openDetailPanel",
         "tipo": "boolean",
         "porDefecto": "true",
         "requerida": false,
-        "descripcion": "Si «Ver detalle» abre el panel de detalle incluido. En `false` solo emite `detail`."
+        "descripcion": "Si «Ver detalle» abre el panel de detalle incluido. En `false` solo emite `detail`.",
+        "control": "booleano"
       },
       {
         "nombre": "processName",
         "tipo": "string",
         "porDefecto": "''",
         "requerida": false,
-        "descripcion": "Nombre del proceso en la tarjeta del detalle; por defecto, el `title`."
+        "descripcion": "Nombre del proceso en la tarjeta del detalle; por defecto, el `title`.",
+        "control": "texto"
       },
       {
         "nombre": "showDetail",
         "tipo": "boolean",
         "porDefecto": "true",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "booleano"
       },
       {
         "nombre": "title",
         "tipo": "string",
         "porDefecto": "''",
         "requerida": false,
-        "descripcion": "Qué proceso se sigue; va en mayúsculas y se corta con tooltip si no entra."
+        "descripcion": "Qué proceso se sigue; va en mayúsculas y se corta con tooltip si no entra.",
+        "control": "texto"
       }
     ],
     "eventos": [
@@ -15215,6 +16490,10 @@ export const MANIFIESTO_UI_KIT: readonly FichaComponente[] = [
     "evitar": "- Para el flujo de aprobación de una solicitud (Elaborado, Verificado, Aprobado): usar `siaf-action-tracker`.\n- Para pasos con el nombre siempre visible: usar `siaf-steps`; aquí el nombre de cada hito solo sale en el tooltip.\n- Con muchos hitos en poco ancho: cada hito mide al menos 16 px y los puntos se amontonan; usar `siaf-steps`\n  vertical.\n- Para un porcentaje sin hitos: usar `siaf-loading-progress` o `siaf-progress-circular`.",
     "teclado": "- **Tab**: pasa por «Ver detalle» y luego por cada punto de la barra; al enfocar un punto aparece su tooltip con\n  nombre y fecha.\n- **Enter / Espacio** en «Ver detalle»: abren `siaf-timeline-detail-panel` y emiten `detail` (sigue `siaf-button`).\n- El panel de detalle se cierra con su X o con Escape; el foco vuelve a «Ver detalle».",
     "accesibilidad": "- **1.3.1 Información y relaciones (A)**: los hitos son una lista ordenada (`ol` y `li`) dentro de un `section`\n  con `aria-label` igual al título, que además es un `h3`.\n- **Pendiente · 4.1.2 Nombre, función y valor (A)**: cada punto anuncia «Hito N de M: nombre · fecha, estado» y el\n  actual lleva `aria-current=\"step\"`, pero es un `span` con `tabindex=\"0\"` sin rol: ARIA no admite `aria-label` en\n  un elemento genérico y no todos los lectores de pantalla lo leen.\n- **1.4.1 Uso del color (A)**: el avance se ve por el largo de la barra llena, que llega hasta el hito en curso, no\n  solo por el tono de los puntos.\n- **1.4.3 Contraste mínimo (AA)**: título `text-neutral-high` 16.29:1 (oscuro 16.53:1) sobre la superficie.\n- **Pendiente · 1.4.11 Contraste no textual (AA)**: en oscuro la barra llena y el contorno de foco de los puntos\n  (`bg-brand-primary`) dan 2.66:1 sobre la superficie; en los hitos cumplidos ese contorno además se funde con la\n  barra del mismo color.\n- **1.4.13 Contenido en hover o foco (AA)**: el tooltip de los puntos se cierra con Escape y se puede recorrer con el\n  puntero.\n- **Pendiente · 2.1.1 Teclado (A)**: el título truncado no recibe foco: su texto completo solo sale con el puntero\n  (el lector de pantalla sí lo lee entero).\n- **2.4.7 Foco visible (AA)**: cada punto muestra un contorno de 2 px `border-states-focus` (5.35:1 claro / 10.15:1\n  oscuro); «Ver detalle» sigue `siaf-button`.\n- **2.4.3 Orden del foco (A)**: el panel de «Ver detalle» (`siaf-timeline-detail-panel`, con `siafFoco`) lleva el\n  foco a su X al abrir, cierra con Escape y lo devuelve a «Ver detalle».",
+    "limitaciones": null,
+    "incorrecto": null,
+    "correcto": null,
+    "waiAria": null,
     "figma": [
       {
         "nodo": "19149:1300",
@@ -15314,14 +16593,16 @@ export const MANIFIESTO_UI_KIT: readonly FichaComponente[] = [
         "tipo": "number",
         "porDefecto": "-1",
         "requerida": false,
-        "descripcion": "Índice del hito en curso (desde 0), igual que en `siaf-timeline`."
+        "descripcion": "Índice del hito en curso (desde 0), igual que en `siaf-timeline`.",
+        "control": "numero"
       },
       {
         "nombre": "itemLabel",
         "tipo": "string",
         "porDefecto": "'hito'",
         "requerida": false,
-        "descripcion": "Cómo se llama un hito en el resumen, en singular y plural: «9 procedimientos completados de 11»."
+        "descripcion": "Cómo se llama un hito en el resumen, en singular y plural: «9 procedimientos completados de 11».",
+        "control": "texto"
       },
       {
         "nombre": "items",
@@ -15335,28 +16616,32 @@ export const MANIFIESTO_UI_KIT: readonly FichaComponente[] = [
         "tipo": "string",
         "porDefecto": "'hitos'",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "texto"
       },
       {
         "nombre": "open",
         "tipo": "boolean",
         "porDefecto": "false",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "booleano"
       },
       {
         "nombre": "processName",
         "tipo": "string",
         "porDefecto": "''",
         "requerida": false,
-        "descripcion": "Nombre del proceso en la tarjeta de avance (va en mayúsculas)."
+        "descripcion": "Nombre del proceso en la tarjeta de avance (va en mayúsculas).",
+        "control": "texto"
       },
       {
         "nombre": "title",
         "tipo": "string",
         "porDefecto": "'Detalle del seguimiento'",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "texto"
       }
     ],
     "eventos": [
@@ -15370,6 +16655,10 @@ export const MANIFIESTO_UI_KIT: readonly FichaComponente[] = [
     "evitar": "- Para el historial de acciones de una solicitud (quién verificó, aprobó u observó): usar\n  `siaf-document-history-panel` o `siaf-action-tracker`.\n- Para los pasos de un formulario o asistente: usar `siaf-steps`.\n- Para la barra de avance dentro de la página: usar `siaf-timeline`, que ya abre este panel.",
     "teclado": "- **Tab**: al abrir, el foco entra en la X, el único control, y no sale del panel.\n- **Enter / Espacio**: la X cierra el panel (emite `closed`).\n- **Escape**: cierra el panel (emite `closed`) y el foco vuelve a «Ver detalle».",
     "accesibilidad": "- **4.1.2 Nombre, función y valor (A)**: `role=\"dialog\"` con `aria-modal=\"true\"` y `aria-labelledby` al título (id\n  propio por instancia); la barra es `role=\"progressbar\"` con `aria-valuenow`, `aria-valuemax` y el resumen como\n  nombre, y el hito en curso lleva `aria-current=\"step\"`.\n- **2.4.3 Orden del foco (A)**: con `siafFoco`, al abrir lleva el foco a la X y al cerrar lo devuelve a «Ver detalle».\n- **2.1.2 Sin trampas de teclado (A)**: Tab queda dentro mientras está abierto, pero Escape siempre lo cierra.\n- **1.3.1 Información y relaciones (A)**: título `h2` y los hitos en una lista ordenada (`ol` / `li`) con\n  `aria-label`; el punto y la línea de cada hito son `aria-hidden`.\n- **1.4.1 Uso del color (A)**: el estado de cada hito va en texto, no solo en el color del punto: los cumplidos\n  muestran su fecha, el en curso «En proceso» y los pendientes «No iniciado».\n- **1.4.3 Contraste mínimo (AA)**: `text-neutral-high` (16.29:1 / 16.53:1), `text-neutral-medium` (14.53:1 /\n  12.87:1) y las descripciones `text-neutral-low` (5.01:1 / 8.86:1) sobre `bg-surface`.\n- **2.4.7 Foco visible (AA)**: la X no tiene estilo de foco propio ni `outline-none`: queda el anillo nativo del\n  navegador.\n- **2.5.8 Tamaño del objetivo (AA)**: la X mide 40 px.",
+    "limitaciones": null,
+    "incorrecto": null,
+    "correcto": null,
+    "waiAria": null,
     "figma": [
       {
         "nodo": "20182:155604",
@@ -15496,7 +16785,7 @@ export const MANIFIESTO_UI_KIT: readonly FichaComponente[] = [
     "importacion": "@kennedy122112/siaf-rp-ui-angular",
     "archivo": "node_modules/@kennedy122112/siaf-rp-ui-angular/types/kennedy122112-siaf-rp-ui-angular.d.ts",
     "descripcion": "Vista de la Bandeja de Documentos: la grilla de una sección (`title` = Recibidos, Enviados,\nBorradores o Papelera) con buscador, filtros de Estado y Tipo de acción, filtros personalizados y favoritos.\n\nLas filas salen de `FuenteBandeja` (los documentos del rol vigente, que provee el proyecto: el kit no llama a\nninguna API) y se recortan con `SECTION_STATES`, que define qué estados ve cada sección; sin filtro de estado explícito\nordena \"pendientes primero\". El buscador es `siaf-records-search-toolbar`, la misma barra de Documentos y registros,\ncon los menús Campos y Favorito y el botón Más opciones proyectados: solo aplica con Enter o la lupa.",
-    "usaSesion": true,
+    "usaSesion": false,
     "proyectaContenido": false,
     "entradas": [
       {
@@ -15504,7 +16793,8 @@ export const MANIFIESTO_UI_KIT: readonly FichaComponente[] = [
         "tipo": "string",
         "porDefecto": "'Borradores'",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "texto"
       }
     ],
     "eventos": [],
@@ -15512,6 +16802,10 @@ export const MANIFIESTO_UI_KIT: readonly FichaComponente[] = [
     "evitar": "- Para los documentos de un proceso (plan de cuentas, asientos de ajuste, catálogo de eventos…): usar\n  `siaf-documents-records-page`, con pestañas Documentos / Registros e historial.\n- Para la sección Notificaciones de la bandeja: usar `siaf-tray-notifications-view`.\n- Como base de una grilla nueva: varios controles aún no hacen nada (casillas, Campos, Favorito, Más opciones,\n  Historial e Inicio); partir de `siaf-table-controls`, `siaf-documents-records-table` y `siaf-pagination`.",
     "teclado": "- **Enter** en el buscador: aplica la búsqueda, igual que la lupa; escribir no filtra por sí solo.\n- **Enter / Espacio** en la X de un filtro personalizado: lo quita; sobre el resto del chip, lo abre para editarlo.\n- **Tab**: al abrir el panel de filtros personalizados el foco entra en su primer campo, aunque se pinte después de\n  la paginación; se cierra con Aplicar, Cancelar o Escape.\n- Los demás controles siguen su componente: `siaf-records-search-toolbar`, `siaf-filter-pill`, `siaf-icon-dropdown-menu`,\n  `siaf-table-controls`, `siaf-pagination` y `siaf-custom-filter`.",
     "accesibilidad": "- **Pendiente · 1.3.1 Información y relaciones (A)**: `h1`, `h2` y `<table>` con `<th>` están bien, pero la ruta de\n  navegación es un `nav` hecho a mano, sin `ol`/`li` ni `aria-current` (`siaf-breadcrumb` ya lo resuelve); las\n  columnas de casilla e Historial tienen `<th>` vacío y el encabezado «Fecha de re...» viene cortado en el texto.\n- **Pendiente · 1.4.3 Contraste mínimo (AA)**: celdas en `text-neutral-medium` sobre la superficie (14.53:1 / 12.87:1),\n  pero la etiqueta Observado (`siaf-flow-status-tag`) queda en 3.39:1 en claro.\n- **2.4.3 Orden del foco (A)**: el panel de filtros personalizados (`siaf-custom-filter`) recibe el foco al abrirse,\n  cierra con Escape y lo devuelve al botón que lo abrió, aunque se pinte después de la grilla.\n- **2.4.7 Foco visible (AA)**: los botones propios (Inicio, Más opciones, chips de filtro personalizado, «Agregar\n  filtro personalizado» e Historial) y las casillas no tienen estilo de foco y quedan con el anillo del navegador;\n  los controles del kit traen el suyo.\n- **Pendiente · 2.5.8 Tamaño del objetivo (AA)**: la X para quitar un filtro personalizado mide 20 px (`size-5`) y está\n  dentro del chip, que es otro objetivo.\n- **Pendiente · 4.1.2 Nombre, función y valor (A)**: las casillas de fila no tienen nombre; el chip de filtro\n  personalizado se llama siempre «Filtro personalizado aplicado» (tapa campo y valor) y su X es un `role=\"button\"`\n  dentro de otro `<button>`, que los lectores no anuncian bien; «Agregar filtro personalizado» no publica\n  `aria-expanded`.\n- **Pendiente · 4.1.3 Mensajes de estado (AA)**: buscar, filtrar o paginar cambia la grilla y el contador «1-10 de N»\n  sin anunciarlo, y sin resultados la tabla queda vacía, sin mensaje.",
+    "limitaciones": null,
+    "incorrecto": null,
+    "correcto": null,
+    "waiAria": null,
     "figma": [],
     "aria": {
       "roles": [
@@ -15685,7 +16979,7 @@ export const MANIFIESTO_UI_KIT: readonly FichaComponente[] = [
     "importacion": "@kennedy122112/siaf-rp-ui-angular",
     "archivo": "node_modules/@kennedy122112/siaf-rp-ui-angular/types/kennedy122112-siaf-rp-ui-angular.d.ts",
     "descripcion": "Menú de la Bandeja de Documentos: lista Recibidos, Enviados, Borradores, Notificaciones y Papelera\ncon su contador, y emite en `selected` la sección elegida.\n\nLos contadores son un `computed` que depende del rol: los de `FuenteBandeja` para las secciones (el aprobador no\ntiene Borradores ni Papelera) y `FuenteNotificaciones.sinLeer()` —la misma fuente que la campana del navbar— para\nNotificaciones. Las dos las provee el proyecto. Se muestran a dos dígitos, tope '99+'.",
-    "usaSesion": true,
+    "usaSesion": false,
     "proyectaContenido": false,
     "entradas": [
       {
@@ -15693,7 +16987,8 @@ export const MANIFIESTO_UI_KIT: readonly FichaComponente[] = [
         "tipo": "string",
         "porDefecto": "'Borradores'",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "texto"
       }
     ],
     "eventos": [
@@ -15707,6 +17002,10 @@ export const MANIFIESTO_UI_KIT: readonly FichaComponente[] = [
     "evitar": "- Para la navegación principal: usar `siaf-sidebar` o `siaf-mobile-navigation-menu`.\n- Para alternar secciones dentro de una pantalla (Documentos / Registros): usar `siaf-tabs` o `siaf-records-tabs`.\n- Para una lista de opciones con contador fuera del armazón: usar `siaf-list` con un badge al final.",
     "teclado": "- **Tab**: recorre las cinco secciones en orden.\n- **Enter / Espacio**: emiten `selected` con la sección (Recibidos, Enviados, Borradores, Notificaciones o Papelera).",
     "accesibilidad": "- **Pendiente · 1.3.1 Información y relaciones (A)**: es un `<aside>` con `h2` y un `<nav>`, pero el `nav` no tiene\n  `aria-label` (en escritorio convive con el del rail) y las secciones son botones sueltos, sin lista `ul`/`li`.\n- **1.4.1 Uso del color (A)**: la sección elegida, además del fondo y el color, va en negrita.\n- **1.4.3 Contraste mínimo (AA)**: contadores de `siaf-badge` en blanco sobre `bg-brand-accent` (4.89:1 / 5.65:1) y,\n  en claro, secciones en `text-neutral-medium` sobre blanco (14.53:1); en oscuro el fondo es\n  `bg-surfaces-surface-highest` y falta medirlo.\n- **1.4.11 Contraste no textual (AA)**: el contorno de foco es el azul del kit (`border-states-focus`, 5.35:1 claro\n  / 10.15:1 oscuro sobre la superficie).\n- **Pendiente · 2.4.3 Orden del foco (A)**: no toma el foco al abrirse ni cierra con Escape; el armazón lo pinta\n  después del rail, así que desde Bandeja el Tab pasa antes por Procesos, Ayuda y Ajustes.\n- **2.4.7 Foco visible (AA)**: cada sección muestra un contorno azul de 2 px con `focus-visible`.\n- **Pendiente · 4.1.2 Nombre, función y valor (A)**: cada sección es un `<button>` cuyo nombre incluye el contador\n  («Recibidos 03»), pero la elegida no publica `aria-current`.\n- **4.1.3 Mensajes de estado (AA)**: los contadores se leen dentro del botón al enfocarlo; no son región viva, así que\n  avisar de una notificación nueva le toca a la campana de `siaf-navbar`.",
+    "limitaciones": null,
+    "incorrecto": null,
+    "correcto": null,
+    "waiAria": null,
     "figma": [],
     "aria": {
       "roles": [],
@@ -15814,7 +17113,7 @@ export const MANIFIESTO_UI_KIT: readonly FichaComponente[] = [
     "importacion": "@kennedy122112/siaf-rp-ui-angular",
     "archivo": "node_modules/@kennedy122112/siaf-rp-ui-angular/types/kennedy122112-siaf-rp-ui-angular.d.ts",
     "descripcion": "Sección Notificaciones de la bandeja: historial paginado con filtro Todas / No leídas / Leídas\ny acción \"Marcar todas como leídas\".\n\nEl historial completo y el marcado masivo salen de `FuenteNotificaciones`, la misma de la campana del navbar\n(que así queda en cero), que provee el proyecto: el kit no llama a ninguna API. Mientras carga muestra skeletons.\nAl hacer clic navega a la `ruta` de la notificación.",
-    "usaSesion": true,
+    "usaSesion": false,
     "proyectaContenido": false,
     "entradas": [],
     "eventos": [],
@@ -15822,6 +17121,10 @@ export const MANIFIESTO_UI_KIT: readonly FichaComponente[] = [
     "evitar": "- Para un vistazo rápido desde cualquier pantalla: usar la campana de `siaf-navbar`, que abre\n  `siaf-notifications-panel`.\n- Para las demás secciones de la bandeja (Recibidos, Enviados, Borradores, Papelera): usar `siaf-tray-documents-view`.\n- Para el historial de un documento o registro: usar `siaf-document-history-panel` o `siaf-action-tracker`.",
     "teclado": "- **Tab**: recorre el Inicio de la ruta (sin acción), «Marcar todas como leídas» si hay no leídas, las tres pestañas\n  de filtro (cada una es una parada), la paginación de arriba, las notificaciones y la de abajo.\n- **Enter / Espacio**: en una pestaña aplica el filtro y vuelve a la página 1; en una notificación abre su documento,\n  si lo tiene; en «Marcar todas como leídas», las marca.\n- La paginación sigue `siaf-table-controls` y `siaf-pagination`.",
     "accesibilidad": "- **Pendiente · 1.3.1 Información y relaciones (A)**: `h1`, `h2` y notificaciones en lista `ul`/`li`, pero la ruta de\n  navegación es un `nav` hecho a mano, sin `ol`/`li` ni `aria-current` (`siaf-breadcrumb` ya lo resuelve), y leída o\n  no leída solo se ve por el punto azul, que es `aria-hidden`.\n- **Pendiente · 1.4.3 Contraste mínimo (AA)**: título `text-text` 16.29:1 / 16.53:1, mensaje `text-neutral-medium`\n  14.53:1 / 12.87:1, fecha y pestañas inactivas `text-neutral-low` 5.01:1 / 8.86:1 y pestaña activa blanca sobre\n  `bg-brand-primary` 8.79:1 / 6.67:1; pero «Marcar todas como leídas» usa la clase `text-brand-primary` (azul de\n  fondo de marca) y en oscuro queda en 2.66:1.\n- **Pendiente · 1.4.11 Contraste no textual (AA)**: en oscuro, el punto de no leída, el relleno de la pestaña activa y\n  el contorno de foco, todos en `brand-primary`, quedan en 2.66:1 sobre la superficie.\n- **Pendiente · 2.4.3 Orden del foco (A)**: al usar «Marcar todas como leídas» el botón desaparece y el foco se pierde.\n- **2.4.7 Foco visible (AA)**: las notificaciones y «Marcar todas como leídas» muestran un contorno azul de 2 px con\n  `focus-visible`; las pestañas y el Inicio de la ruta no tienen estilo propio y quedan con el anillo del navegador.\n- **Pendiente · 4.1.2 Nombre, función y valor (A)**: el filtro es `role=\"tablist\"` con `role=\"tab\"` y `aria-selected`,\n  pero sin `role=\"tabpanel\"` ni flechas, y cada pestaña es una parada de Tab; `siaf-tabs` ya lo resuelve.\n- **Pendiente · 4.1.3 Mensajes de estado (AA)**: la carga solo marca `aria-busy`, y no se anuncian el resultado de\n  filtrar, el vacío «No hay notificaciones para mostrar.» ni el marcado de todas como leídas.",
+    "limitaciones": null,
+    "incorrecto": null,
+    "correcto": null,
+    "waiAria": null,
     "figma": [],
     "aria": {
       "roles": [
@@ -15991,6 +17294,10 @@ export const MANIFIESTO_UI_KIT: readonly FichaComponente[] = [
     "evitar": "- Para el menú de Procesos o de Ajustes: `siaf-process-menu-tree`, el árbol real de la app, con búsqueda.\n- Si el usuario debe abrir o cerrar ramas o elegir un nodo: no tiene clic, teclado ni roles de árbol; para secciones\n  plegables, `siaf-accordion` o `siaf-expansion-panel`.\n- Para una lista plana de ítems: `siaf-list`.",
     "teclado": "- No recibe foco: no es interactivo. Los nodos no se abren ni se cierran: lo decide `expanded` en los datos.",
     "accesibilidad": "- **1.3.1 Información y relaciones (A)**: la jerarquía va en listas `<ul>` y `<li>` anidadas.\n- **Pendiente · 1.1.1 Contenido no textual (A)**: el chevron (`chevron_right` / `expand_more`) y el punto de hoja\n  dicen si el nodo tiene hijos y si está abierto, pero son `siaf-icon` decorativos (`aria-hidden`) y no hay\n  `aria-expanded`: un nodo cerrado no anuncia que tiene hijos ocultos.\n- **1.4.3 Contraste mínimo (AA)**: etiquetas en `text-neutral-high` (16.29:1 / 16.53:1) sobre la superficie; los\n  íconos, en `text-neutral-low` (5.01:1 / 8.86:1), superan el 3:1 no textual.",
+    "limitaciones": null,
+    "incorrecto": null,
+    "correcto": null,
+    "waiAria": null,
     "figma": [],
     "aria": {
       "roles": [],
@@ -16049,42 +17356,48 @@ export const MANIFIESTO_UI_KIT: readonly FichaComponente[] = [
         "tipo": "string",
         "porDefecto": "'.pdf'",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "texto"
       },
       {
         "nombre": "acceptedLabel",
         "tipo": "string",
         "porDefecto": "'Solo admite archivos .pdf'",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "texto"
       },
       {
         "nombre": "description",
         "tipo": "string",
         "porDefecto": "'Sube un archivo .PDF en el formato correcto.'",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "texto"
       },
       {
         "nombre": "hint",
         "tipo": "string",
         "porDefecto": "'Se permiten archivos de 10 MB como máximo'",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "texto"
       },
       {
         "nombre": "maxSizeMb",
         "tipo": "number",
         "porDefecto": "10",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "numero"
       },
       {
         "nombre": "open",
         "tipo": "boolean",
         "porDefecto": "false",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "booleano"
       },
       {
         "nombre": "planTypeOptions",
@@ -16098,7 +17411,8 @@ export const MANIFIESTO_UI_KIT: readonly FichaComponente[] = [
         "tipo": "string",
         "porDefecto": "''",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "texto"
       },
       {
         "nombre": "replacementPlanOptions",
@@ -16112,42 +17426,52 @@ export const MANIFIESTO_UI_KIT: readonly FichaComponente[] = [
         "tipo": "boolean",
         "porDefecto": "false",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "booleano"
       },
       {
         "nombre": "replacementPlanValue",
         "tipo": "string",
         "porDefecto": "''",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "texto"
       },
       {
         "nombre": "templateDownloadName",
         "tipo": "string",
         "porDefecto": "''",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "texto"
       },
       {
         "nombre": "templateHref",
         "tipo": "string",
         "porDefecto": "''",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "texto"
       },
       {
         "nombre": "title",
         "tipo": "string",
         "porDefecto": "'Cargar Documento de Sustento'",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "texto"
       },
       {
         "nombre": "variant",
         "tipo": "'default' | 'bulk-chart-accounts'",
         "porDefecto": "'default'",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "opciones",
+        "opciones": [
+          "default",
+          "bulk-chart-accounts"
+        ]
       }
     ],
     "eventos": [
@@ -16181,6 +17505,10 @@ export const MANIFIESTO_UI_KIT: readonly FichaComponente[] = [
     "evitar": "- Para una carga embebida en la página, sin panel: usar `siaf-uploader` directo.\n- Para mostrar un archivo ya adjunto: usar `siaf-uploaded-file-card`.\n- Para elegir registros de un catálogo: usar `siaf-selection-side-nav`.",
     "teclado": "- **Tab**: al abrir, el foco entra en la X; recorre, en carga masiva, los dos selects y el enlace de plantilla, el\n  «elige archivo» de `siaf-uploader` y Cancelar / Aceptar, y da la vuelta sin salir del panel. Los selects siguen\n  `siaf-input`.\n- **Escape**: cierra el panel (emite `closed`) y el foco vuelve al botón que lo abrió; con la lista de un select\n  abierta, Escape cierra solo la lista.\n- **Enter / Espacio** en «elige archivo»: abre el selector de archivos del sistema (input de archivo nativo);\n  arrastrar y soltar es solo con mouse.\n- **Enter** en el enlace de plantilla: la descarga.\n- **Enter / Espacio**: activan la X y Cancelar (emiten `closed`) y Aceptar (emite `confirmed` con el archivo;\n  habilitado cuando hay un archivo cargado en su tarjeta y, en carga masiva, los selects obligatorios tienen valor).",
     "accesibilidad": "- **4.1.2 Nombre, función y valor (A)**: `role=\"dialog\"` con `aria-modal=\"true\"` y `aria-labelledby` al título; la X\n  se llama «Cerrar».\n- **2.4.3 Orden del foco (A)**: con `siafFoco`, al abrir lleva el foco a la X y al cerrar lo devuelve al botón que lo\n  abrió; Tab no sale a la página de atrás.\n- **2.1.1 Teclado (A)**: Escape cierra el panel como la X; arrastrar y soltar tiene alternativa: el input de archivo.\n- **2.4.7 Foco visible (AA)**: «elige archivo» de `siaf-uploader` (variante `extended`, la de este panel) y el enlace\n  de plantilla muestran un contorno azul de 2 px (`border-states-focus`, 5.35:1 claro / 10.15:1 oscuro) con el foco;\n  la X y Cancelar quedan con el anillo nativo.\n- **Pendiente · 1.4.3 Contraste mínimo (AA)**: el enlace «descárgalo aquí» y el «elige archivo» del uploader usan la\n  clase `text-brand-primary`, que toma el fondo de marca: 8.79:1 en claro, pero 2.66:1 sobre la superficie en oscuro\n  (el token de texto `--sys-color-text-brand-primary` da 10.15:1).\n- **Pendiente · 4.1.3 Mensajes de estado (AA)**: el avance («Subiendo...») y el rechazo del archivo en\n  `siaf-uploader` no se anuncian (sin `role=\"status\"` ni `aria-live`).\n- **3.3.2 Etiquetas o instrucciones (A)**: en carga masiva los selects de `siaf-input` tienen etiqueta y marcan el\n  obligatorio; el tipo admitido y el tamaño máximo se dicen en texto (`acceptedLabel`, `hint`).\n- **2.5.8 Tamaño del objetivo (AA)**: la X y Cancelar miden 40 px.",
+    "limitaciones": null,
+    "incorrecto": null,
+    "correcto": null,
+    "waiAria": null,
     "figma": [],
     "aria": {
       "roles": [],
@@ -16254,7 +17582,8 @@ export const MANIFIESTO_UI_KIT: readonly FichaComponente[] = [
         "tipo": "string",
         "porDefecto": "''",
         "requerida": false,
-        "descripcion": "Mensaje de error del archivo (ej. «No se pudo cargar el archivo»). Si trae texto, la tarjeta se muestra fallida."
+        "descripcion": "Mensaje de error del archivo (ej. «No se pudo cargar el archivo»). Si trae texto, la tarjeta se muestra fallida.",
+        "control": "texto"
       },
       {
         "nombre": "file",
@@ -16268,7 +17597,8 @@ export const MANIFIESTO_UI_KIT: readonly FichaComponente[] = [
         "tipo": "boolean",
         "porDefecto": "false",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "booleano"
       }
     ],
     "eventos": [
@@ -16287,6 +17617,10 @@ export const MANIFIESTO_UI_KIT: readonly FichaComponente[] = [
     "evitar": "- Para elegir o arrastrar el archivo: usar `siaf-upload-side-nav` (o `siaf-uploader` embebido); esta tarjeta solo\n  muestra el que ya está adjunto.\n- Para el aviso «No se han adjuntado archivos»: usar `message-box` en vez del bloque gris que hoy repiten a mano las\n  solicitudes.\n- Para el avance de una subida en curso: usar las tarjetas de progreso de `siaf-uploader`.",
     "teclado": "- **Tab**: recorre «Reemplazar archivo» y «Quitar archivo»; con `readonly` la tarjeta no recibe foco.\n- **Enter / Espacio**: ejecutan la acción del botón enfocado.",
     "accesibilidad": "- **4.1.2 Nombre, función y valor (A)**: las acciones son `<button>` nativos con `aria-label` («Reemplazar archivo»,\n  «Quitar archivo»); los íconos son decorativos.\n- **4.1.3 Mensajes de estado (AA)**: el mensaje de error va con `role=\"alert\"` y se anuncia al aparecer.\n- **1.4.1 Uso del color (A)**: el estado fallido, además del rojo, muestra el mensaje en lugar del peso.\n- **Pendiente · 2.1.1 Teclado (A)**: un nombre largo se corta y el completo solo aparece con el mouse o una pulsación\n  larga: el `siafTooltip` está en un texto que no recibe foco.\n- **2.4.7 Foco visible (AA)**: los botones no definen estilo de foco; queda el anillo nativo del navegador.\n- **1.4.11 Contraste no textual (AA)**: los íconos de acción van en `text-neutral-low` 5.01:1 y, si falló, en\n  `text-feedback-danger` 9.84:1.\n- **1.4.3 Contraste mínimo (AA)**: nombre `text-neutral-high` 16.29:1, peso `text-neutral-low` 5.01:1 y error\n  `text-feedback-danger` 9.84:1.\n- **2.5.8 Tamaño del objetivo (AA)**: cada botón mide 24 × 24 px (`size-6`), justo el mínimo.",
+    "limitaciones": null,
+    "incorrecto": null,
+    "correcto": null,
+    "waiAria": null,
     "figma": [
       {
         "nodo": "2612:9065",
@@ -16391,35 +17725,44 @@ export const MANIFIESTO_UI_KIT: readonly FichaComponente[] = [
         "tipo": "string",
         "porDefecto": "'.pdf'",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "texto"
       },
       {
         "nombre": "hint",
         "tipo": "string",
         "porDefecto": "'Se permiten archivos de 10 MB como máximo'",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "texto"
       },
       {
         "nombre": "maxSizeMb",
         "tipo": "number",
         "porDefecto": "10",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "numero"
       },
       {
         "nombre": "multiple",
         "tipo": "boolean",
         "porDefecto": "false",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "booleano"
       },
       {
         "nombre": "variant",
         "tipo": "'extended' | 'compact'",
         "porDefecto": "'extended'",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "opciones",
+        "opciones": [
+          "extended",
+          "compact"
+        ]
       }
     ],
     "eventos": [
@@ -16443,6 +17786,10 @@ export const MANIFIESTO_UI_KIT: readonly FichaComponente[] = [
     "evitar": "- Para mostrar un archivo ya adjunto o guardado: usar `siaf-uploaded-file-card`.\n- Para el flujo de adjuntar en una solicitud: usar `siaf-upload-side-nav`, que ya trae título, Aceptar y Cancelar.\n- Para mostrar el avance real de una subida al servidor: el progreso es simulado con un temporizador.",
     "teclado": "- **Tab**: enfoca el selector de archivos (el `input type=\"file\"` oculto dentro de «elige archivo» o «Elegir\n  archivo») y después los botones de cada tarjeta (Pausar, Reintentar, Cancelar).\n- **Enter / Espacio**: en el selector abren el diálogo de archivos del sistema; en los botones, ejecutan la acción.",
     "accesibilidad": "- **2.1.1 Teclado (A)**: soltar archivos es opcional; el `input type=\"file\"` nativo permite elegirlos con teclado.\n- **2.4.7 Foco visible (AA)**: el `input type=\"file\"` va oculto con `sr-only`, así que «elige archivo» (`extended`)\n  y «Elegir archivo» (`compact`) pintan un contorno azul de 2 px (`border-states-focus`, 5.35:1 claro / 10.15:1\n  oscuro) cuando el selector recibe el foco con teclado. Los botones de las tarjetas conservan el anillo nativo.\n- **Pendiente · 4.1.3 Mensajes de estado (AA)**: ni el progreso, ni la carga terminada, ni el motivo de un rechazo se\n  anuncian: no hay `role=\"status\"`, `role=\"alert\"` ni `aria-live`, y la barra es un `div` sin `role=\"progressbar\"`.\n- **3.3.1 Identificación de errores (A)**: un archivo de tipo o tamaño inválido queda en una tarjeta roja con el\n  motivo en texto («Solo se admiten archivos .pdf»).\n- **Pendiente · 3.3.2 Etiquetas o instrucciones (A)**: la ayuda (`hint`) no se asocia al selector y `compact` no la\n  muestra.\n- **4.1.2 Nombre, función y valor (A)**: el selector se nombra con el texto de su `label`; los botones de cada\n  tarjeta tienen `aria-label` (Pausar, Reintentar, Cancelar) y los íconos son decorativos.\n- **Pendiente · 1.4.3 Contraste mínimo (AA)**: «elige archivo» usa la clase `text-brand-primary`, que pinta con\n  `bg-brand-primary`: 8.79:1 en claro, pero 2.66:1 en oscuro. El resto cumple: texto `text-neutral-high` 16.29:1,\n  ayuda y peso `text-neutral-low` 5.01:1 y error `text-feedback-danger` 9.84:1.\n- **2.5.8 Tamaño del objetivo (AA)**: los botones de las tarjetas miden 24 × 24 px (`size-6`).",
+    "limitaciones": null,
+    "incorrecto": null,
+    "correcto": null,
+    "waiAria": null,
     "figma": [],
     "aria": {
       "roles": [],
@@ -16612,6 +17959,10 @@ export const MANIFIESTO_UI_KIT: readonly FichaComponente[] = [
     "evitar": null,
     "teclado": null,
     "accesibilidad": null,
+    "limitaciones": null,
+    "incorrecto": null,
+    "correcto": null,
+    "waiAria": null,
     "figma": [],
     "aria": {
       "roles": [],
@@ -16733,63 +18084,77 @@ export const MANIFIESTO_UI_KIT: readonly FichaComponente[] = [
         "tipo": "boolean",
         "porDefecto": "false",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "booleano"
       },
       {
         "nombre": "error",
         "tipo": "string",
         "porDefecto": "''",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "texto"
       },
       {
         "nombre": "maxlength",
         "tipo": "number",
         "porDefecto": "500",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "numero"
       },
       {
         "nombre": "minlength",
         "tipo": "number",
         "porDefecto": "0",
         "requerida": false,
-        "descripcion": "Mínimo de caracteres (sin contar espacios al inicio/fin). 0 = sin mínimo."
+        "descripcion": "Mínimo de caracteres (sin contar espacios al inicio/fin). 0 = sin mínimo.",
+        "control": "numero"
       },
       {
         "nombre": "placeholder",
         "tipo": "string",
         "porDefecto": "''",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "texto"
       },
       {
         "nombre": "required",
         "tipo": "boolean",
         "porDefecto": "false",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "booleano"
       },
       {
         "nombre": "state",
         "tipo": "'success' | 'error' | 'enabled'",
         "porDefecto": "'enabled'",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "opciones",
+        "opciones": [
+          "enabled",
+          "error",
+          "success"
+        ]
       },
       {
         "nombre": "title",
         "tipo": "string",
         "porDefecto": "''",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "texto"
       },
       {
         "nombre": "value",
         "tipo": "string",
         "porDefecto": "''",
         "requerida": false,
-        "descripcion": null
+        "descripcion": null,
+        "control": "texto"
       }
     ],
     "eventos": [
@@ -16803,6 +18168,10 @@ export const MANIFIESTO_UI_KIT: readonly FichaComponente[] = [
     "evitar": "- Para textos de una línea (nombre, código, correo): usar `siaf-input`.\n- Para mostrar el texto ya grabado en modo lectura: usar `readonly-field`, como hacen las solicitudes.\n- Marcar el obligatorio con un `*` al final de `placeholder`: el componente lo quita; usar `[required]`.",
     "teclado": "- **Tab**: entra y sale del campo (en un `textarea` nativo, Tab no escribe tabulaciones).\n- **Enter**: agrega un salto de línea; al llegar a `maxlength` no deja escribir más.",
     "accesibilidad": "- **Pendiente · 1.3.1 Información y relaciones (A)**: el `<label>` envuelve el `textarea`, pero la etiqueta flotante\n  solo existe con foco o valor, y el error y el contador («0/500») están dentro del mismo `<label>`: se suman al\n  nombre en vez de ir por `aria-describedby`. Sin foco ni valor, un campo sin `title` ni `required` queda nombrado\n  por el contador y no por su `placeholder`.\n- **3.3.1 Identificación de errores (A)**: con error publica `aria-invalid=\"true\"`, borde rojo de 2 px y el texto (el\n  `error` del padre o «Mínimo N caracteres», que aparece al salir del campo). Con `state=\"error\"` y sin texto, el\n  aviso es solo el borde.\n- **3.3.2 Etiquetas o instrucciones (A)**: la etiqueta siempre se ve (dentro del campo o flotante), el obligatorio\n  lleva asterisco y `aria-required`, y el contador muestra el máximo.\n- **4.1.2 Nombre, función y valor (A)**: `textarea` nativo con `aria-required`, `aria-invalid`, `maxlength` y\n  `disabled`.\n- **2.4.7 Foco visible (AA)**: el `textarea` usa `outline-none` y el foco pinta el borde de 2 px\n  `border-states-focus` (5.35:1); con un `error` del padre el borde sigue rojo y solo queda el cursor de texto.\n- **Pendiente · 1.4.11 Contraste no textual (AA)**: el borde del campo vacío es `border-states-enabled` (2.44:1\n  claro, 2.59:1 oscuro).\n- **1.4.3 Contraste mínimo (AA)**: texto `text-neutral-medium` 14.53:1, etiqueta y contador `text-neutral-low`\n  5.01:1, título `text-neutral-high` 16.29:1 y error `text-feedback-danger` 9.84:1.",
+    "limitaciones": null,
+    "incorrecto": null,
+    "correcto": null,
+    "waiAria": null,
     "figma": [],
     "aria": {
       "roles": [],

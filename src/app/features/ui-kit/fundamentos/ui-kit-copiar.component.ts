@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, DestroyRef, Input, inject, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, DestroyRef, inject, signal, input } from '@angular/core';
 
 import { IconComponent } from '@kennedy122112/siaf-rp-ui-angular';
 
@@ -12,11 +12,11 @@ import { IconComponent } from '@kennedy122112/siaf-rp-ui-angular';
     <button
       class="group inline-flex max-w-full items-center gap-1 rounded-siaf-sm px-1 py-0.5 text-left text-text transition hover:bg-surface-muted"
       type="button"
-      [attr.aria-label]="(copiado() ? 'Copiado: ' : 'Copiar ') + (copia || texto)"
+      [attr.aria-label]="(copiado() ? 'Copiado: ' : 'Copiar ') + (copia() || texto())"
       (click)="copiar()"
     >
       <!-- La fuente va en el texto: la regla global button { font: inherit } pisa las utilidades del botón. -->
-      <span class="min-w-0 font-mono text-[12px] leading-[normal]" [class.[overflow-wrap:anywhere]]="envolver" [class.whitespace-nowrap]="!envolver">{{ texto }}</span>
+      <span class="min-w-0 font-mono text-[12px] leading-[normal]" [class.[overflow-wrap:anywhere]]="envolver()" [class.whitespace-nowrap]="!envolver()">{{ texto() }}</span>
       <siaf-icon
         class="shrink-0 text-text-muted opacity-0 transition group-hover:opacity-100 group-focus-visible:opacity-100"
         [class.opacity-100]="copiado()"
@@ -30,17 +30,17 @@ export class UiKitCopiarComponent {
   private readonly destroyRef = inject(DestroyRef);
 
   /** Lo que se ve. */
-  @Input({ required: true }) texto = '';
+  readonly texto = input.required<string>();
   /** Lo que se copia, si es distinto de lo que se ve. */
-  @Input() copia = '';
+  readonly copia = input('');
   /** Parte el texto en cualquier carácter si no cabe; en tablas va en `false` para no partir los nombres. */
-  @Input() envolver = true;
+  readonly envolver = input(true);
 
   readonly copiado = signal(false);
 
   async copiar(): Promise<void> {
     try {
-      await navigator.clipboard.writeText(this.copia || this.texto);
+      await navigator.clipboard.writeText(this.copia() || this.texto());
       this.copiado.set(true);
       const t = setTimeout(() => this.copiado.set(false), 1500);
       this.destroyRef.onDestroy(() => clearTimeout(t));

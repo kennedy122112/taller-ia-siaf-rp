@@ -2,17 +2,19 @@ import { FichaComponente } from './ui-kit.model';
 import { MANIFIESTO_UI_KIT } from './ui-kit.manifest';
 import {
   MOTIVO_SESION,
-  PosicionSeccion,
   agrupar,
   bloquesDeDescripcion,
   filtrar,
   idDeSelector,
   nombreDeUso,
-  seccionEnLectura,
+  rutaDeFicha,
+  rutaDeFundamento,
   segmentar,
   snippetUso,
+  tituloDeClase,
   urlDeNodoFigma,
   usuariosDe,
+  vecinas,
 } from './ui-kit.vista';
 
 const ficha = (extra: Partial<FichaComponente>): FichaComponente => ({
@@ -20,8 +22,8 @@ const ficha = (extra: Partial<FichaComponente>): FichaComponente => ({
   clase: 'XComponent',
   tipo: 'componente',
   capa: 'ui',
-  importacion: '@kennedy122112/siaf-rp-ui-angular',
-  archivo: 'node_modules/@kennedy122112/siaf-rp-ui-angular/types/kennedy122112-siaf-rp-ui-angular.d.ts',
+  importacion: '@siaf/ui/x/x.component',
+  archivo: 'src/app/shared/ui/x/x.component.ts',
   descripcion: '',
   usaSesion: false,
   proyectaContenido: false,
@@ -31,6 +33,10 @@ const ficha = (extra: Partial<FichaComponente>): FichaComponente => ({
   evitar: null,
   teclado: null,
   accesibilidad: null,
+  limitaciones: null,
+  incorrecto: null,
+  correcto: null,
+  waiAria: null,
   figma: [],
   aria: { roles: [], atributos: [] },
   tokens: [],
@@ -158,38 +164,38 @@ describe('ui-kit.vista', () => {
     });
   });
 
-  describe('seccionEnLectura', () => {
-    const secciones: PosicionSeccion[] = [
-      { id: 'color', arriba: -900 },
-      { id: 'siaf-icon', arriba: 40 },
-      { id: 'siaf-button', arriba: 700 },
-      { id: 'siaf-menu', arriba: 1500 },
-    ];
-
-    it('elige la última sección que ya cruzó la línea de lectura', () => {
-      expect(seccionEnLectura(secciones, 128)).toBe('siaf-icon');
-      expect(seccionEnLectura(secciones, 700)).toBe('siaf-button');
+  describe('páginas del catálogo', () => {
+    it('el título sale de la clase, con las siglas intactas', () => {
+      expect(tituloDeClase('ButtonComponent')).toBe('Button');
+      expect(tituloDeClase('IconDropdownMenuComponent')).toBe('Icon dropdown menu');
+      expect(tituloDeClase('TooltipDirective')).toBe('Tooltip');
+      expect(tituloDeClase('KPICardComponent')).toBe('KPI card');
     });
 
-    it('arriba de la primera sección (la introducción) no marca ninguna', () => {
-      expect(seccionEnLectura([{ id: 'color', arriba: 400 }], 128)).toBeNull();
-      expect(seccionEnLectura([], 128)).toBeNull();
+    it('una ficha propia enlaza a su archivo en el repositorio del taller; todas, a su versión en Markdown', () => {
+      const [grupo] = agrupar([ficha({ selector: 'siaf-x', archivo: 'src/app/layout/x/x.component.ts' })]);
+      expect(grupo.fichas[0].enlaces).toEqual({
+        codigoFuente: 'https://github.com/kennedy122112/taller-ia-siaf-rp/blob/main/src/app/layout/x/x.component.ts',
+        editar: 'https://github.com/kennedy122112/taller-ia-siaf-rp/edit/main/src/app/layout/x/x.component.ts',
+        markdown: '/ui-kit/componentes/siaf-x.md',
+      });
     });
 
-    it('deja de medir en la primera sección que está debajo de la línea', () => {
-      const medidas: string[] = [];
-      function* medir(): Generator<PosicionSeccion> {
-        for (const s of secciones) {
-          medidas.push(s.id);
-          yield s;
-        }
-      }
-      expect(seccionEnLectura(medir(), 128)).toBe('siaf-icon');
-      // siaf-menu no se mide: siaf-button ya estaba debajo de la línea.
-      expect(medidas).toEqual(['color', 'siaf-icon', 'siaf-button']);
-      medidas.length = 0;
-      expect(seccionEnLectura(medir(), -1000)).toBeNull();
-      expect(medidas).toEqual(['color']);
+    it('una ficha del kit no enlaza a su código: viene del paquete instalado', () => {
+      const [grupo] = agrupar([ficha({ selector: 'siaf-x', archivo: 'node_modules/@kennedy122112/siaf-rp-ui-angular/types/x.d.ts' })]);
+      expect(grupo.fichas[0].enlaces).toEqual({ codigoFuente: null, editar: null, markdown: '/ui-kit/componentes/siaf-x.md' });
+    });
+
+    it('cada componente y cada fundamento tiene su ruta', () => {
+      expect(rutaDeFicha('siaf-menu')).toBe('/ui-kit/componentes/siaf-menu');
+      expect(rutaDeFundamento('color')).toBe('/ui-kit/fundamentos/color');
+    });
+
+    it('la anterior y la siguiente siguen el orden de la lista', () => {
+      const lista = [{ id: 'a' }, { id: 'b' }, { id: 'c' }];
+      expect(vecinas(lista, 'b')).toEqual({ anterior: { id: 'a' }, siguiente: { id: 'c' } });
+      expect(vecinas(lista, 'a')).toEqual({ anterior: null, siguiente: { id: 'b' } });
+      expect(vecinas(lista, 'z')).toEqual({ anterior: null, siguiente: null });
     });
   });
 
@@ -198,35 +204,35 @@ describe('ui-kit.vista', () => {
 
     it('respeta el orden de categorías y el curado dentro de cada una, sin las pantallas ocultas', () => {
       expect(grupos[0].categoria.titulo).toBe('Fundamentos');
+      expect(grupos[0].fichas[0].categoria?.id).toBe('fundamentos');
+      expect(grupos[0].fichas[0].titulo).toBe('Icon');
       expect(grupos[0].fichas[0].selector).toBe('siaf-icon');
       const todos = grupos.flatMap((g) => g.fichas.map((f) => f.selector));
       expect(todos).not.toContain('siaf-app-shell');
       expect(grupos.some((g) => g.categoria.titulo === 'Otros')).toBeFalse();
     });
 
-    it('los componentes que usan la API también tienen ejemplo (con datos de muestra)', () => {
+    it('todas las fichas visibles tienen ejemplo y ninguna depende de la sesión: lo de la app llega por fuentes', () => {
       const fichas = grupos.flatMap((g) => g.fichas);
-      const navbar = fichas.find((f) => f.selector === 'siaf-navbar')!;
-      expect(navbar.usaSesion).toBeTrue();
-      expect(navbar.ejemplo).not.toBeNull();
-      expect(navbar.motivoSinEjemplo).toBeNull();
+      expect(fichas.filter((f) => f.usaSesion).map((f) => f.selector)).toEqual([]);
       expect(fichas.filter((f) => !f.ejemplo).map((f) => f.selector)).toEqual([]);
     });
 
     it('sin ejemplo, un componente con sesión explica por qué', () => {
-      const [grupo] = agrupar([{ ...MANIFIESTO_UI_KIT.find((f) => f.selector === 'siaf-navbar')!, selector: 'siaf-navbar-futuro' }]);
+      const [grupo] = agrupar([{ ...MANIFIESTO_UI_KIT.find((f) => f.selector === 'siaf-app-shell')!, selector: 'siaf-armazon-futuro' }]);
       expect(grupo.fichas[0].motivoSinEjemplo).toBe(MOTIVO_SESION);
     });
 
     it('busca sin distinguir acentos ni mayúsculas, también en la descripción', () => {
       const porDescripcion = filtrar(grupos, 'BOTÓN BASE').flatMap((g) => g.fichas.map((f) => f.selector));
       expect(porDescripcion).toContain('siaf-button');
+      expect(filtrar(grupos, 'icon dropdown').flatMap((g) => g.fichas.map((f) => f.selector))).toContain('siaf-icon-dropdown-menu');
       expect(filtrar(grupos, 'no-existe-nada')).toEqual([]);
       expect(filtrar(grupos, '   ').length).toBe(grupos.length);
     });
   });
 
-  describe('pestañas de la ficha', () => {
+  describe('secciones de la ficha', () => {
     const tabs = agrupar(MANIFIESTO_UI_KIT).flatMap((g) => g.fichas).find((f) => f.selector === 'siaf-tabs')!;
 
     it('Uso y Accesibilidad salen de @usar, @evitar, @teclado y @accesibilidad del JSDoc', () => {
@@ -239,7 +245,7 @@ describe('ui-kit.vista', () => {
       expect(tabs.descripcion).not.toContain('Para alternar entre vistas');
     });
 
-    it('Especificaciones: nodo del Figma con enlace, componentes que pinta y tokens con su valor', () => {
+    it('Figma, composición y tokens: nodo del Figma con enlace, componentes que pinta y tokens con su valor', () => {
       expect(tabs.enlacesFigma).toEqual([{ nodo: '2588:135', nombre: 'Tabs content', url: urlDeNodoFigma('2588:135') }]);
       expect(urlDeNodoFigma('2588:135')).toBe('https://www.figma.com/design/mJrG11d0rWf7BjPuE2ApPZ/?node-id=2588-135');
       expect(tabs.componentesUsados.map((c) => c.selector)).toEqual(['siaf-badge']);

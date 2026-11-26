@@ -1,21 +1,6 @@
-import { ChangeDetectionStrategy, Component, Input, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, signal, input } from '@angular/core';
 
-import {
-  CheckboxComponent,
-  DateTimePickerComponent,
-  RadioComponent,
-  RadioOption,
-  ReadonlyComponent,
-  ReadonlyFieldComponent,
-  SelectOption,
-  SelectOptionsComponent,
-  SwitchComponent,
-  TextAreaControlComponent,
-  TextFieldComponent,
-  TextFieldOption,
-  UploadedFileCardComponent,
-  UploaderComponent,
-} from '@kennedy122112/siaf-rp-ui-angular';
+import { CheckboxComponent, DateTimePickerComponent, RadioComponent, RadioOption, ReadonlyComponent, ReadonlyFieldComponent, SelectOption, SelectOptionsComponent, StatusTagComponent, SwitchComponent, TextAreaControlComponent, TextFieldComponent, TextFieldOption, UploadedFileCardComponent, UploaderComponent } from '@kennedy122112/siaf-rp-ui-angular';
 
 /** Ejemplos en vivo de la categoría Formularios. */
 @Component({
@@ -24,10 +9,10 @@ import {
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     CheckboxComponent, DateTimePickerComponent, RadioComponent, ReadonlyComponent, ReadonlyFieldComponent,
-    SelectOptionsComponent, SwitchComponent, TextAreaControlComponent, TextFieldComponent, UploadedFileCardComponent, UploaderComponent,
+    SelectOptionsComponent, StatusTagComponent, SwitchComponent, TextAreaControlComponent, TextFieldComponent, UploadedFileCardComponent, UploaderComponent,
   ],
   template: `
-    @switch (selector) {
+    @switch (selector()) {
       @case ('siaf-input') {
         <div class="space-y-6">
           <section>
@@ -76,6 +61,29 @@ import {
               <siaf-input label="Sin borde verde al escribir (autoSuccess=false)" value="Valor ya grabado" [autoSuccess]="false" />
             </div>
             <p class="mt-3 text-xs text-text-muted">clearable solo actúa en los select; en un campo de texto no muestra nada.</p>
+          </section>
+
+          <section>
+            <h5 class="mb-3 text-[11px] font-bold uppercase tracking-widest text-text-muted">Select en una tabla con scroll · floatingList</h5>
+            <div class="siaf-table-scroll min-w-0" data-ejemplo-lista-flotante>
+              <table class="w-full min-w-[560px] border-collapse text-left text-sm">
+                <thead>
+                  <tr class="text-xs font-bold uppercase text-text">
+                    <th class="px-siaf-md py-siaf-sm" scope="col">Cuenta contable</th>
+                    <th class="w-[180px] px-siaf-md py-siaf-sm" scope="col">Tipo</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr class="border-b border-divider-default text-text-neutral-medium">
+                    <td class="px-siaf-md py-siaf-sm">1101.0202 Fondos De Caja Chica</td>
+                    <td class="px-siaf-xs py-siaf-xxs">
+                      <siaf-input label="Tipo" type="select" [options]="tiposCuenta" [autoSuccess]="false" [floatingList]="true" />
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <p class="mt-3 text-xs text-text-muted">La lista flota sobre la tabla: sin floatingList, el scroll de la tabla la recorta.</p>
           </section>
         </div>
       }
@@ -148,6 +156,10 @@ import {
         <div class="grid gap-4 sm:grid-cols-2">
           <readonly-field caption="Número de documento" value="PCC-SCC-00001-2026-MEF-DGCP" />
           <readonly-field caption="Unidad ejecutora" [required]="true" value="" />
+          <readonly-field caption="Estado de conciliación">
+            <siaf-status-tag tone="success" size="small">Conciliado</siaf-status-tag>
+          </readonly-field>
+          <readonly-field caption="Crédito" value="S/ 9,753.00" variant="monto" />
         </div>
       }
       @case ('siaf-readonly') {
@@ -164,7 +176,7 @@ export class EjemplosFormulariosComponent {
     'siaf-input', 'text-area-control', 'siaf-checkbox', 'siaf-switch', 'siaf-radio-group', 'siaf-select-options',
     'siaf-date-time-picker', 'siaf-uploader', 'siaf-uploaded-file-card', 'readonly-field', 'siaf-readonly',
   ];
-  @Input({ required: true }) selector!: string;
+  readonly selector = input.required<string>();
 
   readonly opciones: TextFieldOption[] = [
     { label: 'Solicitud de cuenta contable', value: 'scc' },
@@ -174,6 +186,11 @@ export class EjemplosFormulariosComponent {
     { label: 'Gobierno Nacional', value: 'GN' },
     { label: 'Gobierno Regional', value: 'GR' },
     { label: 'Gobierno Local', value: 'GL' },
+  ];
+  /** Opciones del select dentro de una tabla con scroll (`floatingList`). */
+  readonly tiposCuenta: TextFieldOption[] = [
+    { label: 'Debe', value: 'Debe' },
+    { label: 'Haber', value: 'Haber' },
   ];
   /** Veces que se pulsó el ícono con acción del ejemplo de `trailingIcon`. */
   readonly acciones = signal(0);

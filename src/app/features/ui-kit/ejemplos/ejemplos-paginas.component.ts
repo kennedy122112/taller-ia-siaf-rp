@@ -1,19 +1,6 @@
-import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 
-import {
-  BreadcrumbItem,
-  ButtonComponent,
-  CreateDocumentComponent,
-  PageHeaderComponent,
-  PageShellComponent,
-  SolicitudeFormCardComponent,
-  SolicitudeHeaderComponent,
-  SolicitudeInfoCardComponent,
-  SolicitudeInfoField,
-  SolicitudePageLayoutComponent,
-  TextFieldComponent,
-  TextFieldOption,
-} from '@kennedy122112/siaf-rp-ui-angular';
+import { BreadcrumbItem, ButtonComponent, CreateDocumentComponent, PageHeaderComponent, PageShellComponent, SolicitudeFormCardComponent, SolicitudeHeaderComponent, SolicitudeInfoCardComponent, SolicitudeInfoField, SolicitudePageLayoutComponent, TextFieldComponent, TextFieldOption } from '@kennedy122112/siaf-rp-ui-angular';
 
 /**
  * Ejemplos en vivo de la categoría Layouts de página. El layout y la cabecera de solicitud se
@@ -31,7 +18,7 @@ import {
     SolicitudeHeaderComponent, SolicitudeInfoCardComponent, SolicitudePageLayoutComponent, TextFieldComponent,
   ],
   template: `
-    @switch (selector) {
+    @switch (selector()) {
       @case ('siaf-page-shell') {
         <div class="overflow-hidden rounded-siaf-md border border-border">
           <siaf-page-shell homeHref="/ui-kit" [breadcrumbs]="migas">
@@ -84,7 +71,7 @@ import {
 })
 export class EjemplosPaginasComponent {
   static readonly selectores = ['siaf-solicitude-page-layout', 'siaf-solicitude-header', 'siaf-page-shell', 'siaf-page-header', 'siaf-create-document'];
-  @Input({ required: true }) selector!: string;
+  readonly selector = input.required<string>();
 
   readonly migasSolicitud: BreadcrumbItem[] = [
     { label: 'Inicio', href: '/ui-kit' },

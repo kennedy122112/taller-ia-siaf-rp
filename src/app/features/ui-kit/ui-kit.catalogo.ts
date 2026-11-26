@@ -3,8 +3,8 @@
  *
  * Todo lo demás (selector, descripción, entradas, eventos, si tiene uso) sale del código
  * vía `scripts/generar-ui-kit.mjs`. El spec `ui-kit.catalogo.spec.ts` falla si un
- * componente nuevo del kit (o del armazón) no tiene categoría, así que actualizar el kit sin
- * declararlo aquí rompe los tests: esa es la regla de "sin ficha no está terminado".
+ * componente nuevo no tiene categoría, así que agregar uno a `shared/` sin declararlo
+ * aquí rompe los tests: esa es la regla de "sin ficha no está terminado".
  *
  * Criterio: una familia va entera en una sola categoría (todos los paneles laterales en
  * Overlays, todas las tarjetas en Superficies) y los componentes que se parecen van uno
@@ -33,23 +33,25 @@ export interface CategoriaUiKit {
   id: CategoriaId;
   titulo: string;
   descripcion: string;
+  /** Ícono de Material Icons del grupo en el menú lateral del catálogo. */
+  icono: string;
 }
 
 export const CATEGORIAS_UI_KIT: readonly CategoriaUiKit[] = [
-  { id: 'fundamentos', titulo: 'Fundamentos', descripcion: 'Iconografía, separadores y ayuda contextual.' },
-  { id: 'acciones', titulo: 'Botones y acciones', descripcion: 'Botones, grupos de botones y menús de acciones.' },
-  { id: 'formularios', titulo: 'Formularios', descripcion: 'Campos, selectores, carga de archivos y datos de solo lectura.' },
-  { id: 'datos', titulo: 'Datos y tablas', descripcion: 'Tablas, paginación, filtros, búsqueda y listas.' },
-  { id: 'graficos', titulo: 'Gráficos', descripcion: 'Visualización de datos: secciones con gráfico, indicadores KPI, barras (también apiladas), líneas, divergente, dona, leyenda y tooltip.' },
-  { id: 'feedback', titulo: 'Estado y feedback', descripcion: 'Etiquetas de estado, alertas, avisos, cargas y estados vacíos.' },
-  { id: 'navegacion', titulo: 'Navegación', descripcion: 'Migas y pestañas.' },
-  { id: 'superficies', titulo: 'Superficies', descripcion: 'Tarjetas y contenedores: resúmenes, acordeones y popovers.' },
-  { id: 'trazabilidad', titulo: 'Trazabilidad del documento', descripcion: 'Quién hizo qué y cuándo: detalle, historial, pasos y líneas de tiempo.' },
-  { id: 'overlays', titulo: 'Overlays', descripcion: 'Modales y paneles laterales que se abren sobre la pantalla.' },
-  { id: 'paginas', titulo: 'Layouts de página', descripcion: 'Armazones y cabeceras de las pantallas de solicitud y de consulta: cada pantalla pone dentro su propio contenido.' },
-  { id: 'plantillas', titulo: 'Plantillas de pantalla', descripcion: 'Flujos completos que se repiten entre procesos: cada pantalla solo pasa su configuración (título, textos, columnas y filtros).' },
-  { id: 'armazon', titulo: 'Armazón de la aplicación', descripcion: 'Piezas del shell autenticado: barra superior, menús y bandeja.' },
-  { id: 'landing', titulo: 'Página de inicio', descripcion: 'Piezas de la página pública de los sistemas: cabecera, barra de sistemas, tarjetas, detalle, pie y chat.' },
+  { id: 'fundamentos', titulo: 'Fundamentos', descripcion: 'Iconografía, separadores y ayuda contextual.', icono: 'category' },
+  { id: 'acciones', titulo: 'Botones y acciones', descripcion: 'Botones, grupos de botones y menús de acciones.', icono: 'smart_button' },
+  { id: 'formularios', titulo: 'Formularios', descripcion: 'Campos, selectores, carga de archivos y datos de solo lectura.', icono: 'edit_note' },
+  { id: 'datos', titulo: 'Datos y tablas', descripcion: 'Tablas, paginación, filtros, búsqueda y listas.', icono: 'table_chart' },
+  { id: 'graficos', titulo: 'Gráficos', descripcion: 'Visualización de datos: secciones con gráfico, indicadores KPI, barras (también apiladas), líneas, divergente, dona, leyenda y tooltip.', icono: 'bar_chart' },
+  { id: 'feedback', titulo: 'Estado y feedback', descripcion: 'Etiquetas de estado, alertas, avisos, cargas y estados vacíos.', icono: 'notifications' },
+  { id: 'navegacion', titulo: 'Navegación', descripcion: 'Migas y pestañas.', icono: 'explore' },
+  { id: 'superficies', titulo: 'Superficies', descripcion: 'Tarjetas y contenedores: resúmenes, acordeones y popovers.', icono: 'dashboard' },
+  { id: 'trazabilidad', titulo: 'Trazabilidad del documento', descripcion: 'Quién hizo qué y cuándo: detalle, historial, pasos y líneas de tiempo.', icono: 'history' },
+  { id: 'overlays', titulo: 'Overlays', descripcion: 'Modales y paneles laterales que se abren sobre la pantalla.', icono: 'picture_in_picture' },
+  { id: 'paginas', titulo: 'Layouts de página', descripcion: 'Armazones y cabeceras de las pantallas de solicitud y de consulta: cada pantalla pone dentro su propio contenido.', icono: 'view_quilt' },
+  { id: 'plantillas', titulo: 'Plantillas de pantalla', descripcion: 'Flujos completos que se repiten entre procesos: cada pantalla solo pasa su configuración (título, textos, columnas y filtros).', icono: 'auto_awesome_mosaic' },
+  { id: 'armazon', titulo: 'Armazón de la aplicación', descripcion: 'Piezas del shell autenticado: barra superior, menús y bandeja.', icono: 'view_sidebar' },
+  { id: 'landing', titulo: 'Landing público', descripcion: 'Piezas del sitio institucional, fuera de la aplicación: cabecera, pie, barra de sistemas, carrusel, encabezado de detalle y chat. Usan la paleta propia del landing.', icono: 'public' },
 ];
 
 export const CATEGORIA_POR_SELECTOR: Readonly<Record<string, CategoriaId>> = {
@@ -173,24 +175,14 @@ export const CATEGORIA_POR_SELECTOR: Readonly<Record<string, CategoriaId>> = {
   'siaf-tray-menu': 'armazon',
   'siaf-tray-documents-view': 'armazon',
   'siaf-tray-notifications-view': 'armazon',
-  // Página de inicio
+  // Landing público
   'siaf-landing-header': 'landing',
   'siaf-landing-systems-bar': 'landing',
-  'siaf-landing-cards-carousel': 'landing',
   'siaf-landing-detail-hero': 'landing',
+  'siaf-landing-cards-carousel': 'landing',
   'siaf-landing-footer': 'landing',
   'siaf-landing-chat-button': 'landing',
 };
 
-/**
- * No se listan en el catálogo: las pantallas completas del taller (armazón y escritorio) y las secciones internas de
- * `siaf-documents-records-page` (encabezado, filtros y acciones en lote), que el kit exporta pero se usan dentro de
- * la plantilla, no solas.
- */
-export const SELECTORES_OCULTOS: readonly string[] = [
-  'siaf-app-shell',
-  'siaf-virtual-desk',
-  'siaf-encabezado-section',
-  'siaf-filtros-section',
-  'siaf-acciones-en-lote-section',
-];
+/** Pantallas completas, no piezas reutilizables: no se listan en el catálogo. */
+export const SELECTORES_OCULTOS: readonly string[] = ['siaf-app-shell', 'siaf-virtual-desk'];

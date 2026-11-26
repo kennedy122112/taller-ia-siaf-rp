@@ -14,7 +14,7 @@ import { UiKitCopiarComponent } from './ui-kit-copiar.component';
     <ul class="grid grid-cols-2 gap-3 sm:grid-cols-3 xl:grid-cols-5">
       @for (r of radios; track r.token) {
         <li class="min-w-0 rounded-siaf-md border border-border p-3" [attr.data-radio]="r.escala">
-          <div class="mb-2 h-16 border-2 border-brand-primary bg-[var(--sys-color-bg-surfaces-surface-low)]" [style.border-radius]="'var(' + r.token + ')'"></div>
+          <div class="mb-2 h-16 border-2 border-brand-primary bg-bg-surfaces-surface-low" [style.border-radius]="'var(' + r.token + ')'"></div>
           <p class="px-1 font-mono text-[12px] font-semibold text-text">{{ r.escala }} · {{ r.escritorio }}</p>
           @for (u of r.utilidades; track u) {
             <siaf-ui-kit-copiar class="block" [texto]="u" />

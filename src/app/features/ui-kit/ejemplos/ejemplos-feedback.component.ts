@@ -1,33 +1,6 @@
-import { ChangeDetectionStrategy, Component, DestroyRef, Input, inject, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, DestroyRef, inject, signal, input } from '@angular/core';
 
-import {
-  AlertComponent,
-  AlertTone,
-  BadgeColor,
-  BadgeComponent,
-  ButtonComponent,
-  EmptySectionComponent,
-  EmptyStateComponent,
-  FlowStatus,
-  FlowStatusTagComponent,
-  IconComponent,
-  LoaderComponent,
-  LoaderOverlayComponent,
-  LoadingProgressComponent,
-  MessageBoxComponent,
-  ProgressCircularComponent,
-  RecordStatus,
-  RecordStatusTagComponent,
-  SnackbarComponent,
-  SnackbarTone,
-  StatusTagAppearance,
-  StatusTagComponent,
-  StatusTagSize,
-  StatusTagTone,
-  TagComponent,
-  TagSize,
-  TagVariant,
-} from '@kennedy122112/siaf-rp-ui-angular';
+import { AlertComponent, AlertTone, BadgeColor, BadgeComponent, ButtonComponent, EmptySectionComponent, EmptyStateComponent, FlowStatus, FlowStatusTagComponent, IconComponent, LoaderComponent, LoaderOverlayComponent, LoadingProgressComponent, MessageBoxComponent, ProgressCircularComponent, RecordStatus, RecordStatusTagComponent, SnackbarComponent, SnackbarTone, StatusTagAppearance, StatusTagComponent, StatusTagSize, StatusTagTone, TagComponent, TagSize, TagVariant } from '@kennedy122112/siaf-rp-ui-angular';
 
 /** Un estado del Figma que se fija con inputs; hover y foco se ven al pasar el puntero o llegar con Tab. */
 interface EstadoTag {
@@ -57,7 +30,7 @@ const ESTADOS_TAG: EstadoTag[] = [
     SnackbarComponent, StatusTagComponent, TagComponent,
   ],
   template: `
-    @switch (selector) {
+    @switch (selector()) {
       @case ('siaf-alert') {
         <p class="mb-2 text-[11px] font-bold uppercase tracking-widest text-text-muted">Estados (tone)</p>
         <div class="flex flex-col gap-3">
@@ -253,7 +226,7 @@ export class EjemplosFeedbackComponent {
     'siaf-alert', 'message-box', 'siaf-badge', 'siaf-tag', 'siaf-status-tag', 'siaf-flow-status-tag', 'siaf-record-status-tag', 'siaf-snackbar',
     'siaf-loader', 'siaf-loader-overlay', 'siaf-loading-progress', 'siaf-progress-circular', 'empty-section', 'siaf-empty-state',
   ];
-  @Input({ required: true }) selector!: string;
+  readonly selector = input.required<string>();
 
   private readonly destroyRef = inject(DestroyRef);
 

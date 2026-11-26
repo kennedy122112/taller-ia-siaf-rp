@@ -1,13 +1,6 @@
-import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 
-import {
-  ButtonComponent,
-  DividerComponent,
-  DividerVariant,
-  IconComponent,
-  ReadonlyFieldComponent,
-  TooltipDirective,
-} from '@kennedy122112/siaf-rp-ui-angular';
+import { ButtonComponent, DividerComponent, DividerVariant, IconComponent, ReadonlyFieldComponent, TooltipDirective } from '@kennedy122112/siaf-rp-ui-angular';
 
 /**
  * Ejemplos en vivo de la categoría Fundamentos. `siafTooltip` suma un bloque «Uso en consultas»
@@ -19,7 +12,7 @@ import {
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [ButtonComponent, DividerComponent, IconComponent, ReadonlyFieldComponent, TooltipDirective],
   template: `
-    @switch (selector) {
+    @switch (selector()) {
       @case ('siaf-icon') {
         <div class="flex flex-wrap items-center gap-4 text-text">
           @for (icono of iconos; track icono) {
@@ -74,9 +67,9 @@ import {
         <section class="flex flex-col gap-siaf-lg rounded-siaf-md border border-border bg-surface p-siaf-lg">
           <div class="flex flex-col gap-siaf-md">
             <div class="flex items-center gap-siaf-xs">
-              <h3 class="m-0 text-sm font-bold uppercase tracking-wide text-[var(--sys-color-text-neutral-medium)]">Datos de plan contable</h3>
+              <h3 class="m-0 text-sm font-bold uppercase tracking-wide text-text-neutral-medium">Datos de plan contable</h3>
               <span
-                class="inline-flex size-5 cursor-help items-center justify-center text-[var(--sys-color-text-neutral-low)]"
+                class="inline-flex size-5 cursor-help items-center justify-center text-text-neutral-low"
                 siafTooltip="Criterios de búsqueda ingresados"
                 aria-label="Criterios de búsqueda ingresados"
                 tabindex="0"
@@ -94,7 +87,7 @@ import {
           <div class="overflow-x-auto">
             <table class="w-full min-w-[560px] table-fixed border-collapse text-left text-sm">
               <thead>
-                <tr class="h-10 bg-[var(--sys-color-bg-surfaces-surface-high)] text-xs font-bold uppercase text-text">
+                <tr class="h-10 bg-bg-surfaces-surface-high text-xs font-bold uppercase text-text">
                   <th class="w-[120px] rounded-l-siaf-sm px-siaf-md py-siaf-sm">Código</th>
                   <th class="px-siaf-md py-siaf-sm">Nombre</th>
                   <th class="w-[120px] px-siaf-md py-siaf-sm">Naturaleza</th>
@@ -103,13 +96,13 @@ import {
               </thead>
               <tbody>
                 @for (cuenta of cuentasConsulta; track cuenta.codigo) {
-                  <tr class="h-12 border-b border-[var(--sys-color-divider-default)]">
+                  <tr class="h-12 border-b border-divider-default">
                     <td class="px-siaf-md py-siaf-sm font-medium text-text">{{ cuenta.codigo }}</td>
-                    <td class="px-siaf-md py-siaf-sm text-[var(--sys-color-text-neutral-medium)]">
+                    <td class="px-siaf-md py-siaf-sm text-text-neutral-medium">
                       <span class="block truncate" siafTooltip>{{ cuenta.nombre }}</span>
                     </td>
-                    <td class="px-siaf-md py-siaf-sm text-[var(--sys-color-text-neutral-medium)]">{{ cuenta.naturaleza }}</td>
-                    <td class="px-siaf-md py-siaf-sm text-[var(--sys-color-text-neutral-medium)]">{{ cuenta.estado }}</td>
+                    <td class="px-siaf-md py-siaf-sm text-text-neutral-medium">{{ cuenta.naturaleza }}</td>
+                    <td class="px-siaf-md py-siaf-sm text-text-neutral-medium">{{ cuenta.estado }}</td>
                   </tr>
                 }
               </tbody>
@@ -126,7 +119,7 @@ import {
 })
 export class EjemplosFundamentosComponent {
   static readonly selectores = ['siaf-icon', 'siaf-divider', '[siafTooltip]'];
-  @Input({ required: true }) selector!: string;
+  readonly selector = input.required<string>();
 
   readonly variantesDivider: DividerVariant[] = ['full-width', 'inset', 'middle-inset'];
 

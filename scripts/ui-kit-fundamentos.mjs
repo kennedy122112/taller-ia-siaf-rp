@@ -9,7 +9,7 @@
  * depender del tema activo de la página.
  */
 import { readFileSync, readdirSync, statSync } from 'node:fs';
-import { join, relative } from 'node:path';
+import { join, relative, sep } from 'node:path';
 
 // Orden de la cascada de src/styles.css: primero los tokens del kit y después lo propio del taller (el que viene
 // después gana).
@@ -194,6 +194,31 @@ export function utilidadesTailwind(raiz) {
   return { color: de('--color-'), espaciado: de('--spacing-'), radio: de('--radius-'), sombra: de('--shadow-') };
 }
 
+/** Los breakpoints de Tailwind v4 por defecto: prefijo y ancho mínimo. */
+const BREAKPOINTS_TAILWIND = [
+  ['sm', 640],
+  ['md', 768],
+  ['lg', 1024],
+  ['xl', 1280],
+  ['2xl', 1536],
+];
+
+/** Cuántas veces usa la app cada prefijo responsive (`md:flex`, `lg:grid-cols-2`…) en sus plantillas y clases. */
+function contarPrefijosResponsive(dir) {
+  const usos = new Map();
+  const recorrer = (carpeta) => {
+    for (const nombre of readdirSync(carpeta)) {
+      const ruta = join(carpeta, nombre);
+      if (statSync(ruta).isDirectory()) recorrer(ruta);
+      else if (/\.(ts|html)$/.test(nombre) && !nombre.endsWith('.spec.ts') && !ruta.includes(`${sep}features${sep}ui-kit${sep}`)) {
+        for (const m of readFileSync(ruta, 'utf8').matchAll(/(?<![\w-])(2xl|xl|lg|md|sm):(?=[\w\[-])/g)) usos.set(m[1], (usos.get(m[1]) ?? 0) + 1);
+      }
+    }
+  };
+  recorrer(dir);
+  return usos;
+}
+
 export function generarFundamentos(raiz) {
   const { mapas, definidas, origen } = leerTokens(raiz);
 
@@ -357,7 +382,23 @@ export function generarFundamentos(raiz) {
     .map(([nombre, uso]) => ({ nombre, archivos: [...uso.archivos].sort(), sinRespaldo: uso.sinRespaldo }))
     .sort((a, b) => b.archivos.length - a.archivos.length || a.nombre.localeCompare(b.nombre));
 
+  // Tamaños de pantalla: los prefijos de Tailwind (sus valores por defecto, salvo que el @theme los cambie) con cuántas
+  // veces los usa la app, y los tres dispositivos de los tokens del Figma (las @media del tema del kit).
+  const usosDe = contarPrefijosResponsive(join(raiz, 'src/app'));
+  const breakpoints = {
+    tailwind: BREAKPOINTS_TAILWIND.map(([prefijo, px]) => {
+      const propio = mapas.theme.get(`--breakpoint-${prefijo}`);
+      return { prefijo, desde: propio ? legible(propio) : `${px}px`, usos: usosDe.get(prefijo) ?? 0 };
+    }),
+    dispositivos: [
+      { nombre: 'Escritorio', rango: 'Desde 1024 px', media: null },
+      { nombre: 'Tablet', rango: 'De 768 a 1023 px', media: MEDIA_TABLET.slice('@media '.length) },
+      { nombre: 'Móvil', rango: 'Hasta 767 px', media: MEDIA_MOVIL.slice('@media '.length) },
+    ],
+  };
+
   return {
+    breakpoints,
     colores,
     paleta,
     tipografia,

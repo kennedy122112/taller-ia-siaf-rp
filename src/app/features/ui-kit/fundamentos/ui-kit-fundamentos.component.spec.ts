@@ -23,7 +23,16 @@ describe('UiKitFundamentosComponent', () => {
 
   it('pinta una sección con su ancla por fundamento', () => {
     const ids = Array.from(el().querySelectorAll('[data-fundamento]')).map((s) => s.id);
-    expect(ids).toEqual(['color', 'tipografia', 'espaciado', 'radios-y-bordes', 'sombras', 'iconos', 'revision-de-tokens']);
+    expect(ids).toEqual(['color', 'tipografia', 'espaciado', 'radios-y-bordes', 'breakpoints', 'sombras', 'iconos', 'revision-de-tokens']);
+  });
+
+  it('breakpoints: los cinco prefijos de Tailwind con su ancho y sus usos, y los tres dispositivos de los tokens', () => {
+    const filas = Array.from(el().querySelectorAll<HTMLElement>('[data-breakpoint]'));
+    expect(filas.map((f) => f.dataset['breakpoint'])).toEqual(['sm', 'md', 'lg', 'xl', '2xl']);
+    expect(filas[2].textContent).toContain('1024px');
+    expect(FUNDAMENTOS_UI_KIT.breakpoints.tailwind.find((b) => b.prefijo === 'lg')!.usos).toBeGreaterThan(0);
+    expect(Array.from(el().querySelectorAll<HTMLElement>('[data-dispositivo]')).map((d) => d.dataset['dispositivo'])).toEqual(['Escritorio', 'Tablet', 'Móvil']);
+    expect(el().querySelector('[data-dispositivo="Móvil"]')?.textContent).toContain('(max-width: 767px)');
   });
 
   it('color: un renglón por token con muestra clara y oscura; el filtro «Igual en oscuro» deja solo esos', async () => {

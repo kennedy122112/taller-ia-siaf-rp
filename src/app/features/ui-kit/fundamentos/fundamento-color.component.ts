@@ -1,13 +1,6 @@
 import { ChangeDetectionStrategy, Component, computed, signal } from '@angular/core';
 
-import {
-  ButtonGroupItem,
-  ButtonsGroupComponent,
-  ExpansionPanelComponent,
-  IconComponent,
-  TextFieldComponent,
-  TooltipDirective,
-} from '@kennedy122112/siaf-rp-ui-angular';
+import { ButtonGroupItem, ButtonsGroupComponent, ExpansionPanelComponent, IconComponent, TextFieldComponent, TooltipDirective } from '@kennedy122112/siaf-rp-ui-angular';
 import { FUNDAMENTOS_UI_KIT } from '../ui-kit.fundamentos';
 import { GrupoColor } from '../ui-kit.model';
 import { UiKitCopiarComponent } from './ui-kit-copiar.component';
@@ -27,7 +20,7 @@ type FiltroColor = 'todos' | 'sin-oscuro' | 'fuera-de-figma';
       </div>
       <!-- pr-px: el grupo solapa los bordes con margen negativo y sin ese píxel asomaría una barra de desplazamiento. -->
       <div class="min-w-0 overflow-x-auto pr-px">
-        <siaf-buttons-group [items]="filtros" [value]="filtro()" (valueChange)="filtro.set($any($event))" />
+        <siaf-buttons-group [items]="filtros" [value]="filtro()" (valueChange)="filtro.set($event)" />
       </div>
     </div>
     <p class="mb-4 text-xs text-text-muted" data-color-total>
@@ -58,12 +51,12 @@ type FiltroColor = 'todos' | 'sin-oscuro' | 'fuera-de-figma';
                   <div class="flex flex-wrap items-center gap-x-1">
                     <siaf-ui-kit-copiar [texto]="t.nombre" [copia]="'var(' + t.nombre + ')'" />
                     @if (t.sinOscuro) {
-                      <span class="inline-flex text-[var(--sys-color-icon-feedback-light-warning)]" data-indicador="igual-en-oscuro" siafTooltip="Igual en oscuro: el tema oscuro no lo cambia" tabindex="0" aria-label="Igual en oscuro">
+                      <span class="inline-flex text-icon-feedback-light-warning" data-indicador="igual-en-oscuro" siafTooltip="Igual en oscuro: el tema oscuro no lo cambia" tabindex="0" aria-label="Igual en oscuro">
                         <siaf-icon name="dark_mode" [size]="16" />
                       </span>
                     }
                     @if (t.soloOscuro) {
-                      <span class="inline-flex text-[var(--sys-color-icon-feedback-light-info)]" data-indicador="solo-en-oscuro" siafTooltip="Solo en oscuro: en claro depende del respaldo del var()" tabindex="0" aria-label="Solo en oscuro">
+                      <span class="inline-flex text-icon-feedback-light-info" data-indicador="solo-en-oscuro" siafTooltip="Solo en oscuro: en claro depende del respaldo del var()" tabindex="0" aria-label="Solo en oscuro">
                         <siaf-icon name="nightlight" [size]="16" />
                       </span>
                     }
@@ -140,7 +133,7 @@ export class FundamentoColorComponent {
 
   readonly busqueda = signal('');
   readonly filtro = signal<FiltroColor>('todos');
-  readonly filtros: ButtonGroupItem[] = [
+  readonly filtros: ButtonGroupItem<FiltroColor>[] = [
     { label: 'Todos', value: 'todos' },
     { label: 'Igual en oscuro', value: 'sin-oscuro' },
     { label: 'Fuera de Figma', value: 'fuera-de-figma' },

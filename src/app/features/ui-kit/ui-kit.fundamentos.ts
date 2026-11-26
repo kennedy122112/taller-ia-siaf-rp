@@ -3,6 +3,52 @@
 import type { FundamentosUiKit } from './ui-kit.model';
 
 export const FUNDAMENTOS_UI_KIT: FundamentosUiKit = {
+  "breakpoints": {
+    "tailwind": [
+      {
+        "prefijo": "sm",
+        "desde": "640px",
+        "usos": 10
+      },
+      {
+        "prefijo": "md",
+        "desde": "768px",
+        "usos": 2
+      },
+      {
+        "prefijo": "lg",
+        "desde": "1024px",
+        "usos": 20
+      },
+      {
+        "prefijo": "xl",
+        "desde": "1280px",
+        "usos": 4
+      },
+      {
+        "prefijo": "2xl",
+        "desde": "1536px",
+        "usos": 0
+      }
+    ],
+    "dispositivos": [
+      {
+        "nombre": "Escritorio",
+        "rango": "Desde 1024 px",
+        "media": null
+      },
+      {
+        "nombre": "Tablet",
+        "rango": "De 768 a 1023 px",
+        "media": "(max-width: 1023px)"
+      },
+      {
+        "nombre": "Móvil",
+        "rango": "Hasta 767 px",
+        "media": "(max-width: 767px)"
+      }
+    ]
+  },
   "colores": [
     {
       "id": "bg-brand",

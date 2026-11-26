@@ -1,11 +1,10 @@
-import { ChangeDetectionStrategy, Component, Input, inject, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, signal, input } from '@angular/core';
 
 import { CurrentUserService } from '../../../core/auth/current-user.service';
 import { PermissionService } from '../../../core/auth/permission.service';
 
-import { DocumentsRecordsPageComponent } from '@kennedy122112/siaf-rp-ui-angular';
+import { DocumentsRecordsPageComponent, type QueryReportResult } from '@kennedy122112/siaf-rp-ui-angular';
 import { QueryReportExportEvent, QueryReportPageComponent } from '@kennedy122112/siaf-rp-ui-angular/graficos';
-import type { QueryReportResult } from '../../../shared/types/query-report.types';
 import { BANDEJA_CONFIG_DE_MUESTRA, PROVEEDORES_BANDEJA_DE_MUESTRA, sembrarSesionDeMuestra } from './datos-de-muestra';
 import { CONFIG_REPORTE_DE_MUESTRA, FILAS_REPORTE_DE_MUESTRA, RESULTADO_REPORTE_DE_MUESTRA } from './reporte-de-muestra';
 
@@ -22,7 +21,7 @@ import { CONFIG_REPORTE_DE_MUESTRA, FILAS_REPORTE_DE_MUESTRA, RESULTADO_REPORTE_
   providers: PROVEEDORES_BANDEJA_DE_MUESTRA,
   imports: [DocumentsRecordsPageComponent, QueryReportPageComponent],
   template: `
-    @switch (selector) {
+    @switch (selector()) {
       @case ('siaf-documents-records-page') {
         <div class="overflow-hidden rounded-siaf-md border border-border [transform:translateZ(0)]">
           <siaf-documents-records-page [config]="bandeja" />
@@ -53,7 +52,7 @@ import { CONFIG_REPORTE_DE_MUESTRA, FILAS_REPORTE_DE_MUESTRA, RESULTADO_REPORTE_
 })
 export class EjemplosPlantillasComponent {
   static readonly selectores = ['siaf-documents-records-page', 'siaf-query-report-page'];
-  @Input({ required: true }) selector!: string;
+  readonly selector = input.required<string>();
 
   constructor() {
     sembrarSesionDeMuestra(inject(CurrentUserService), inject(PermissionService));

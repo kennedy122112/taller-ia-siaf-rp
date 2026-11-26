@@ -1,13 +1,6 @@
-import { ChangeDetectionStrategy, Component, Input, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, signal, input } from '@angular/core';
 
-import {
-  BreadcrumbComponent,
-  BreadcrumbItem,
-  RecordsTabItem,
-  RecordsTabsComponent,
-  TabItem,
-  TabsComponent,
-} from '@kennedy122112/siaf-rp-ui-angular';
+import { BreadcrumbComponent, BreadcrumbItem, RecordsTabItem, RecordsTabsComponent, TabItem, TabsComponent } from '@kennedy122112/siaf-rp-ui-angular';
 
 /** Ejemplos en vivo de la categoría Navegación. */
 @Component({
@@ -16,7 +9,7 @@ import {
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [BreadcrumbComponent, RecordsTabsComponent, TabsComponent],
   template: `
-    @switch (selector) {
+    @switch (selector()) {
       @case ('siaf-breadcrumb') {
         <siaf-breadcrumb homeHref="/ui-kit" [items]="migas" />
       }
@@ -42,6 +35,10 @@ import {
             <p class="mb-2 text-[11px] font-bold uppercase tracking-widest text-text-muted">Ancho completo · fullWidth</p>
             <siaf-tabs [tabs]="pestanasLogin" [border]="false" [fullWidth]="true" [activeId]="pestanaLogin()" ariaLabel="Tipo de usuario" (activeIdChange)="pestanaLogin.set($event)" />
           </div>
+          <div class="min-w-0">
+            <p class="mb-2 text-[11px] font-bold uppercase tracking-widest text-text-muted">Con una deshabilitada · disabled</p>
+            <siaf-tabs [tabs]="pestanasConDeshabilitada" [border]="false" activeId="documentos" ariaLabel="Documentos y registros" />
+          </div>
         </div>
       }
       @case ('siaf-records-tabs') {
@@ -52,7 +49,7 @@ import {
 })
 export class EjemplosNavegacionComponent {
   static readonly selectores = ['siaf-breadcrumb', 'siaf-tabs', 'siaf-records-tabs'];
-  @Input({ required: true }) selector!: string;
+  readonly selector = input.required<string>();
 
   readonly migas: BreadcrumbItem[] = [
     { label: 'Gestión contable', href: '/ui-kit' },
@@ -81,6 +78,12 @@ export class EjemplosNavegacionComponent {
     { id: 'proveedores', label: 'Proveedores y Externos' },
   ];
   readonly pestanaLogin = signal('entidades');
+
+  /** Como el validador de cierre contable: Registros se ve pero todavía no se puede abrir. */
+  readonly pestanasConDeshabilitada: TabItem[] = [
+    { id: 'documentos', label: 'Documentos' },
+    { id: 'registros', label: 'Registros', disabled: true },
+  ];
 
   readonly pestanasRegistros: RecordsTabItem[] = [
     { id: 'documentos', label: 'Documentos', count: 24 },

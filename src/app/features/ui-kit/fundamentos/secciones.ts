@@ -34,6 +34,13 @@ export const SECCIONES_FUNDAMENTOS: readonly SeccionFundamento[] = [
     claves: ['radius', 'rounded', 'esquinas', 'borde', 'grosor'],
   },
   {
+    id: 'breakpoints',
+    titulo: 'Breakpoints',
+    descripcion:
+      'Los tamaños de pantalla: los prefijos responsive de Tailwind para el layout y los tres dispositivos de los tokens del Figma, que cambian textos, espacios e íconos. Miran el ancho de la ventana, no el del contenedor.',
+    claves: ['responsive', 'pantallas', 'móvil', 'tablet', 'escritorio', 'media query', 'sm', 'md', 'lg', 'xl'],
+  },
+  {
     id: 'sombras',
     titulo: 'Sombras',
     descripcion: 'Elevaciones de tarjetas, popovers y menús, con su versión en tema oscuro.',

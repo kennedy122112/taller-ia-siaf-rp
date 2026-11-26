@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, DestroyRef, ElementRef, Input, afterNextRender, computed, inject, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, DestroyRef, ElementRef, afterNextRender, computed, inject, signal, input } from '@angular/core';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 
 /**
@@ -14,17 +14,17 @@ import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
   template: `
     <figure class="m-0">
       <figcaption class="mb-1 flex items-center justify-between text-[11px] font-semibold uppercase tracking-widest text-text-muted">
-        <span>{{ etiqueta }}</span>
-        <span class="font-mono font-normal normal-case tracking-normal">{{ ancho }} px</span>
+        <span>{{ etiqueta() }}</span>
+        <span class="font-mono font-normal normal-case tracking-normal">{{ ancho() }} px</span>
       </figcaption>
-      <div class="overflow-hidden rounded-siaf-md border border-border bg-surface" [style.height.px]="alto * escala()">
+      <div class="overflow-hidden rounded-siaf-md border border-border bg-surface" [style.height.px]="alto() * escala()">
         <iframe
           class="block origin-top-left border-0"
           loading="lazy"
-          [title]="etiqueta + ' — ' + selector"
+          [title]="etiqueta() + ' — ' + selector()"
           [src]="url()"
-          [style.width.px]="ancho"
-          [style.height.px]="alto"
+          [style.width.px]="ancho()"
+          [style.height.px]="alto()"
           [style.transform]="'scale(' + escala() + ')'"
         ></iframe>
       </div>
@@ -35,22 +35,20 @@ export class UiKitMarcoComponent {
   private readonly sanitizer = inject(DomSanitizer);
   private readonly host = inject(ElementRef<HTMLElement>);
 
-  @Input({ required: true }) selector!: string;
-  @Input({ required: true }) etiqueta!: string;
-  @Input({ required: true }) ancho!: number;
-  @Input({ required: true }) alto!: number;
-  private readonly _tema = signal<'light' | 'dark'>('light');
-  @Input() set tema(valor: 'light' | 'dark') {
-    this._tema.set(valor);
-  }
+  readonly selector = input.required<string>();
+  readonly etiqueta = input.required<string>();
+  readonly ancho = input.required<number>();
+  readonly alto = input.required<number>();
+  readonly tema = input<'light' | 'dark'>('light');
+  private readonly _tema = computed(() => this.tema());
 
   private readonly disponible = signal(0);
   /** Nunca agranda: solo reduce si la columna es más angosta que el dispositivo. */
-  readonly escala = computed(() => (this.disponible() > 0 ? Math.min(1, this.disponible() / this.ancho) : 1));
+  readonly escala = computed(() => (this.disponible() > 0 ? Math.min(1, this.disponible() / this.ancho()) : 1));
 
   /** La ruta es interna y fija salvo el selector, que viene del manifiesto generado: se codifica y se confía. */
   readonly url = computed<SafeResourceUrl>(() =>
-    this.sanitizer.bypassSecurityTrustResourceUrl(`/ui-kit/vista/${encodeURIComponent(this.selector)}?tema=${this._tema()}`),
+    this.sanitizer.bypassSecurityTrustResourceUrl(`/ui-kit/vista/${encodeURIComponent(this.selector())}?tema=${this._tema()}`),
   );
 
   constructor() {
